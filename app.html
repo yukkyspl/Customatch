@@ -951,8 +951,6 @@ function init(){
   const us=document.getElementById('up-maker-sel');
   us.innerHTML='<option value="">選択してください</option>';
   Object.keys(MAKERS).forEach(m=>us.innerHTML+=`<option>${m}</option>`);
-  // LP初期化（少し遅延させてDOMとcanvasサイズを確定させる）
-  setTimeout(initLP, 100);
 }
 
 function populateMakers(){
@@ -1297,11 +1295,9 @@ function getWheelColor(){
 function drawCar(){
   const cv=document.getElementById('cv');
   // app-wrapが非表示だとoffsetWidth=0になる→表示後に再実行
-  const W=cv.offsetWidth,H=cv.offsetHeight;
-  if(!W||!H){
-    requestAnimationFrame(()=>drawCar());
-    return;
-  }
+  var W=cv.offsetWidth||cv.parentElement.offsetWidth||320;
+  var H=cv.offsetHeight||200;
+  if(!W||!H) return;
   cv.width=W*(devicePixelRatio||1);cv.height=H*(devicePixelRatio||1);
   const ctx=cv.getContext('2d');
   ctx.scale(devicePixelRatio||1,devicePixelRatio||1);
@@ -2269,7 +2265,10 @@ function toast(msg){
 }
 
 window.addEventListener('resize',()=>drawCar());
-document.addEventListener("DOMContentLoaded", function(){ init(); });
+document.addEventListener("DOMContentLoaded", function(){
+  init();
+  setTimeout(function(){ drawCar(); }, 50);
+});
 
 // LP init is called at the bottom of the original init()
 </script>
