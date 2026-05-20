@@ -156,8 +156,8 @@ input[type=text],input[type=number]{background:var(--b3);color:var(--t);border:.
   <div class="ph">
     <div class="logo">Cus<span>To</span>match</div>
     <div style="display:flex;gap:10px;align-items:center">
-      <i class="ti ti-car" style="font-size:20px;color:var(--t2);cursor:pointer" onclick="openModal()"></i>
-      <button onclick="saveGarage()" style="font-size:11px;padding:4px 10px;border-radius:8px;border:.5px solid var(--br2);background:transparent;color:var(--t2);cursor:pointer">保存</button>
+      <i class="ti ti-car" style="font-size:20px;color:var(--t2);cursor:pointer" data-action="openModal"></i>
+      <button data-action="saveGarage" style="font-size:11px;padding:4px 10px;border-radius:8px;border:.5px solid var(--br2);background:transparent;color:var(--t2);cursor:pointer">保存</button>
     </div>
   </div>
 
@@ -165,17 +165,17 @@ input[type=text],input[type=number]{background:var(--b3);color:var(--t);border:.
     <div class="cv-wrap">
       <canvas id="cv"></canvas>
       <div class="vbtns">
-        <div class="vbtn" onclick="dlImg()"><i class="ti ti-download"></i></div>
-        <div class="vbtn" onclick="shareImg()"><i class="ti ti-share"></i></div>
+        <div class="vbtn" data-action="dlImg"><i class="ti ti-download"></i></div>
+        <div class="vbtn" data-action="shareImg"><i class="ti ti-share"></i></div>
       </div>
     </div>
     <div class="vtabs">
-      <div class="vt on" id="vt-side"     onclick="setView('side')">サイド</div>
-      <div class="vt"    id="vt-front"    onclick="setView('front')">フロント</div>
-      <div class="vt"    id="vt-rear"     onclick="setView('rear')">リア</div>
-      <div class="vt"    id="vt-top"      onclick="setView('top')">上面</div>
-      <div class="vt"    id="vt-engine"   onclick="setView('engine')">エンジン</div>
-      <div class="vt"    id="vt-interior" onclick="setView('interior')">室内</div>
+      <div class="vt on" id="vt-side"     data-view="side">サイド</div>
+      <div class="vt"    id="vt-front"    data-view="front">フロント</div>
+      <div class="vt"    id="vt-rear"     data-view="rear">リア</div>
+      <div class="vt"    id="vt-top"      data-view="top">上面</div>
+      <div class="vt"    id="vt-engine"   data-view="engine">エンジン</div>
+      <div class="vt"    id="vt-interior" data-view="interior">室内</div>
     </div>
   </div>
 
@@ -186,7 +186,7 @@ input[type=text],input[type=number]{background:var(--b3);color:var(--t);border:.
       <strong id="bc-model">—</strong>
       <i class="ti ti-chevron-right" style="font-size:10px"></i>
       <strong id="bc-grade">—</strong>
-      <button onclick="openModal()" style="margin-left:auto;font-size:11px;padding:3px 10px;border-radius:8px;border:.5px solid var(--br2);background:transparent;color:var(--a);cursor:pointer">変更</button>
+      <button data-action="openModal" style="margin-left:auto;font-size:11px;padding:3px 10px;border-radius:8px;border:.5px solid var(--br2);background:transparent;color:var(--a);cursor:pointer">変更</button>
     </div>
 
     <div class="stitle">ボディカラー</div>
@@ -216,8 +216,8 @@ input[type=text],input[type=number]{background:var(--b3);color:var(--t);border:.
 
   <!-- 車種フィルター -->
   <div class="filter-bar" id="order-filter-bar">
-    <div class="fpill on" id="fp-current" onclick="setOrderFilter('current',this)">選択車種のみ</div>
-    <div class="fpill" id="fp-all" onclick="setOrderFilter('all',this)">すべて表示</div>
+    <div class="fpill on" id="fp-current" data-filter="current">選択車種のみ</div>
+    <div class="fpill" id="fp-all" data-filter="all">すべて表示</div>
   </div>
 
   <div id="compat-notice" style="padding:8px 14px;font-size:11px;color:var(--a);background:rgba(216,90,48,.08);border-bottom:.5px solid rgba(216,90,48,.15);display:none">
@@ -238,29 +238,29 @@ input[type=text],input[type=number]{background:var(--b3);color:var(--t);border:.
         <div class="total-l">合計（参考価格）</div>
         <div class="total-n" id="total-num">¥0</div>
       </div>
-      <button onclick="clearAllParts()" style="font-size:11px;padding:5px 11px;border-radius:8px;border:.5px solid rgba(216,90,48,.4);background:transparent;color:var(--a);cursor:pointer;white-space:nowrap">
+      <button data-action="clearAllParts" style="font-size:11px;padding:5px 11px;border-radius:8px;border:.5px solid rgba(216,90,48,.4);background:transparent;color:var(--a);cursor:pointer;white-space:nowrap">
         <i class="ti ti-trash" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i>全削除
       </button>
     </div>
     <div style="padding:0 14px 10px">
       <div style="font-size:10px;color:var(--t3);letter-spacing:.6px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:8px">まとめて検索・購入</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
-        <button class="bulk-btn amz-bulk" onclick="openAllShops('amz')">
+        <button class="bulk-btn amz-bulk" data-action="openAllShops" data-arg="amz">
           <i class="ti ti-brand-amazon" style="font-size:16px;display:block;margin-bottom:2px"></i>Amazon
         </button>
-        <button class="bulk-btn yah-bulk" onclick="openAllShops('yah')">
+        <button class="bulk-btn yah-bulk" data-action="openAllShops" data-arg="yah">
           <i class="ti ti-shopping-bag" style="font-size:16px;display:block;margin-bottom:2px"></i>Yahoo!
         </button>
-        <button class="bulk-btn rak-bulk" onclick="openAllShops('rak')">
+        <button class="bulk-btn rak-bulk" data-action="openAllShops" data-arg="rak">
           <i class="ti ti-building-store" style="font-size:16px;display:block;margin-bottom:2px"></i>楽天
         </button>
       </div>
     </div>
     <div style="padding:0 14px 6px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
-      <div class="share-row" onclick="shareImg()">
+      <div class="share-row" data-action="shareImg">
         <i class="ti ti-brand-x" style="font-size:14px;vertical-align:-2px;margin-right:5px"></i>Xでシェア
       </div>
-      <div class="share-row" onclick="dlImg()">
+      <div class="share-row" data-action="dlImg">
         <i class="ti ti-download" style="font-size:14px;vertical-align:-2px;margin-right:5px"></i>画像保存
       </div>
     </div>
@@ -273,14 +273,14 @@ input[type=text],input[type=number]{background:var(--b3);color:var(--t);border:.
   <div class="ph"><div class="logo" style="font-size:17px">投稿する</div></div>
   <div class="scr" style="padding-top:12px">
     <div style="display:flex;gap:8px;margin-bottom:12px">
-      <button class="cpill on" id="upt-car"  onclick="setUT('car',this)">車種を追加</button>
-      <button class="cpill"    id="upt-part" onclick="setUT('part',this)">パーツを追加</button>
+      <button class="cpill on" id="upt-car"  data-action="setUT" data-arg="car">車種を追加</button>
+      <button class="cpill"    id="upt-part" data-action="setUT" data-arg="part">パーツを追加</button>
     </div>
     <div id="up-car">
       <div style="font-size:12px;color:var(--t2);line-height:1.7;margin-bottom:12px;padding:10px;background:var(--b2);border-radius:var(--r);border:.5px solid var(--br)">
         ノーマル状態の写真を投稿すると車種一覧に表示されます。<br>前後左右＋エンジンルーム＋室内があると最高です！
       </div>
-      <div class="uzone" onclick="fakeUp(this)"><i class="ti ti-camera"></i><p>横からのノーマル写真<br><small style="color:var(--t3)">タップしてカメラ起動 or 選択</small></p></div>
+      <div class="uzone" data-action="fakeUp"><i class="ti ti-camera"></i><p>横からのノーマル写真<br><small style="color:var(--t3)">タップしてカメラ起動 or 選択</small></p></div>
       <div class="flabel">メーカー</div>
       <select class="fi" id="up-maker-sel"><option value="">選択してください</option></select>
       <div class="flabel">車種名</div>
@@ -289,12 +289,12 @@ input[type=text],input[type=number]{background:var(--b3);color:var(--t);border:.
       <input class="fi" type="text" placeholder="例: S15 Spec R (1999-2002)" id="up-grade-in">
       <div class="flabel">純正カラー（カラー名 #HEX 形式で複数可）</div>
       <input class="fi" type="text" placeholder="例: ブレイジングレッド #B01010, ホワイト #F0EDE8">
-      <button onclick="submitCar()" class="cbtn" style="margin-top:16px">
+      <button data-action="submitCar" class="cbtn" style="margin-top:16px">
         <i class="ti ti-upload" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i>車種を投稿する
       </button>
     </div>
     <div id="up-part" style="display:none">
-      <div class="uzone" onclick="fakeUp(this)"><i class="ti ti-photo"></i><p>パーツ単体画像（透過PNG推奨）</p></div>
+      <div class="uzone" data-action="fakeUp"><i class="ti ti-photo"></i><p>パーツ単体画像（透過PNG推奨）</p></div>
       <div class="flabel">カテゴリ</div>
       <select class="fi"><option>ホイール</option><option>フロントバンパー</option><option>リアウイング</option><option>サイドスカート</option><option>ボンネット</option><option>シート</option><option>ステアリング</option><option>マフラー</option><option>車高調</option><option>その他</option></select>
       <div class="flabel">ブランド</div><input class="fi" type="text" placeholder="例: RAYS">
@@ -306,7 +306,7 @@ input[type=text],input[type=number]{background:var(--b3);color:var(--t);border:.
       <input class="fi" type="text" placeholder="例: ブラック #111111, シルバー #CCCCCC">
       <div class="flabel">AmazonリンクURL（アフィリエイトタグ付き）</div>
       <input class="fi" type="text" placeholder="https://www.amazon.co.jp/dp/...?tag=your-tag-22">
-      <button onclick="submitPart()" class="cbtn" style="margin-top:16px">
+      <button data-action="submitPart" class="cbtn" style="margin-top:16px">
         <i class="ti ti-upload" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i>パーツを投稿する
       </button>
     </div>
@@ -323,32 +323,32 @@ input[type=text],input[type=number]{background:var(--b3);color:var(--t);border:.
 </div>
 
 <nav class="nav">
-  <div class="ni on" id="ni-custom" onclick="sw('custom')"><i class="ti ti-car-turbine"></i>カスタム</div>
-  <div class="ni" id="ni-order" onclick="sw('order')">
+  <div class="ni on" id="ni-custom" data-sw="custom"><i class="ti ti-car-turbine"></i>カスタム</div>
+  <div class="ni" id="ni-order" data-sw="order">
     <i class="ti ti-shopping-cart"></i>注文
     <span class="nbadge" id="nbadge">0</span>
   </div>
-  <div class="ni" id="ni-upload" onclick="sw('upload')"><i class="ti ti-upload"></i>投稿</div>
-  <div class="ni" id="ni-garage" onclick="sw('garage')"><i class="ti ti-garage"></i>ガレージ</div>
+  <div class="ni" id="ni-upload" data-sw="upload"><i class="ti ti-upload"></i>投稿</div>
+  <div class="ni" id="ni-garage" data-sw="garage"><i class="ti ti-garage"></i>ガレージ</div>
 </nav>
 <div class="toast" id="toast"></div>
 
 <!-- CAR MODAL -->
-<div class="mover" id="car-modal" onclick="closeModal(event)">
+<div class="mover" id="car-modal" data-action="closeModal">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="mtitle">車種を選ぶ
-      <span style="font-size:22px;color:var(--t2);cursor:pointer;line-height:1" onclick="closeModal()">&times;</span>
+      <span style="font-size:22px;color:var(--t2);cursor:pointer;line-height:1" data-action="closeModal">&times;</span>
     </div>
     <div class="slabel">① メーカー</div>
-    <select id="sel-maker" onchange="onMaker()"><option value="">メーカーを選択</option></select>
+    <select id="sel-maker" data-change="onMaker"><option value="">メーカーを選択</option></select>
     <div id="wrap-model" style="display:none">
       <div class="slabel">② 車種</div>
-      <select id="sel-model" onchange="onModel()"><option value="">車種を選択</option></select>
+      <select id="sel-model" data-change="onModel"><option value="">車種を選択</option></select>
     </div>
     <div id="wrap-grade" style="display:none">
       <div class="slabel">③ 型式・グレード</div>
       <select id="sel-grade"><option value="">型式を選択</option></select>
-      <button class="cbtn" onclick="confirmCar()">この車種に決定</button>
+      <button class="cbtn" data-action="confirmCar">この車種に決定</button>
     </div>
     <div style="margin-top:18px">
       <div class="slabel">📸 みんなが投稿した車種</div>
@@ -2268,6 +2268,63 @@ window.addEventListener('resize',()=>drawCar());
 document.addEventListener("DOMContentLoaded", function(){
   init();
   setTimeout(function(){ drawCar(); }, 50);
+
+  // ── イベントデリゲーション ──
+  // data-sw → ページ切替
+  document.querySelectorAll('[data-sw]').forEach(function(el){
+    el.addEventListener('click', function(){ sw(this.getAttribute('data-sw')); });
+  });
+  // data-view → 6アングル切替
+  document.querySelectorAll('[data-view]').forEach(function(el){
+    el.addEventListener('click', function(){ setView(this.getAttribute('data-view')); });
+  });
+  // data-action → 各種アクション
+  document.querySelectorAll('[data-action]').forEach(function(el){
+    el.addEventListener('click', function(e){
+      var action = this.getAttribute('data-action');
+      var arg = this.getAttribute('data-arg');
+      switch(action){
+        case 'openModal':    openModal(); break;
+        case 'closeModal':   closeModal(e); break;
+        case 'confirmCar':   confirmCar(); break;
+        case 'saveGarage':   saveGarage(); break;
+        case 'dlImg':        dlImg(); break;
+        case 'shareImg':     shareImg(); break;
+        case 'clearAllParts':clearAllParts(); break;
+        case 'openAllShops': openAllShops(arg); break;
+        case 'setUT':        setUT(arg, this); break;
+        case 'fakeUp':       fakeUp(this); break;
+        case 'submitCar':    submitCar(); break;
+        case 'submitPart':   submitPart(); break;
+      }
+    });
+  });
+  // data-filter → 注文フィルター
+  document.querySelectorAll('[data-filter]').forEach(function(el){
+    el.addEventListener('click', function(){
+      setOrderFilter(this.getAttribute('data-filter'), this);
+    });
+  });
+  // data-change → select変更
+  document.querySelectorAll('[data-change]').forEach(function(el){
+    el.addEventListener('change', function(){
+      var fn = this.getAttribute('data-change');
+      if(fn === 'onMaker') onMaker();
+      if(fn === 'onModel') onModel();
+    });
+  });
+  // モーダルオーバーレイのクリック閉じ
+  var modalOverlay = document.getElementById('car-modal');
+  if(modalOverlay){
+    modalOverlay.addEventListener('click', function(e){
+      if(e.target === this) closeModal();
+    });
+  }
+  // event.stopPropagation のモーダル内側
+  var modalInner = document.querySelector('.modal');
+  if(modalInner){
+    modalInner.addEventListener('click', function(e){ e.stopPropagation(); });
+  }
 });
 
 // LP init is called at the bottom of the original init()
