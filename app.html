@@ -1350,15 +1350,14 @@ function getWheelColor(){
 
 function drawCar(){
   var cv=document.getElementById('cv');
-  // app-wrapが非表示だとoffsetWidth=0になる→表示後に再実行
   var W=cv.offsetWidth,H=cv.offsetHeight;
   if(!W||!H){
     requestAnimationFrame(function(){drawCar();});
     return;
   }
-  cv.width=W*(devicePixelRatio||1);cv.height=H*(devicePixelRatio||1);
+  cv.width=W;cv.height=H;
   var ctx=cv.getContext('2d');
-  ctx.scale(devicePixelRatio||1,devicePixelRatio||1);
+  ctx.setTransform(1,0,0,1,0,0);
   ctx.clearRect(0,0,W,H);
   try{
     switch(currentView){
@@ -1371,12 +1370,6 @@ function drawCar(){
     }
   }catch(e){
     console.warn('draw error ('+currentView+'):',e.message);
-    // フォールバック描画
-    ctx.fillStyle='rgba(255,255,255,.06)';
-    ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='rgba(255,255,255,.3)';
-    ctx.font='14px "Noto Sans JP",sans-serif';
-    ctx.fillText('描画エラー: '+e.message,10,H/2);
   }
   ctx.save();ctx.globalAlpha=.18;ctx.fillStyle='#fff';
   ctx.font='700 11px "Barlow Condensed",sans-serif';ctx.fillText('CusToMatch',10,H-10);ctx.restore();
