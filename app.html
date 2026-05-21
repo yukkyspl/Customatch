@@ -360,6 +360,1952 @@ input[type=text],input[type=number]{background:var(--b3);color:var(--t);border:.
 
 
 
-<script src="app.js"></script>
+<script>
+
+// ══════════════════════════════════════
+// MAKERS / GRADES
+// ══════════════════════════════════════
+var MAKERS={
+  'マツダ':['RX-7','RX-8','ロードスター','アテンザ','アクセラ'],
+  '日産':['スカイライン GT-R','フェアレディZ','シルビア','180SX','GT-R R35','ローレル'],
+  'トヨタ':['スープラ','AE86','MR2','セリカ','チェイサー','マーク II','GR86'],
+  'ホンダ':['NSX','S2000','シビック TYPE R','インテグラ TYPE R','ビート','CR-X'],
+  'スバル':['インプレッサ STI','レガシィ B4','BRZ','WRX STI'],
+  '三菱':['ランサーエボリューション','GTO','FTO'],
+  'BMW':['M3','M4','M5','Z3 M Coupe','1M Coupe'],
+  'ポルシェ':['911 GT3','Cayman GT4','Boxster S','944 Turbo'],
+  'メルセデス AMG':['C63 AMG','E55 AMG','SL 63 AMG'],
+  'アウディ':['RS4 Avant','RS6 Avant','TT RS','R8 V10'],
+  'VW':['ゴルフ GTI','ゴルフ R'],
+  'フォード':['マスタング シェルビー'],
+  'シボレー':['カマロ ZL1','コルベット Z06'],
+};
+var GRADES={
+  'RX-7':['FD3S (1991-2002)','FC3S (1985-1991)','SA22C (1978-1985)'],
+  'RX-8':['SE3P (2003-2012)'],
+  'ロードスター':['ND5RC (2015-)','NC (2005-2015)','NB8C (1998-2005)','NA6CE (1989-1997)'],
+  'アテンザ':['GJ2FP (2012-2019)','GG3P (2002-2007)'],
+  'アクセラ':['BMLFS (2013-2019)','BL3FW (2009-2013)','BK3P (2003-2009)'],
+  'スカイライン GT-R':['BNR34 (1999-2002)','BCNR33 (1995-1998)','BNR32 (1989-1994)'],
+  'フェアレディZ':['RZ34 (2022-)','Z34 (2008-)','Z33 (2002-2008)','Z32 (1989-2000)','S130 (1978-1983)'],
+  'シルビア':['S15 Spec R (1999-2002)','S14 K\'s (1993-1998)','S13 K\'s (1988-1993)'],
+  '180SX':['RPS13 TypeX (1991-1998)','PS13 (1989-1991)'],
+  'GT-R R35':['CBA-R35 NISMO (2014-)','DBA-R35 (2007-)'],
+  'ローレル':['C35 (1997-2002)','C33 Medalist Club S (1988-1993)'],
+  'スープラ':['JZA80 RZ (1993-2002)','JZA70 3.0GT (1986-1993)','DB82 GR Supra (2019-)'],
+  'AE86':['AE86 トレノ GT-APEX (1983-1987)','AE86 レビン GT-APEX (1983-1987)'],
+  'MR2':['SW20 GT-S (1989-1999)','AW11 G (1984-1989)'],
+  'セリカ':['ST205 GT-Four (1994-1999)','ST185 GT-Four (1989-1993)','ZZT231 SS-II (1999-2006)'],
+  'チェイサー':['JZX100 Tourer V (1996-2001)','JZX90 Tourer V (1992-1996)'],
+  'マーク II':['JZX110 iR-V (2000-2004)','JZX100 Tourer V (1996-2001)'],
+  'GR86':['ZN8 RZ (2021-)'],
+  'NSX':['NC1 Type S (2016-)','NA2 (1997-2005)','NA1 (1990-2001)'],
+  'S2000':['AP2 (2003-2009)','AP1 (1999-2003)'],
+  'シビック TYPE R':['FL5 (2022-)','FK8 (2017-2021)','EP3 (2001-2005)','EK9 (1997-2001)'],
+  'インテグラ TYPE R':['DC5 (2001-2007)','DC2 (1995-2001)'],
+  'ビート':['PP1 (1991-1996)'],
+  'CR-X':['EF8 SiR (1987-1991)'],
+  'インプレッサ STI':['VAB (2014-2021)','GDB A-D (2000-2007)','GC8 V (1996-1998)'],
+  'レガシィ B4':['BP5 2.0GT (2003-2009)','BH5 RSK (1998-2003)'],
+  'BRZ':['ZD8 S (2021-)','ZC6 R (2012-2021)'],
+  'WRX STI':['VAB Type S (2014-2021)','GRB Spec C (2007-2014)'],
+  'ランサーエボリューション':['CT9A Evo IX GSR (2005-2007)','CT9A Evo VIII GSR (2003-2005)','CP9A Evo VI T.M. (1999-2001)','CE9A Evo III GSR (1995-1996)'],
+  'GTO':['Z16A Twin Turbo (1990-2000)'],
+  'FTO':['DE3A GPversion R (1994-2000)'],
+  'M3':['G80 Competition (2021-)','F80 CS (2016-2018)','E92 GTS (2010-2012)','E46 CSL (2003-2004)','E36 GT (1994-1999)'],
+  'M4':['G82 CSL (2022-)','F82 GTS (2016)'],
+  'M5':['F90 Competition (2018-)','F10 30Jahre (2014)','E60 CS (2006-2007)'],
+  'Z3 M Coupe':['E36/8 M Coupe (1998-2002)'],
+  '1M Coupe':['E82 (2011)'],
+  '911 GT3':['992 GT3 RS (2022-)','991.2 GT3 RS (2018-2019)','997 GT3 RS 4.0 (2011)','996 GT3 RS (2002-2004)'],
+  'Cayman GT4':['982 GT4 RS (2021-)','981 GT4 (2015-2016)'],
+  'Boxster S':['987 S (2004-2012)','986 S (1996-2004)'],
+  '944 Turbo':['944 Turbo S (1988-1991)'],
+  'C63 AMG':['W205 S (2015-2021)','W204 507 Edition (2013-2014)'],
+  'E55 AMG':['W211 (2002-2006)'],
+  'SL 63 AMG':['R231 (2012-2020)'],
+  'RS4 Avant':['B9 (2017-)','B7 (2006-2008)'],
+  'RS6 Avant':['C8 (2019-)','C7 (2013-2018)'],
+  'TT RS':['8S Coupe (2016-)','8J Coupe (2009-2014)'],
+  'R8 V10':['4S Plus (2019-)','42 V10 (2009-2015)'],
+  'ゴルフ GTI':['Mk8 Clubsport (2021-)','Mk7 Performance (2017-2020)','Mk4 (1997-2004)'],
+  'ゴルフ R':['Mk8 (2021-)','Mk7.5 (2017-2020)'],
+  'マスタング シェルビー':['S550 GT500 (2020-)','S197 GT500 (2013-2014)'],
+  'カマロ ZL1':['6th Gen 1LE (2017-)'],
+  'コルベット Z06':['C8 (2023-)','C7 (2015-2019)'],
+};
+
+// ── 正確な純正カラーデータ ──
+// 色名は日本国内カタログ名準拠、HEXはメーカー公式塗料コードに基づいた近似値
+var CAR_COLORS={
+  // ──────── MAZDA ────────
+  'FD3S (1991-2002)':[
+    {name:'ビビッドレッド',        hex:'#BF0000', code:'A3E'},
+    {name:'ピュアホワイト',        hex:'#F0EDE5', code:'22B'},
+    {name:'マグネシウムグリーンマイカ',hex:'#4D5E3E',code:'18T'},
+    {name:'ブラック',              hex:'#151515', code:'A3F'},
+    {name:'ウォームホワイト',      hex:'#EAE4D5', code:'22V'},
+    {name:'シルバーストーンメタリック',hex:'#8D8D92',code:'22M'},
+    {name:'チタニウムグレーメタリック',hex:'#5C5C60',code:'22G'},
+    {name:'サンバーストイエロー',  hex:'#C89A00', code:'22C'},
+  ],
+  'FC3S (1985-1991)':[
+    {name:'クリスタルホワイト',    hex:'#EEE9E0', code:'22B'},
+    {name:'マーズレッド',          hex:'#A80F10', code:'A3E'},
+    {name:'シルバーメタリック',    hex:'#8E8E94', code:'22M'},
+    {name:'ブラック',              hex:'#151515', code:'A3F'},
+    {name:'ダークブルーマイカ',    hex:'#1C2244', code:'18U'},
+    {name:'フォレストグリーンマイカ',hex:'#3A5038',code:'18T'},
+  ],
+  // ──────── NISSAN ────────
+  'BNR34 (1999-2002)':[
+    {name:'ベイサイドブルー',      hex:'#1D3D73', code:'BT2'},
+    {name:'ミッドナイトパープル II',hex:'#2B1F4E', code:'LY0'},
+    {name:'スパークリングシルバーメタリック',hex:'#ADADB5',code:'KY0'},
+    {name:'ブラックパール',        hex:'#171718', code:'GA2'},
+    {name:'ホワイトパールトリコート',hex:'#EEE9E2',code:'QM1'},
+    {name:'アクティブレッド',      hex:'#A31020', code:'AX6'},
+    {name:'ライトニングイエロー',  hex:'#D3BC00', code:'EV1'},
+    {name:'ガンメタリック',        hex:'#3A3A40', code:'K11'},
+  ],
+  'BCNR33 (1995-1998)':[
+    {name:'ミッドナイトパープル',  hex:'#231A45', code:'LY0'},
+    {name:'ホワイトパールトリコート',hex:'#EEE9E2',code:'QM1'},
+    {name:'ガンメタリック',        hex:'#3B3B41', code:'K11'},
+    {name:'ブラックパール',        hex:'#171718', code:'GA2'},
+    {name:'シルバーグレーメタリック',hex:'#9898A0',code:'KY0'},
+    {name:'クリスタルホワイト',    hex:'#EEE9E0', code:'QM0'},
+  ],
+  'BNR32 (1989-1994)':[
+    {name:'クリスタルホワイト',    hex:'#EEE9E0', code:'QM0'},
+    {name:'ガングレーメタリック',  hex:'#4C4C55', code:'K11'},
+    {name:'ブラックパール',        hex:'#171718', code:'GA2'},
+    {name:'シルバーグレーメタリック',hex:'#9898A0',code:'KY0'},
+    {name:'ガーネットレッドパール',hex:'#7A1015', code:'AX6'},
+    {name:'ダークブルーパール',    hex:'#1A2348', code:'BT2'},
+  ],
+  'S15 Spec R (1999-2002)':[
+    {name:'スパークリングシルバーメタリック',hex:'#B1B1B8',code:'KY0'},
+    {name:'ブラックパール',        hex:'#171718', code:'GA2'},
+    {name:'ピュアホワイト',        hex:'#EEE9E0', code:'QM0'},
+    {name:'エターナルブルーパール',hex:'#1A2A5A', code:'BT2'},
+    {name:'ブレイジングレッド',    hex:'#B31020', code:'AX6'},
+    {name:'ラグナブルーパール',    hex:'#1E3058', code:'BV6'},
+    {name:'ライトニングイエロー',  hex:'#CCA800', code:'EV1'},
+    {name:'ノーブルジェード',      hex:'#2A4030', code:'GW0'},
+  ],
+  'S14 K\'s (1993-1998)':[
+    {name:'スパークリングシルバーメタリック',hex:'#B1B1B8',code:'KY0'},
+    {name:'ブラックパール',        hex:'#171718', code:'GA2'},
+    {name:'ホワイト',              hex:'#EEE9E0', code:'QM0'},
+    {name:'スーパーレッド',        hex:'#A81010', code:'AX6'},
+    {name:'ブルーブラック',        hex:'#1A2060', code:'BT2'},
+    {name:'グリーン',              hex:'#304838', code:'GW0'},
+  ],
+  'Z32 (1989-2000)':[
+    {name:'クリスタルホワイト',    hex:'#EEE9E0', code:'QM0'},
+    {name:'ブラックパール',        hex:'#171718', code:'GA2'},
+    {name:'シルバーグレーメタリック',hex:'#9898A0',code:'KY0'},
+    {name:'ガーネットレッドパール',hex:'#7A1015', code:'AX6'},
+    {name:'ダークブルーパール',    hex:'#1A2348', code:'BU0'},
+    {name:'ブリティッシュグリーン',hex:'#243520', code:'GY0'},
+  ],
+  // ──────── TOYOTA ────────
+  'JZA80 RZ (1993-2002)':[
+    {name:'ルネッサンスレッド',    hex:'#921010', code:'3P1'},
+    {name:'スーパーホワイト II',   hex:'#EEE9E0', code:'040'},
+    {name:'ブラック',              hex:'#151515', code:'202'},
+    {name:'シルバーメタリック',    hex:'#9898A0', code:'1C0'},
+    {name:'ブルーメタリック',      hex:'#1A3050', code:'8L0'},
+    {name:'スポーツグリーンマイカ',hex:'#2A3E28', code:'6Q1'},
+    {name:'ライトイエロー',        hex:'#C8A800', code:'5B0'},
+  ],
+  'AE86 トレノ GT-APEX (1983-1987)':[
+    {name:'スーパーホワイト/ブラック',hex:'#E8E5DC',code:'040'},
+    {name:'スーパーホワイト',      hex:'#F2EFE6', code:'040'},
+    {name:'ブラック',              hex:'#151515', code:'202'},
+    {name:'ハイランドグリーン',    hex:'#3D5238', code:'6R4'},
+    {name:'レッドマイカメタリック',hex:'#8C1018', code:'3E0'},
+    {name:'シルバーメタリック',    hex:'#9898A2', code:'1C0'},
+  ],
+  'SW20 GT-S (1989-1999)':[
+    {name:'スーパーレッド III',    hex:'#C01010', code:'3P0'},
+    {name:'スーパーホワイト II',   hex:'#EEE9E2', code:'040'},
+    {name:'ブラック',              hex:'#151515', code:'202'},
+    {name:'シルバーメタリック',    hex:'#9898A0', code:'1C0'},
+    {name:'ブルーメタリック',      hex:'#1A2850', code:'8L0'},
+  ],
+  'JZX100 Tourer V (1996-2001)':[
+    {name:'スパークリングブラックパールクリスタルシャイン',hex:'#1A1418',code:'220'},
+    {name:'スーパーホワイト II',   hex:'#EEE9E2', code:'040'},
+    {name:'シルバーメタリック',    hex:'#9898A0', code:'1C0'},
+    {name:'ブルーイッシュグレーメタリック',hex:'#4E4E56',code:'1F7'},
+    {name:'ダークグリーンマイカ',  hex:'#243020', code:'6R0'},
+    {name:'ルビーレッドマイカ',    hex:'#780E12', code:'3R3'},
+  ],
+  // ──────── HONDA ────────
+  'NA1 (1990-2001)':[
+    {name:'モナコシルバーメタリック',hex:'#ABABB3',code:'NH578M'},
+    {name:'フォーミュラレッド',    hex:'#BE1010', code:'R81'},
+    {name:'ブラック',              hex:'#151515', code:'NH547'},
+    {name:'グランプリホワイト',    hex:'#EEE9E2', code:'NH538'},
+    {name:'バーミリオンオレンジメタリック',hex:'#B84010',code:'YR521M'},
+    {name:'ベルリナブラック',      hex:'#1A1010', code:'NH547'},
+    {name:'ブルーグリーンパール',  hex:'#1A3A40', code:'BG48P'},
+  ],
+  'AP1 (1999-2003)':[
+    {name:'グランプリホワイト',    hex:'#EEE9E2', code:'NH538'},
+    {name:'セブリングシルバーメタリック',hex:'#9898A2',code:'NH623M'},
+    {name:'モンテカルログレーパール',hex:'#4A4A52',code:'NH643M'},
+    {name:'ブルーブラックパール',  hex:'#141A28', code:'B508P'},
+    {name:'フォーミュラレッド',    hex:'#C01010', code:'R81'},
+    {name:'ビタミンイエロー',      hex:'#D4A800', code:'Y56'},
+    {name:'スパルタングリーンメタリック',hex:'#2A3E28',code:'G502M'},
+  ],
+  'AP2 (2003-2009)':[
+    {name:'グランプリホワイト',    hex:'#EEE9E2', code:'NH538'},
+    {name:'ニューフォーミュラレッド',hex:'#C41010',code:'R513'},
+    {name:'セブリングシルバーメタリック',hex:'#9898A0',code:'NH623M'},
+    {name:'ブルーブラックパール',  hex:'#141828', code:'B508P'},
+    {name:'ビタミンイエロー',      hex:'#D4A800', code:'Y56'},
+    {name:'ヴァーモントグリーンパール',hex:'#263826',code:'G512P'},
+    {name:'モンテカルログレーパール',hex:'#4A4A52',code:'NH643M'},
+  ],
+  'EK9 (1997-2001)':[
+    {name:'チャンピオンシップホワイト',hex:'#EEE9E2',code:'NH0'},
+    {name:'ミラノレッド',          hex:'#BC1010', code:'R81'},
+    {name:'ブラック',              hex:'#151515', code:'NH547'},
+    {name:'スプリントブルーパール',hex:'#1A2A58', code:'B514P'},
+    {name:'ソニックグレーメタリック',hex:'#5A5A62',code:'NH658M'},
+  ],
+  'FK8 (2017-2021)':[
+    {name:'チャンピオンシップホワイト',hex:'#EEE9E2',code:'NH0'},
+    {name:'フレームレッド',        hex:'#C21010', code:'R565M'},
+    {name:'クリスタルブラックパール',hex:'#141418',code:'NH731P'},
+    {name:'ルナシルバーメタリック',hex:'#9898A0', code:'NH830M'},
+    {name:'ソニックグレーパール',  hex:'#505058', code:'NH870M'},
+    {name:'ブルー',                hex:'#1A2A5A', code:'B600M'},
+  ],
+  // ──────── SUBARU ────────
+  'VAB (2014-2021)':[
+    {name:'WRブルーパール',        hex:'#0D3070', code:'02C'},
+    {name:'クリスタルブラックシリカ',hex:'#141418',code:'D4S'},
+    {name:'ピュアホワイトパール',  hex:'#EEE9E2', code:'K1X'},
+    {name:'ダークグレーメタリック',hex:'#404048', code:'6X4'},
+    {name:'アイスシルバーメタリック',hex:'#ACACB2',code:'7T6'},
+    {name:'クールグレーカーキ',    hex:'#5C5C4C', code:'G3U'},
+  ],
+  'GDB A-D (2000-2007)':[
+    {name:'WRブルーマイカ',        hex:'#0E3272', code:'02C'},
+    {name:'ピュアホワイト',        hex:'#EEE9E2', code:'K1X'},
+    {name:'シルバーグレーメタリック',hex:'#A4A4AC',code:'7T6'},
+    {name:'ブラックマイカ',        hex:'#141418', code:'D4S'},
+    {name:'ライトニングレッドマイカ',hex:'#B01010',code:'C6P'},
+  ],
+  'ZD8 S (2021-)':[
+    {name:'クリスタルホワイトパール',hex:'#EEE9E2',code:'K1X'},
+    {name:'クリスタルブラックシリカ',hex:'#141418',code:'D4S'},
+    {name:'サファイアブルーパール',hex:'#1A2A5A', code:'K3X'},
+    {name:'マグネタイトグレーメタリック',hex:'#484848',code:'61K'},
+    {name:'ファイアリーレッドパール',hex:'#B81010',code:'C6P'},
+  ],
+  // ──────── MITSUBISHI ────────
+  'CT9A Evo IX GSR (2005-2007)':[
+    {name:'チャンピオンシップホワイト',hex:'#EEE9E2',code:'W67'},
+    {name:'コードレッド',          hex:'#B01818', code:'R25'},
+    {name:'チタニウムグレーメタリック',hex:'#5C5C62',code:'A17'},
+    {name:'ファントムブラックパール',hex:'#141418',code:'X08'},
+    {name:'ランサーエボリューションブルー',hex:'#1A3060',code:'B15'},
+    {name:'ライトニングシルバーメタリック',hex:'#9898A0',code:'A83'},
+  ],
+  'CP9A Evo VI T.M. (1999-2001)':[
+    {name:'アクティブレッドマイカ',hex:'#C01010', code:'R25'},
+    {name:'チャンピオンシップホワイト',hex:'#EEE9E2',code:'W67'},
+    {name:'メタリックシルバー',    hex:'#9898A0', code:'A83'},
+    {name:'ブラックパール',        hex:'#141418', code:'X08'},
+  ],
+  // ──────── BMW ────────
+  'E46 CSL (2003-2004)':[
+    {name:'アルピンホワイト III',  hex:'#EEE9E2', code:'300'},
+    {name:'ジェットブラック',      hex:'#161618', code:'668'},
+    {name:'シルバーグレーメタリック',hex:'#9898A0',code:'354'},
+    {name:'ブルーウォーターメタリック',hex:'#1A3A6A',code:'364'},
+    {name:'ファイアーオレンジメタリック',hex:'#B04010',code:'887'},
+    {name:'インターラゴスブルーメタリック',hex:'#1A3A70',code:'364'},
+  ],
+  'E92 GTS (2010-2012)':[
+    {name:'アルピンホワイト III',  hex:'#EEE9E2', code:'300'},
+    {name:'ジェットブラック',      hex:'#161618', code:'668'},
+    {name:'シルバーグレーメタリック',hex:'#9898A0',code:'354'},
+    {name:'ファイアーオレンジメタリック',hex:'#B84010',code:'887'},
+    {name:'インターラゴスブルーメタリック',hex:'#1C3A70',code:'364'},
+  ],
+  'G80 Competition (2021-)':[
+    {name:'アルピンホワイト',      hex:'#EEE9E2', code:'300'},
+    {name:'ブラックサファイア',    hex:'#161618', code:'668'},
+    {name:'ミネラルグレーメタリック',hex:'#4A4A52',code:'A52'},
+    {name:'サンセットオレンジ',    hex:'#C05020', code:'C49'},
+    {name:'ポルティマオブルーメタリック',hex:'#1A3060',code:'C4G'},
+    {name:'サンパウロイエロー',    hex:'#D4B000', code:'1EM'},
+  ],
+  // ──────── PORSCHE ────────
+  '992 GT3 RS (2022-)':[
+    {name:'ワイスシルバーメタリック',hex:'#C8C8C8',code:'LX7W'},
+    {name:'ガーズレッド',          hex:'#AE1010', code:'G1'},
+    {name:'ホワイト',              hex:'#F0EDE5', code:'L0'},
+    {name:'ブラック',              hex:'#151515', code:'L041'},
+    {name:'マンバグリーン',        hex:'#3A5E20', code:'P8K'},
+    {name:'パイソングリーン',      hex:'#4A7028', code:'P8F'},
+    {name:'ミアミブルー',          hex:'#1A8090', code:'M5B'},
+    {name:'ラバオレンジ',          hex:'#C04810', code:'20U'},
+  ],
+  '991.2 GT3 RS (2018-2019)':[
+    {name:'リザードグリーン',      hex:'#508022', code:'P8F'},
+    {name:'ガーズレッド',          hex:'#AE1010', code:'G1'},
+    {name:'ホワイト',              hex:'#F0EDE5', code:'L0'},
+    {name:'ブラック',              hex:'#151515', code:'L041'},
+    {name:'ミアミブルー',          hex:'#1A8090', code:'M5B'},
+    {name:'ラバオレンジ',          hex:'#C04810', code:'20U'},
+  ],
+  // ── デフォルト（型式データなし時） ──
+  '_default_':[
+    {name:'ホワイト',  hex:'#EEE9E2'},{name:'ブラック', hex:'#151515'},
+    {name:'シルバー',  hex:'#9898A0'},{name:'レッド',   hex:'#A01010'},
+    {name:'ブルー',    hex:'#1A2A50'},{name:'グレー',   hex:'#5A5A62'},
+  ],
+};
+
+// パーツカラー（カテゴリ別）
+var PART_COLORS={
+  wheel:[
+    {name:'ポリッシュシルバー',hex:'#C4C4C4'},{name:'ガンメタリック',hex:'#3C3C40'},
+    {name:'マットブラック',hex:'#1C1C1E'},{name:'ゴールド',hex:'#B89000'},
+    {name:'ブロンズ',hex:'#8A6030'},{name:'レッド',hex:'#9E1012'},
+    {name:'ホワイト',hex:'#E8E5DC'},{name:'チタンシルバー',hex:'#909098'},
+  ],
+  wing:[
+    {name:'カーボン',hex:'#2A2A2C'},{name:'ボディ同色',hex:'__body__'},
+    {name:'ホワイト',hex:'#E8E5DC'},{name:'ブラック',hex:'#1C1C1E'},
+    {name:'レッド',hex:'#9E1012'},{name:'ブルー',hex:'#1A2A5A'},
+  ],
+  aero:[
+    {name:'ボディ同色',hex:'__body__'},{name:'カーボン',hex:'#2A2A2C'},
+    {name:'プライマーグレー',hex:'#6A6A70'},{name:'FRP ホワイト',hex:'#E0DDD6'},
+  ],
+  seat:[
+    {name:'ブラック',hex:'#1C1C1E'},{name:'レッド',hex:'#9E1012'},
+    {name:'ブルー',hex:'#1A2A5A'},{name:'グレー',hex:'#4A4A52'},
+    {name:'カーボンブラック',hex:'#2A2A2C'},{name:'ホワイト',hex:'#E8E5DC'},
+  ],
+};
+
+var CATEGORIES=[
+  {id:'wheel',   label:'ホイール',     icon:'⚙', cs:'wheel'},
+  {id:'aero',    label:'エアロ',       icon:'💨', cs:'aero'},
+  {id:'wing',    label:'リアウイング', icon:'🏁', cs:'wing'},
+  {id:'interior',label:'内装',         icon:'🪑', cs:'seat'},
+  {id:'engine',  label:'エンジン',     icon:'🔧', cs:null},
+  {id:'muffler', label:'マフラー',     icon:'💥', cs:null},
+];
+
+// ── PARTS DATA — 対応車種(compatCars)付き ──
+// compatCars: 対応型式の配列。['汎用'] = 全車種対応
+var PARTS={
+  wheel:[
+    {id:'te37',  name:'TE37 SAGA SL',           maker:'RAYS',        price:280000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=RAYS+TE37+SAGA&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=RAYS+TE37+SAGA'},
+    {id:'ce28',  name:'CE28N',                  maker:'RAYS',        price:320000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=RAYS+CE28N&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=RAYS+CE28N'},
+    {id:'rpf1',  name:'RPF1',                   maker:'エンケイ',    price:180000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=enkei+rpf1&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=enkei+RPF1'},
+    {id:'bbs',   name:'BBS RS',                 maker:'BBS',         price:420000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=BBS+RS+ホイール&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=BBS+RS+ホイール'},
+    {id:'work',  name:'Meister S1',             maker:'WORK',        price:350000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=work+meister+s1&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=WORK+Meister+S1'},
+    {id:'advan', name:'ADVAN Racing GT',         maker:'YOKOHAMA',    price:310000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=ADVAN+Racing+GT&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=ADVAN+Racing+GT'},
+    {id:'gram',  name:'gram LIGHTS 57CR',        maker:'RAYS',        price:220000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=gram+lights+57cr&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=gram+lights+57CR'},
+    {id:'ssr',   name:'SSR SP5',                 maker:'SSR',         price:290000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=SSR+SP5+ホイール&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=SSR+SP5'},
+  ],
+  aero:[
+    {id:'varis_fd',name:'FD3S フロントバンパー GT',  maker:'VARIS',   price:88000,
+     compatCars:['FD3S'],
+     amz:'https://www.amazon.co.jp/s?k=VARIS+FD3S+フロントバンパー&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=VARIS+FD3S+バンパー'},
+    {id:'varis_ek',name:'EK9 フロントバンパー',       maker:'VARIS',   price:72000,
+     compatCars:['EK9'],
+     amz:'https://www.amazon.co.jp/s?k=VARIS+EK9+バンパー&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=VARIS+EK9+バンパー'},
+    {id:'varis_bnr',name:'BNR34 フロントバンパー GT',maker:'VARIS',   price:92000,
+     compatCars:['BNR34','BCNR33','BNR32'],
+     amz:'https://www.amazon.co.jp/s?k=VARIS+BNR34+バンパー&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=VARIS+BNR34+バンパー'},
+    {id:'origin_s15',name:'S15 サイドスカート',      maker:'ORIGIN',  price:45000,
+     compatCars:['S15'],
+     amz:'https://www.amazon.co.jp/s?k=ORIGIN+S15+サイドスカート&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=ORIGIN+S15+スカート'},
+    {id:'rb_fd',  name:'FD3S ワイドボディキット',    maker:'ROCKET BUNNY',price:220000,
+     compatCars:['FD3S'],
+     amz:'https://www.amazon.co.jp/s?k=ROCKET+BUNNY+FD3S&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=ROCKET+BUNNY+FD3S'},
+    {id:'rb_86',  name:'AE86 オーバーフェンダー',    maker:'ROCKET BUNNY',price:185000,
+     compatCars:['AE86'],
+     amz:'https://www.amazon.co.jp/s?k=ROCKET+BUNNY+AE86&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=ROCKET+BUNNY+AE86'},
+    {id:'car_h',  name:'カーボンボンネット（汎用）', maker:'TOP SECRET',price:125000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=カーボンボンネット&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=カーボンボンネット'},
+    {id:'ings_s15',name:'S15 リアバンパー',          maker:'INGS',    price:68000,
+     compatCars:['S15'],
+     amz:'https://www.amazon.co.jp/s?k=INGS+S15+リアバンパー&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=INGS+S15+バンパー'},
+  ],
+  wing:[
+    {id:'voltex',  name:'GTウイング Type-5',          maker:'VOLTEX',  price:68000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=VOLTEX+GTウイング&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=VOLTEX+GTウイング'},
+    {id:'varis_w', name:'ドライカーボン GT ウイング', maker:'VARIS',   price:98000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=VARIS+カーボンウイング&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=VARIS+カーボンウイング'},
+    {id:'sard',    name:'カーボン GT ウイング',        maker:'SARD',    price:55000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=SARD+GTウイング&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=SARD+GTウイング'},
+    {id:'jsr_ap',  name:'S2000 リアウイング AP1/2',   maker:"J's Racing",price:74000,
+     compatCars:['AP1','AP2'],
+     amz:'https://www.amazon.co.jp/s?k=js+racing+s2000+ウイング&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=js+racing+s2000+ウイング'},
+    {id:'varis_fd_w',name:'FD3S リアウイング',        maker:'VARIS',   price:85000,
+     compatCars:['FD3S'],
+     amz:'https://www.amazon.co.jp/s?k=VARIS+FD3S+ウイング&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=VARIS+FD3S+ウイング'},
+  ],
+  interior:[
+    {id:'recaro',  name:'バケットシート SP-G',         maker:'RECARO',  price:95000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=RECARO+SP-G&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=RECARO+SP-G'},
+    {id:'bride',   name:'フルバケット ZETA III',        maker:'BRIDE',   price:88000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=BRIDE+ZETA+III&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=BRIDE+ZETA+III'},
+    {id:'sparco',  name:'Rev バケットシート',           maker:'SPARCO',  price:75000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=SPARCO+REV+シート&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=SPARCO+REV+シート'},
+    {id:'nardi',   name:'Classic ステアリング 34φ',    maker:'NARDI',   price:28000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=NARDI+Classic+ステアリング&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=NARDI+Classic+ステアリング'},
+    {id:'takata',  name:'4点式レーシングハーネス',      maker:'TAKATA',  price:35000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=TAKATA+4点式+シートベルト&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=TAKATA+4点式+ハーネス'},
+    {id:'mugen_sh',name:'シフトノブ チタン',            maker:'MUGEN',   price:18000,
+     compatCars:['EK9','FK8','AP1','AP2','DC2','DC5'],
+     amz:'https://www.amazon.co.jp/s?k=無限+チタン+シフトノブ&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=MUGEN+チタンシフトノブ'},
+    {id:'nismo_st',name:'スポーツシート',               maker:'NISMO',   price:82000,
+     compatCars:['BNR34','BCNR33','BNR32','S15','S14','Z32'],
+     amz:'https://www.amazon.co.jp/s?k=NISMO+スポーツシート&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=NISMO+スポーツシート'},
+  ],
+  engine:[
+    {id:'cusco_tb',name:'タワーバー フロント',          maker:'CUSCO',   price:22000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=CUSCO+タワーバー&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=CUSCO+タワーバー'},
+    {id:'hks_air', name:'スーパーパワーフロー エアクリ',maker:'HKS',     price:32000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=HKS+スーパーパワーフロー&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=HKS+スーパーパワーフロー'},
+    {id:'tein',    name:'車高調 FLEX Z',                maker:'TEIN',    price:85000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=TEIN+FLEX+Z&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=TEIN+FLEX+Z'},
+    {id:'hks_tb',  name:'ターボキット GT2530',          maker:'HKS',     price:450000,
+     compatCars:['FD3S','FC3S','BNR32','BCNR33','BNR34','S15','S14','JZA80','SW20'],
+     amz:'https://www.amazon.co.jp/s?k=HKS+GT2530+ターボ&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=HKS+GT2530+ターボ'},
+    {id:'trust_ic',name:'インタークーラーキット',        maker:'TRUST',   price:62000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=TRUST+インタークーラー&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=TRUST+インタークーラー'},
+    {id:'koyo',    name:'アルミラジエーター スポーツ',  maker:'KOYO',    price:48000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=KOYO+アルミラジエーター&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=KOYO+アルミラジエーター'},
+  ],
+  muffler:[
+    {id:'fuji',    name:'チタンマフラー RM-01A',        maker:'FUJITSUBO',price:78000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=FUJITSUBO+チタンマフラー&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=FUJITSUBO+チタンマフラー'},
+    {id:'hks_hi',  name:'Hi-Power スペックL II',       maker:'HKS',     price:65000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=HKS+Hi-Power+マフラー&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=HKS+Hi-Power+マフラー'},
+    {id:'kakimoto',name:'GTbox 06&S',                   maker:'柿本改',  price:42000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=柿本改+GTbox&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=柿本改+GTbox'},
+    {id:'greddy',  name:'Revolution RS マフラー',       maker:'GReddy',  price:88000,
+     compatCars:['汎用'],
+     amz:'https://www.amazon.co.jp/s?k=GReddy+Revolution+RS&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=GReddy+Revolution+RS'},
+    {id:'js_s2k',  name:'S2000 チタンマフラー',         maker:"J's Racing",price:92000,
+     compatCars:['AP1','AP2'],
+     amz:'https://www.amazon.co.jp/s?k=js+racing+s2000+マフラー&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=js+racing+s2000+マフラー'},
+    {id:'nismo_m', name:'GT ドライカーボンマフラー',    maker:'NISMO',   price:118000,
+     compatCars:['BNR34','BCNR33','BNR32','Z32','S15'],
+     amz:'https://www.amazon.co.jp/s?k=NISMO+マフラー&tag=customatch-22',
+     yah:'https://shopping.yahoo.co.jp/search?p=NISMO+マフラー'},
+  ],
+};
+
+// USER CARS (投稿)
+var USER_CARS=[
+  {id:'u1',maker:'ホンダ',model:'ビート',grade:'PP1 (1991-1996)',emoji:'🚗',by:'kcar_lover',
+   colors:[{name:'フィエスタレッド',hex:'#C81010'},{name:'ロスホワイト',hex:'#EEE9E2'},{name:'ラ・ブルー',hex:'#1A3A6A'}]},
+  {id:'u2',maker:'トヨタ',model:'MR2',grade:'SW20 GT-S (1989-1999)',emoji:'🏎',by:'mr2_fan',
+   colors:[{name:'スーパーホワイト II',hex:'#EEE9E2'},{name:'スーパーレッド III',hex:'#C01010'},{name:'ブラック',hex:'#151515'}]},
+  {id:'u3',maker:'日産',model:'シルビア',grade:'S13 K\'s (1988-1993)',emoji:'🚗',by:'drift_s13',
+   colors:[{name:'クリスタルブルー',hex:'#1A3060'},{name:'ブラック',hex:'#151515'},{name:'ホワイト',hex:'#EEE9E0'}]},
+];
+
+// ══ STATE ══
+var S={
+  maker:'マツダ',model:'RX-7',grade:'FD3S (1991-2002)',
+  car:null,bodyColor:'#BF0000',
+  partColors:{},inch:17,selected:{},
+  currentCat:'wheel',currentView:'side',
+  orderFilter:'current',
+  garage:[],
+};
+
+// ── compat helpers ──
+function gradeShortId(grade){
+  // 型式コードを抽出: "BNR34 (1999-2002)" → "BNR34"
+  return grade.split(' ')[0];
+}
+function isCompatible(part){
+  if(!part.compatCars||part.compatCars.includes('汎用')) return true;
+  var gid=gradeShortId(S.grade);
+  return part.compatCars.some(function(c){return gid.includes(c)||c.includes(gid);});
+}
+function compatiblePartsInCat(catId){
+  return (PARTS[catId]||[]).filter(function(p){return isCompatible(p);});
+}
+function allCompatibleSelected(){
+  return Object.keys(S.selected).filter((function(id){
+    var all=Object.values(PARTS).flat();
+    var p=all.find(function(x){return x.id===id;});
+    return p&&!isCompatible(p);
+  });
+}
+
+// ── shape ──
+function guessShape(g){
+  var s=(g||'').toLowerCase();
+  if(/roadster|boxster|s2000|pp1|beat|cabriolet|spider/.test(s)) return 'open';
+  if(/evo|sti|gdb|bcnr|bnr3|jzx|sedan|b4|b7|rs4|rs6|e46|e92|g80|c63|e55|focus/.test(s)) return 'sedan';
+  return 'coupe';
+}
+function getColors(grade){
+  return CAR_COLORS[grade]||CAR_COLORS['_default_'];
+}
+function buildCar(maker,model,grade){
+  return{maker,model,grade,colors:getColors(grade),shape:guessShape(grade),emoji:'🏎',isUser:false};
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+function init(){
+  S.car=buildCar(S.maker,S.model,S.grade);
+  S.bodyColor=S.car.colors[0].hex;
+  populateMakers();
+  renderBC();renderBodyColors();renderInchRow();renderCatStrip();renderPartList();
+  renderUCGrid();renderGarage();drawCar();
+  var us=document.getElementById('up-maker-sel');
+  us.innerHTML='<option value="">選択してください</option>';
+  Object.keys(MAKERS).forEach(function(m){us.innerHTML+=`<option>${m}</option>`;});
+}
+
+function populateMakers(){
+  var s=document.getElementById('sel-maker');
+  s.innerHTML='<option value="">メーカーを選択</option>';
+  Object.keys(MAKERS).forEach(function(m){s.innerHTML+=`<option value="${m}">${m}</option>`;});
+}
+
+// ══ MODAL ══
+function openModal(){
+  document.getElementById('car-modal').classList.add('on');
+  populateMakers();
+  document.getElementById('sel-maker').value=S.maker;
+  document.getElementById('wrap-model').style.display='none';
+  document.getElementById('wrap-grade').style.display='none';
+  onMaker(true);renderUCGrid();
+}
+function closeModal(e){
+  if(!e||e.target===document.getElementById('car-modal'))
+    document.getElementById('car-modal').classList.remove('on');
+}
+function onMaker(silent){
+  var maker=document.getElementById('sel-maker').value;
+  if(!maker){document.getElementById('wrap-model').style.display='none';return;}
+  var ms=MAKERS[maker]||[];
+  var s=document.getElementById('sel-model');
+  s.innerHTML='<option value="">車種を選択</option>';
+  ms.forEach(function(m){s.innerHTML+=`<option value="${m}">${m}</option>`;});
+  document.getElementById('wrap-model').style.display='block';
+  document.getElementById('wrap-grade').style.display='none';
+  if(!silent&&maker===S.maker){s.value=S.model;onModel(true);}
+}
+function onModel(silent){
+  var model=document.getElementById('sel-model').value;
+  if(!model){document.getElementById('wrap-grade').style.display='none';return;}
+  var gs=GRADES[model]||['標準'];
+  var s=document.getElementById('sel-grade');
+  s.innerHTML='<option value="">型式を選択</option>';
+  gs.forEach(function(g){s.innerHTML+=`<option value="${g}">${g}</option>`;});
+  document.getElementById('wrap-grade').style.display='block';
+  if(!silent&&model===S.model)s.value=S.grade;
+}
+function confirmCar(){
+  var maker=document.getElementById('sel-maker').value;
+  var model=document.getElementById('sel-model').value;
+  var grade=document.getElementById('sel-grade').value;
+  if(!maker||!model||!grade){toast('型式まで選択してください');return;}
+  S.maker=maker;S.model=model;S.grade=grade;
+  S.car=buildCar(maker,model,grade);
+  S.bodyColor=S.car.colors[0].hex;
+  S.partColors={};S.selected={};
+  closeModal();
+  renderBC();renderBodyColors();renderCatStrip();renderPartList();renderOrder();drawCar();
+  updateBadge();
+  toast(`${model} ${grade.split(' ')[0]} に切替 → パーツをリセットしました`);
+}
+function selectUC(id){
+  var uc=USER_CARS.find(function(c){return c.id===id;});if(!uc)return;
+  S.maker=uc.maker;S.model=uc.model;S.grade=uc.grade;
+  S.car={...uc,shape:guessShape(uc.grade),isUser:true};
+  S.bodyColor=uc.colors[0].hex;S.partColors={};S.selected={};
+  closeModal();renderBC();renderBodyColors();renderPartList();renderOrder();drawCar();updateBadge();
+  toast(`${uc.model} を選択 (by ${uc.by})`);
+}
+function renderUCGrid(){
+  document.getElementById('uc-grid').innerHTML=USER_CARS.map(function(uc){return `
+    <div class="uccard" onclick="selectUC('${uc.id}')">
+      <div style="height:60px;background:${uc.colors[0].hex};display:flex;align-items:center;justify-content:center;font-size:30px;position:relative">
+        ${uc.emoji}
+        <span style="position:absolute;top:4px;right:5px;font-size:9px;padding:1px 5px;background:rgba(0,0,0,.6);border-radius:100px;color:#aaa">📸投稿</span>
+      </div>
+      <div style="padding:6px 9px">
+        <div style="font-size:11px;font-weight:500">${uc.model}</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:1px">${uc.grade.split(' ')[0]} · by ${uc.by}</div>
+      </div>
+    </div>
+  `;}).join('');
+}
+
+// ══ BC / COLORS ══
+function renderBC(){
+  document.getElementById('bc-maker').textContent=S.maker;
+  document.getElementById('bc-model').textContent=S.model;
+  document.getElementById('bc-grade').textContent=S.grade.split(' ')[0];
+}
+function isLight(hex){var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return(r*.299+g*.587+b*.114)>160;}
+function renderBodyColors(){
+  var colors=S.car?S.car.colors:[];
+  var cur=colors.find(function(c){return c.hex===S.bodyColor;})||colors[0];
+  document.getElementById('color-maker-lbl').textContent=
+    (S.car && S.car.isUser)?'投稿車両カラー':
+    `${S.maker} 純正カラー${(cur && cur.code)?' ['+cur.code+']':''}`;
+  document.getElementById('color-name-lbl').textContent=cur?cur.name:'';
+  document.getElementById('body-dots').innerHTML=colors.map(function(c){return `
+    <div class="cdot ${c.hex===S.bodyColor?'on':''}"
+      style="background:${c.hex};${isLight(c.hex)?'box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.2)':''}"
+      title="${c.name}${c.code?' ['+c.code+']':''}"
+      onclick="setBC('${c.hex}','${c.name.replace(/'/g,'&#39;')}')"></div>
+  `;}).join('');
+}
+function setBC(hex,name){S.bodyColor=hex;renderBodyColors();drawCar();if(name)toast(name);}
+
+// ══ INCH ══
+function renderInchRow(){
+  document.getElementById('inch-row').innerHTML=[15,16,17,18,19,20].map(function(i){return `
+    <div class="ibtn ${i===S.inch?'on':''}" onclick="setInch(${i})">${i}"</div>
+  `;}).join('');
+}
+function setInch(v){S.inch=v;renderInchRow();drawCar();}
+
+// ══ PARTS — カスタムページ (全部表示、対応バッジ付き) ══
+function renderCatStrip(){
+  document.getElementById('cat-strip').innerHTML=CATEGORIES.map((function(c){
+    var compat=compatiblePartsInCat(c.id).length;
+    return `<div class="cpill ${c.id===S.currentCat?'on':''}" onclick="setCat('${c.id}')">
+      ${c.label}${compat>0?`<span style="margin-left:4px;font-size:10px;opacity:.7">${compat}</span>`:''}
+    </div>`;
+  }).join('');
+  // compat notice
+  var note=document.getElementById('compat-note');
+  var gid=gradeShortId(S.grade);
+  note.textContent=`✓ ${gid}対応パーツを強調表示`;
+}
+function setCat(id){S.currentCat=id;renderCatStrip();renderPartList();}
+
+function renderPartList(){
+  var cat=CATEGORIES.find(function(c){return c.id===S.currentCat;});
+  var allParts=PARTS[S.currentCat]||[];
+  var cs=(cat && cat.cs)?PART_COLORS[cat.cs]:null;
+  // 対応パーツ→非対応の順にソート
+  var sorted=[...allParts].sort((function(a,b){
+    var ca=isCompatible(a)?0:1, cb=isCompatible(b)?0:1;
+    return ca-cb;
+  });
+  document.getElementById('part-list').innerHTML=sorted.map((function(p){
+    var sel=!!S.selected[p.id];
+    var compat=isCompatible(p);
+    var colorHtml='';
+    if(cs){
+      colorHtml='<div class="pcdots">'+cs.map((function(c){
+        var hex=c.hex==='__body__'?S.bodyColor:c.hex;
+        var cur=(S.partColors[p.id]||cs[0].hex)===c.hex;
+        return `<div class="pcd ${cur?'on':''}" style="background:${hex};${isLight(hex)?'box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)':''}" title="${c.name}" onclick="setPC('${p.id}','${c.hex}',event)"></div>`;
+      }).join('')+'</div>';
+    }
+    var compatHtml=compat
+      ?`<span class="compat-tag match">✓ ${gradeShortId(S.grade)}対応</span>`
+      :`<span class="compat-tag">対応: ${p.compatCars.slice(0,2).join('/')}${p.compatCars.length>2?'…':''}</span>`;
+    return `<div class="pcard ${sel?'on':''}" onclick="togglePart('${p.id}')">
+      <div class="picon" style="opacity:${compat?1:.6}">${(cat && cat.icon)||'🔧'}</div>
+      <div class="pinfo">
+        <div class="pn" style="opacity:${compat?1:.75}">${p.name}</div>
+        <div class="pm">${p.maker}</div>
+        <div class="pp">¥${p.price.toLocaleString()}</div>
+        ${compatHtml}
+        ${colorHtml}
+      </div>
+      <div class="padd ${sel?'on':''}">${sel?'<i class="ti ti-check" style="font-size:14px"></i>':'<i class="ti ti-plus" style="font-size:14px"></i>'}</div>
+    </div>`;
+  }).join('');
+}
+function setPC(id,hex,e){e.stopPropagation();S.partColors[id]=hex;renderPartList();drawCar();}
+function togglePart(id){
+  var all=Object.values(PARTS).flat();
+  var p=all.find(function(x){return x.id===id;});if(!p)return;
+  if(S.selected[id]){delete S.selected[id];toast(p.name+' を外しました');}
+  else{S.selected[id]=p;toast(p.name+' を追加！');}
+  renderPartList();renderOrder();drawCar();updateBadge();
+}
+
+// ══ ORDER — 「選択車種のみ」フィルター ══
+var orderFilter='current'; // 'current' or 'all'
+function setOrderFilter(f,btn){
+  orderFilter=f;
+  document.querySelectorAll('.fpill').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  renderOrder();
+}
+function renderOrder(){
+  var allKeys=Object.keys(S.selected);
+  var all=Object.values(PARTS).flat();
+  // フィルタ
+  var filteredKeys=allKeys.filter((function(id){
+    var p=S.selected[id];
+    if(!p) return false;
+    if(orderFilter==='current') return isCompatible(p);
+    return true;
+  });
+  var incompatKeys=allKeys.filter((function(id){
+    var p=S.selected[id];
+    return p&&!isCompatible(p);
+  });
+
+  document.getElementById('order-cnt').textContent=allKeys.length?`${allKeys.length}点選択中`:'';
+
+  // notice bar
+  var notice=document.getElementById('compat-notice');
+  var noticeText=document.getElementById('compat-notice-text');
+  if(orderFilter==='current'&&incompatKeys.length>0){
+    notice.style.display='block';
+    noticeText.textContent=`${incompatKeys.length}点のパーツは${gradeShortId(S.grade)}非対応のため非表示。「すべて表示」で確認できます。`;
+  } else {
+    notice.style.display='none';
+  }
+
+  if(!filteredKeys.length){
+    document.getElementById('order-empty').style.display='flex';
+    document.getElementById('order-empty').innerHTML=allKeys.length&&orderFilter==='current'
+      ?`<i class="ti ti-filter" style="font-size:40px"></i><p>${gradeShortId(S.grade)}対応パーツが<br>選択されていません<br><span style="font-size:11px;color:var(--a);cursor:pointer" onclick="setOrderFilter('all',document.getElementById('fp-all'))">すべて表示する →</span></p>`
+      :`<i class="ti ti-shopping-cart" style="font-size:40px"></i><p>カスタムページでパーツを選ぶと<br>ここに購入リンクが表示されます</p>`;
+    document.getElementById('order-foot').style.display='none';
+    document.getElementById('order-items').innerHTML='';
+    return;
+  }
+  document.getElementById('order-empty').style.display='none';
+  document.getElementById('order-foot').style.display='block';
+
+  var catMap={};CATEGORIES.forEach(function(c){catMap[c.id]=c.label;});
+  var total=0;
+  document.getElementById('order-items').innerHTML=filteredKeys.map((function(id){
+    var p=S.selected[id];total+=p.price;
+    var catId=Object.keys(PARTS).find(function(k){return PARTS[k].some(function(x){return x.id===id;});});
+    var catCs=(CATEGORIES.find(function(c){return c.id===catId;})||{}).cs;
+    var ph=S.partColors[id]||(catCs?(PART_COLORS[catCs] && PART_COLORS[catCs][0] && PART_COLORS[catCs][0].hex):null);
+    var swHex=ph==='__body__'?S.bodyColor:(ph||S.bodyColor);
+    var compat=isCompatible(p);
+    var colorName=catCs?(PART_COLORS[catCs] && PART_COLORS[catCs].find(function(c){return c.hex===(S.partColors[id]||PART_COLORS[catCs][0].hex);})) ? PART_COLORS[catCs].find(function(c){return c.hex===(S.partColors[id]||PART_COLORS[catCs][0].hex);}).name : '';
+
+    return `<div class="oitem">
+      <div class="osw" style="background:${swHex}"></div>
+      <div class="oi">
+        <div class="on2">${p.name}</div>
+        <div class="om2">${p.maker} · ${catMap[catId]||''}</div>
+        ${colorName?`<div class="ocol"><span style="width:10px;height:10px;border-radius:50%;background:${swHex==='__body__'?S.bodyColor:swHex};display:inline-block;border:1px solid rgba(255,255,255,.15)"></span>${colorName}</div>`:''}
+        ${!compat?`<div style="font-size:10px;color:var(--a);margin-top:3px">⚠ ${gradeShortId(S.grade)}の対応を要確認</div>`:''}
+        <div class="olinks">
+          ${p.amz?`<a class="olink amz" href="${p.amz}" target="_blank" rel="noopener">
+            <i class="ti ti-brand-amazon" style="font-size:12px"></i>Amazon
+          </a>`:''}
+          ${p.yah?`<a class="olink yah" href="${p.yah}" target="_blank" rel="noopener">
+            <i class="ti ti-shopping-bag" style="font-size:12px"></i>Yahoo!
+          </a>`:''}
+          <span class="olink rmv" onclick="removePart('${id}')">
+            <i class="ti ti-trash" style="font-size:12px"></i>外す
+          </span>
+        </div>
+      </div>
+      <div class="op">¥${p.price.toLocaleString()}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('total-num').textContent='¥'+total.toLocaleString();
+  renderOrderTips();
+}
+
+function removePart(id){
+  delete S.selected[id];
+  renderPartList();renderOrder();drawCar();updateBadge();
+  toast('パーツを外しました');
+}
+function openAllShops(shop){
+  var parts=Object.values(S.selected);
+  if(!parts.length)return;
+  // 最初のパーツ名で検索（まとめ検索は結果が散乱するため1件目を代表に）
+  var first=encodeURIComponent(parts[0].name);
+  var allQ=encodeURIComponent(parts.map(function(p){return p.name;}).join(' '));
+  var urls={
+    amz:`https://www.amazon.co.jp/s?k=${first}&tag=customatch-22`,
+    yah:`https://shopping.yahoo.co.jp/search?p=${first}`,
+    rak:`https://search.rakuten.co.jp/search/mall/${first}/`,
+  };
+  // 複数パーツある場合は順番に開く（最大3件）
+  if(parts.length>1){
+    parts.slice(0,3).forEach((function(p,i){
+      var q=encodeURIComponent(p.name);
+      var u=shop==='amz'?`https://www.amazon.co.jp/s?k=${q}&tag=customatch-22`
+               :shop==='yah'?`https://shopping.yahoo.co.jp/search?p=${q}`
+               :`https://search.rakuten.co.jp/search/mall/${q}/`;
+      setTimeout(function(){window.open(u,'_blank');},i*300);
+    });
+    if(parts.length>3) toast(`先頭3件を開きました。残り${parts.length-3}件は個別リンクから`);
+  } else {
+    window.open(urls[shop],'_blank');
+  }
+}
+
+function clearAllParts(){
+  if(!Object.keys(S.selected).length) return;
+  if(!confirm('選択中のパーツをすべて外しますか？')) return;
+  S.selected={};S.partColors={};
+  renderPartList();renderOrder();drawCar();updateBadge();
+  toast('全パーツを外しました');
+}
+
+function renderOrderTips(){
+  var el=document.getElementById('order-tips');
+  if(!el) return;
+  var keys=Object.keys(S.selected);
+  if(!keys.length){el.innerHTML='';return;}
+  var total=Object.values(S.selected).reduce(function(s,p){return s+p.price;},0);
+  var tips=[];
+  // アフィリエイト開示
+  tips.push(`<div style="font-size:10px;color:var(--t3);line-height:1.6"><i class="ti ti-info-circle" style="font-size:12px;vertical-align:-2px;color:var(--a)"></i> 各リンクはアフィリエイトリンクです。ご購入でサイト運営を応援できます。</div>`);
+  // 価格比較アドバイス
+  if(total>300000) tips.push(`<div style="margin-top:6px;font-size:11px;color:var(--t2)">💡 合計¥${total.toLocaleString()}超 — 複数ショップで価格比較をおすすめします</div>`);
+  // 車種対応確認
+  var incompat=keys.filter(function(id){return S.selected[id]&&!isCompatible(S.selected[id]);});
+  if(incompat.length) tips.push(`<div style="margin-top:6px;font-size:11px;color:#E0A030">⚠ ${incompat.length}点のパーツは対応車種を購入前に必ずご確認ください</div>`);
+  el.innerHTML=tips.join('');
+}
+function updateBadge(){
+  var n=Object.keys(S.selected).length;
+  var b=document.getElementById('nbadge');
+  b.textContent=n;
+  b.classList.toggle('on',n>0);
+}
+
+// ══ 6-VIEW CANVAS ══
+var currentView='side';
+function setView(v){
+  currentView=v;
+  document.querySelectorAll('.vt').forEach(function(el){el.classList.remove('on');});
+  var vtEl=document.getElementById('vt-'+v);
+  if(vtEl) vtEl.classList.add('on');
+  drawCar();
+}
+
+function darken(hex,amt){
+  var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return '#'+[Math.max(0,r-amt),Math.max(0,g-amt),Math.max(0,b-amt)].map(function(v){return v.toString(16).padStart(2,'0');}).join('');
+}
+function lighten(hex,amt){
+  var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return '#'+[Math.min(255,r+amt),Math.min(255,g+amt),Math.min(255,b+amt)].map(function(v){return v.toString(16).padStart(2,'0');}).join('');
+}
+function getWheelColor(){
+  var wKeys=['te37','ce28','rpf1','bbs','work','advan','gram','ssr'];
+  var sw=wKeys.find(function(k){return S.selected[k];});
+  var wc=S.partColors[sw||'te37']||'#C4C4C4';
+  return wc==='__body__'?S.bodyColor:wc;
+}
+
+function drawCar(){
+  var cv=document.getElementById('cv');
+  // app-wrapが非表示だとoffsetWidth=0になる→表示後に再実行
+  var W=cv.offsetWidth,H=cv.offsetHeight;
+  if(!W||!H){
+    requestAnimationFrame(function(){drawCar();});
+    return;
+  }
+  cv.width=W*(devicePixelRatio||1);cv.height=H*(devicePixelRatio||1);
+  var ctx=cv.getContext('2d');
+  ctx.scale(devicePixelRatio||1,devicePixelRatio||1);
+  ctx.clearRect(0,0,W,H);
+  try{
+    switch(currentView){
+      case'side':    drawSide(ctx,W,H);break;
+      case'front':   drawFront(ctx,W,H);break;
+      case'rear':    drawRear(ctx,W,H);break;
+      case'top':     drawTop(ctx,W,H);break;
+      case'engine':  drawEngine(ctx,W,H);break;
+      case'interior':drawInterior(ctx,W,H);break;
+    }
+  }catch(e){
+    console.warn('draw error ('+currentView+'):',e.message);
+    // フォールバック描画
+    ctx.fillStyle='rgba(255,255,255,.06)';
+    ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(255,255,255,.3)';
+    ctx.font='14px "Noto Sans JP",sans-serif';
+    ctx.fillText('描画エラー: '+e.message,10,H/2);
+  }
+  ctx.save();ctx.globalAlpha=.18;ctx.fillStyle='#fff';
+  ctx.font='700 11px "Barlow Condensed",sans-serif';ctx.fillText('CusToMatch',10,H-10);ctx.restore();
+}
+
+function drawSide(ctx,W,H){try{
+  var bc=S.bodyColor,shape=(S.car && S.car.shape)||'coupe';
+  var cx=W/2, gY=H*.73-(S.inch-17)*4;
+  var wR=28+(S.inch-15)*2;
+  var wXs=shape==='open'?[cx-108,cx+98]:[cx-116,cx+106];
+  var bY=gY-wR*.9;
+  var wc=getWheelColor();
+
+  // ── 地面・グラウンドシャドウ ──
+  var grd=ctx.createRadialGradient(cx,gY+2,10,cx,gY+2,190);
+  grd.addColorStop(0,'rgba(0,0,0,.32)');grd.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=grd;ctx.beginPath();ctx.ellipse(cx,gY+4,190,14,0,0,Math.PI*2);ctx.fill();
+
+  // ── ボディカラー反射（地面への映り込み） ──
+  ctx.save();ctx.globalAlpha=.09;
+  var ref=ctx.createLinearGradient(cx,gY,cx,gY+30);
+  ref.addColorStop(0,bc);ref.addColorStop(1,'transparent');
+  ctx.fillStyle=ref;ctx.beginPath();ctx.ellipse(cx,gY+6,170,20,0,0,Math.PI*2);ctx.fill();ctx.restore();
+
+  // ── ホイール（精密スポーク） ──
+  wXs.forEach((function(wx){
+    // タイヤ
+    ctx.fillStyle='#111';ctx.beginPath();ctx.arc(wx,gY,wR,0,Math.PI*2);ctx.fill();
+    // タイヤサイドウォール質感
+    ctx.strokeStyle='#1e1e1e';ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.arc(wx,gY,wR-.8,0,Math.PI*2);ctx.stroke();
+    // リム外周
+    var rimGrd=ctx.createRadialGradient(wx-wR*.2,gY-wR*.2,0,wx,gY,wR*.68);
+    rimGrd.addColorStop(0,lighten(wc,40));rimGrd.addColorStop(.4,wc);rimGrd.addColorStop(1,darken(wc,30));
+    ctx.fillStyle=rimGrd;ctx.beginPath();ctx.arc(wx,gY,wR*.68,0,Math.PI*2);ctx.fill();
+    // スポーク5本（立体）
+    for(var i=0;i<5;i++){
+      var a=i/5*Math.PI*2-Math.PI/2;
+      var a2=a+Math.PI/5*.3;
+      ctx.save();
+      // スポーク本体
+      ctx.beginPath();
+      ctx.moveTo(wx+Math.cos(a)*wR*.12,gY+Math.sin(a)*wR*.12);
+      ctx.lineTo(wx+Math.cos(a-0.18)*wR*.62,gY+Math.sin(a-0.18)*wR*.62);
+      ctx.lineTo(wx+Math.cos(a+0.18)*wR*.62,gY+Math.sin(a+0.18)*wR*.62);
+      ctx.closePath();
+      var spGrd=ctx.createLinearGradient(
+        wx+Math.cos(a-Math.PI/2)*8,gY+Math.sin(a-Math.PI/2)*8,
+        wx+Math.cos(a+Math.PI/2)*8,gY+Math.sin(a+Math.PI/2)*8);
+      spGrd.addColorStop(0,lighten(wc,25));spGrd.addColorStop(1,darken(wc,20));
+      ctx.fillStyle=spGrd;ctx.fill();
+      ctx.restore();
+    }
+    // リムリング
+    ctx.strokeStyle=lighten(wc,15);ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.arc(wx,gY,wR*.65,0,Math.PI*2);ctx.stroke();
+    ctx.strokeStyle=darken(wc,25);ctx.lineWidth=1;
+    ctx.beginPath();ctx.arc(wx,gY,wR*.68,0,Math.PI*2);ctx.stroke();
+    // センターキャップ
+    var capGrd=ctx.createRadialGradient(wx-2,gY-2,0,wx,gY,wR*.14);
+    capGrd.addColorStop(0,'#bbb');capGrd.addColorStop(1,'#444');
+    ctx.fillStyle=capGrd;ctx.beginPath();ctx.arc(wx,gY,wR*.13,0,Math.PI*2);ctx.fill();
+    // ブレーキローター（スリット見え）
+    ctx.strokeStyle='rgba(180,60,0,.5)';ctx.lineWidth=wR*.18;
+    ctx.beginPath();ctx.arc(wx,gY,wR*.4,0,Math.PI*2);ctx.stroke();
+    ctx.strokeStyle='rgba(140,40,0,.3)';ctx.lineWidth=1;
+    for(var i=0;i<8;i++){var a=i/8*Math.PI*2;
+      ctx.beginPath();ctx.moveTo(wx+Math.cos(a)*wR*.3,gY+Math.sin(a)*wR*.3);
+      ctx.lineTo(wx+Math.cos(a)*wR*.5,gY+Math.sin(a)*wR*.5);ctx.stroke();}
+  });
+
+  // ── ボディ本体 ──
+  var drawBody=(function(pts,fill){ctx.beginPath();pts.forEach(function(pt,i){var x=pt[0],y=pt[1];i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.closePath();ctx.fillStyle=fill;ctx.fill();};
+
+  // メインボディグラデーション
+  var bodyGrd=ctx.createLinearGradient(cx,bY-70,cx,gY);
+  bodyGrd.addColorStop(0,lighten(bc,8));
+  bodyGrd.addColorStop(.35,bc);
+  bodyGrd.addColorStop(.7,darken(bc,8));
+  bodyGrd.addColorStop(1,darken(bc,18));
+
+  if(shape==='coupe'){
+    // メインシルエット
+    var bodyPts=[
+      [cx-194,gY],[cx-189,bY+10],[cx-115,bY-26],
+      [cx-46,bY-60],[cx+63,bY-60],[cx+126,bY-24],
+      [cx+171,bY+6],[cx+180,gY]];
+    drawBody(bodyPts,bodyGrd);
+    // ボンネット面（微妙に明るく）
+    drawBody([[cx-115,bY-26],[cx-46,bY-60],[cx-2,bY-60],[cx-2,bY-18],[cx-76,bY-4]],lighten(bc,5));
+    // ルーフ
+    var roofGrd=ctx.createLinearGradient(cx-80,bY-60,cx+80,bY-20);
+    roofGrd.addColorStop(0,lighten(bc,14));roofGrd.addColorStop(.5,lighten(bc,6));roofGrd.addColorStop(1,darken(bc,10));
+    drawBody([[cx-105,bY-28],[cx-36,bY-58],[cx+58,bY-58],[cx+113,bY-26]],roofGrd);
+    // サイドガラス
+    ctx.fillStyle='rgba(20,40,90,.62)';ctx.beginPath();
+    ctx.moveTo(cx-90,bY-28);ctx.lineTo(cx-26,bY-55);ctx.lineTo(cx+53,bY-55);ctx.lineTo(cx+100,bY-26);ctx.closePath();ctx.fill();
+    // ウィンドウフレーム
+    ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(cx-90,bY-28);ctx.lineTo(cx-26,bY-55);ctx.lineTo(cx+53,bY-55);ctx.lineTo(cx+100,bY-26);ctx.stroke();
+    // ピラー
+    ctx.strokeStyle='rgba(0,0,0,.35)';ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.moveTo(cx-90,bY-28);ctx.lineTo(cx-105,bY-28);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx+100,bY-26);ctx.lineTo(cx+113,bY-26);ctx.stroke();
+    // ドアライン（彫刻ライン）
+    ctx.strokeStyle='rgba(0,0,0,.2)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(cx-180,bY+4);ctx.bezierCurveTo(cx-80,bY-10,cx+60,bY-10,cx+165,bY+4);ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,.08)';
+    ctx.beginPath();ctx.moveTo(cx-180,bY+5);ctx.bezierCurveTo(cx-80,bY-9,cx+60,bY-9,cx+165,bY+5);ctx.stroke();
+
+  }else if(shape==='sedan'){
+    var bodyPts=[
+      [cx-194,gY],[cx-184,bY+8],[cx-95,bY-17],
+      [cx-56,bY-56],[cx+72,bY-56],[cx+111,bY-17],
+      [cx+179,bY+5],[cx+189,gY]];
+    drawBody(bodyPts,bodyGrd);
+    drawBody([[cx-95,bY-17],[cx-56,bY-56],[cx-2,bY-56],[cx-2,bY-12],[cx-76,bY-2]],lighten(bc,4));
+    var roofGrd=ctx.createLinearGradient(cx-80,bY-56,cx+80,bY-14);
+    roofGrd.addColorStop(0,lighten(bc,13));roofGrd.addColorStop(.5,lighten(bc,5));roofGrd.addColorStop(1,darken(bc,8));
+    drawBody([[cx-90,bY-17],[cx-51,bY-53],[cx+70,bY-53],[cx+107,bY-15]],roofGrd);
+    ctx.fillStyle='rgba(20,40,90,.62)';ctx.beginPath();
+    ctx.moveTo(cx-76,bY-17);ctx.lineTo(cx-44,bY-50);ctx.lineTo(cx+64,bY-50);ctx.lineTo(cx+92,bY-15);ctx.closePath();ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(cx-76,bY-17);ctx.lineTo(cx-44,bY-50);ctx.lineTo(cx+64,bY-50);ctx.lineTo(cx+92,bY-15);ctx.stroke();
+    ctx.strokeStyle='rgba(0,0,0,.2)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(cx-182,bY+3);ctx.bezierCurveTo(cx-80,bY-10,cx+70,bY-10,cx+177,bY+2);ctx.stroke();
+
+  }else{
+    // ロードスター・オープン
+    var bodyPts=[
+      [cx-185,gY],[cx-180,bY+12],[cx-66,bY-17],
+      [cx+81,bY-17],[cx+170,bY+8],[cx+180,gY]];
+    drawBody(bodyPts,bodyGrd);
+    // ウィンドシールド
+    ctx.fillStyle='rgba(20,40,90,.55)';ctx.beginPath();
+    ctx.moveTo(cx-22,bY-15);ctx.lineTo(cx-4,bY-32);ctx.lineTo(cx+42,bY-32);ctx.lineTo(cx+56,bY-15);ctx.closePath();ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.15)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(cx-22,bY-15);ctx.lineTo(cx-4,bY-32);ctx.lineTo(cx+42,bY-32);ctx.lineTo(cx+56,bY-15);ctx.stroke();
+    // ロールバー
+    ctx.strokeStyle=darken(bc,20);ctx.lineWidth=5;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(cx+20,bY-15);ctx.lineTo(cx+20,bY-34);ctx.lineTo(cx+36,bY-34);ctx.lineTo(cx+36,bY-15);ctx.stroke();
+  }
+
+  // ── ハイライト（光の当たり） ──
+  ctx.save();ctx.globalAlpha=.13;
+  var hl=ctx.createLinearGradient(cx-190,bY-20,cx-80,bY+10);
+  hl.addColorStop(0,'transparent');hl.addColorStop(.3,'#fff');hl.addColorStop(1,'transparent');
+  ctx.fillStyle=hl;ctx.beginPath();
+  if(shape==='coupe'){ctx.moveTo(cx-189,bY+8);ctx.lineTo(cx-115,bY-26);ctx.lineTo(cx-46,bY-60);ctx.lineTo(cx-30,bY-60);ctx.lineTo(cx-140,bY-10);ctx.lineTo(cx-175,bY+8);}
+  else if(shape==='sedan'){ctx.moveTo(cx-184,bY+6);ctx.lineTo(cx-95,bY-17);ctx.lineTo(cx-56,bY-56);ctx.lineTo(cx-40,bY-56);ctx.lineTo(cx-120,bY-10);ctx.lineTo(cx-175,bY+6);}
+  else{ctx.moveTo(cx-180,bY+10);ctx.lineTo(cx-66,bY-17);ctx.lineTo(cx-40,bY-17);ctx.lineTo(cx-140,bY+8);}
+  ctx.closePath();ctx.fill();ctx.restore();
+
+  // ── アンダーボディ ──
+  ctx.fillStyle=darken(bc,35);
+  ctx.beginPath();ctx.moveTo(cx-192,gY);ctx.lineTo(cx+178,gY);ctx.lineTo(cx+178,gY-8);ctx.lineTo(cx-192,gY-8);ctx.closePath();ctx.fill();
+
+  // ── パーツ描画 ──
+
+  // フロントバンパー（エアロ）
+  var aeroKey=Object.keys(S.selected).find(function(k){return ['varis_fd','varis_bnr','varis_ek'].indexOf(k)>=0;});
+  if(aeroKey){
+    var ac=S.partColors[aeroKey]||'__body__';
+    var rac=ac==='__body__'?bc:ac;
+    var bmpGrd=ctx.createLinearGradient(cx-200,gY-20,cx-170,gY);
+    bmpGrd.addColorStop(0,darken(rac,20));bmpGrd.addColorStop(1,darken(rac,35));
+    ctx.fillStyle=bmpGrd;
+    ctx.beginPath();ctx.moveTo(cx-192,gY);ctx.lineTo(cx-200,gY-18);ctx.bezierCurveTo(cx-202,gY-22,cx-195,gY-24,cx-188,gY-20);ctx.lineTo(cx-178,gY);ctx.closePath();ctx.fill();
+    // エアインテーク
+    ctx.fillStyle='#0a0a0a';
+    ctx.beginPath();ctx.moveTo(cx-198,gY-8);ctx.lineTo(cx-194,gY-17);ctx.lineTo(cx-182,gY-17);ctx.lineTo(cx-178,gY-8);ctx.closePath();ctx.fill();
+    // グリルライン
+    ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=1;
+    for(var i=0;i<3;i++){ctx.beginPath();ctx.moveTo(cx-196+i*5,gY-9);ctx.lineTo(cx-193+i*5,gY-16);ctx.stroke();}
+  }
+
+  // サイドスカート
+  if(S.selected['origin_s15']){
+    var skGrd=ctx.createLinearGradient(cx-170,gY-10,cx-170,gY-2);
+    skGrd.addColorStop(0,'#1a1a1a');skGrd.addColorStop(1,'#0d0d0d');
+    ctx.fillStyle=skGrd;
+    ctx.beginPath();ctx.moveTo(cx-172,gY-2);ctx.lineTo(cx-172,gY-11);
+    ctx.lineTo(cx+159,gY-11);ctx.lineTo(cx+159,gY-2);ctx.closePath();ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.06)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(cx-172,gY-11);ctx.lineTo(cx+159,gY-11);ctx.stroke();
+  }
+
+  // オーバーフェンダー
+  if(S.selected['rb_fd']||S.selected['rb_86']){
+    var fc=S.partColors['rb_fd']||S.partColors['rb_86']||'__body__';
+    var rfc=fc==='__body__'?bc:fc;
+    wXs.forEach((function(wx){
+      ctx.save();
+      var fGrd=ctx.createRadialGradient(wx,gY-wR,4,wx,gY,wR+12);
+      fGrd.addColorStop(0,lighten(rfc,5));fGrd.addColorStop(1,darken(rfc,15));
+      ctx.strokeStyle=fGrd;ctx.lineWidth=6;ctx.lineCap='round';
+      ctx.beginPath();ctx.arc(wx,gY,wR+8,Math.PI*1.22,Math.PI*1.82);ctx.stroke();
+      ctx.beginPath();ctx.arc(wx,gY,wR+8,Math.PI*.18,Math.PI*.78);ctx.stroke();
+      ctx.restore();
+    });
+  }
+
+  // カーボンボンネット
+  if(S.selected['car_h']){
+    // カーボン地
+    ctx.fillStyle='#1a1a1c';
+    ctx.beginPath();
+    if(shape==='coupe'){ctx.moveTo(cx-115,bY-26);ctx.lineTo(cx-46,bY-60);ctx.lineTo(cx-1,bY-60);ctx.lineTo(cx-1,bY-17);ctx.lineTo(cx-76,bY-3);}
+    else{ctx.moveTo(cx-95,bY-17);ctx.lineTo(cx-56,bY-56);ctx.lineTo(cx-1,bY-56);ctx.lineTo(cx-1,bY-11);ctx.lineTo(cx-76,bY+3);}
+    ctx.closePath();ctx.fill();
+    // カーボン織り目
+    ctx.save();ctx.globalAlpha=.07;ctx.strokeStyle='#fff';ctx.lineWidth=0.5;
+    for(var i=0;i<12;i++){ctx.beginPath();ctx.moveTo(cx-108+i*13,bY-26);ctx.lineTo(cx-46+i*13,bY-60);ctx.stroke();}
+    for(var i=0;i<5;i++){ctx.beginPath();ctx.moveTo(cx-108,bY-26+i*8);ctx.lineTo(cx-1,bY-26+i*8);ctx.stroke();}
+    ctx.restore();
+    // ハイライト
+    ctx.save();ctx.globalAlpha=.06;
+    var chGrd=ctx.createLinearGradient(cx-110,bY-26,cx-30,bY-60);
+    chGrd.addColorStop(0,'transparent');chGrd.addColorStop(.4,'#fff');chGrd.addColorStop(1,'transparent');
+    ctx.fillStyle=chGrd;ctx.beginPath();
+    if(shape==='coupe'){ctx.moveTo(cx-115,bY-26);ctx.lineTo(cx-46,bY-60);ctx.lineTo(cx-20,bY-60);ctx.lineTo(cx-90,bY-26);}
+    else{ctx.moveTo(cx-95,bY-17);ctx.lineTo(cx-56,bY-56);ctx.lineTo(cx-30,bY-56);ctx.lineTo(cx-70,bY-17);}
+    ctx.closePath();ctx.fill();ctx.restore();
+  }
+
+  // リアウイング
+  var wingKey=(function(){var wk=['voltex','varis_w','sard','jsr_ap','varis_fd_w'];for(var wi=0;wi<wk.length;wi++){if(S.selected[wk[wi]])return wk[wi];}return null;})();
+  if(wingKey){
+    var rwc=S.partColors[wingKey]||'__body__';
+    var realRW=rwc==='__body__'?bc:rwc;
+    var wy=shape==='open'?bY-30:bY-62;
+    // ステー（2本）
+    [[cx+112,cx+116],[cx+164,cx+168]].forEach(function(pair){var x1=pair[0],x2=pair[1];
+      var stGrd=ctx.createLinearGradient(x1,wy,x1,wy-28);
+      stGrd.addColorStop(0,'#555');stGrd.addColorStop(1,'#888');
+      ctx.fillStyle=stGrd;ctx.beginPath();ctx.moveTo(x1,wy);ctx.lineTo(x2,wy);ctx.lineTo(x2,wy-28);ctx.lineTo(x1,wy-28);ctx.closePath();ctx.fill();
+    });
+    // ウイング本体
+    var wGrd=ctx.createLinearGradient(cx+105,wy-26,cx+170,wy-14);
+    wGrd.addColorStop(0,lighten(realRW,12));wGrd.addColorStop(.5,realRW);wGrd.addColorStop(1,darken(realRW,15));
+    ctx.fillStyle=wGrd;
+    ctx.beginPath();ctx.moveTo(cx+104,wy-26);ctx.lineTo(cx+170,wy-22);ctx.lineTo(cx+171,wy-14);ctx.lineTo(cx+103,wy-18);ctx.closePath();ctx.fill();
+    // エンドプレート
+    ctx.fillStyle=darken(realRW,20);
+    [[cx+103,cx+107],[cx+168,cx+172]].forEach(function(pair){var x1=pair[0],x2=pair[1];
+      ctx.beginPath();ctx.moveTo(x1,wy-28);ctx.lineTo(x2,wy-28);ctx.lineTo(x2,wy-12);ctx.lineTo(x1,wy-12);ctx.closePath();ctx.fill();
+    });
+    // ウイングハイライト
+    ctx.save();ctx.globalAlpha=.12;ctx.fillStyle='#fff';
+    ctx.beginPath();ctx.moveTo(cx+104,wy-26);ctx.lineTo(cx+170,wy-22);ctx.lineTo(cx+168,wy-20);ctx.lineTo(cx+104,wy-24);ctx.closePath();ctx.fill();ctx.restore();
+  }
+
+  // リアバンパー
+  if(S.selected['ings_s15']){
+    var rc=S.partColors['ings_s15']||'__body__';
+    var rrc=rc==='__body__'?bc:rc;
+    var rbGrd=ctx.createLinearGradient(cx+165,gY-20,cx+182,gY);
+    rbGrd.addColorStop(0,darken(rrc,18));rbGrd.addColorStop(1,darken(rrc,32));
+    ctx.fillStyle=rbGrd;
+    ctx.beginPath();ctx.moveTo(cx+179,gY);ctx.lineTo(cx+185,gY-15);ctx.bezierCurveTo(cx+188,gY-20,cx+180,gY-22,cx+173,gY-18);ctx.lineTo(cx+163,gY);ctx.closePath();ctx.fill();
+    ctx.fillStyle='#0a0a0a';ctx.beginPath();ctx.moveTo(cx+181,gY-6);ctx.lineTo(cx+184,gY-14);ctx.lineTo(cx+173,gY-14);ctx.lineTo(cx+170,gY-6);ctx.closePath();ctx.fill();
+  }
+}catch(e){console.warn('drawSide error:',e.message);}
+}
+
+function drawFront(ctx,W,H){try{
+  var bc=S.bodyColor,shape=(S.car && S.car.shape)||'coupe';
+  var cx=W/2,cy=H*.5;
+  var wc=getWheelColor();
+  var wR=24+(S.inch-15)*1.5;
+
+  // 影
+  var grd=ctx.createRadialGradient(cx,cy+55,5,cx,cy+58,130);
+  grd.addColorStop(0,'rgba(0,0,0,.28)');grd.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=grd;ctx.beginPath();ctx.ellipse(cx,cy+58,128,12,0,0,Math.PI*2);ctx.fill();
+
+  // メインボディ
+  var bGrd=ctx.createLinearGradient(cx-140,cy-70,cx+140,cy+40);
+  bGrd.addColorStop(0,lighten(bc,10));bGrd.addColorStop(.5,bc);bGrd.addColorStop(1,darken(bc,20));
+  ctx.fillStyle=bGrd;
+  ctx.beginPath();
+  ctx.moveTo(cx-135,cy+42);ctx.lineTo(cx-124,cy-8);
+  ctx.bezierCurveTo(cx-120,cy-30,cx-90,cy-55,cx-42,cy-67);
+  ctx.lineTo(cx+42,cy-67);
+  ctx.bezierCurveTo(cx+90,cy-55,cx+120,cy-30,cx+124,cy-8);
+  ctx.lineTo(cx+135,cy+42);ctx.closePath();ctx.fill();
+
+  // ルーフ
+  var rGrd=ctx.createLinearGradient(cx-65,cy-55,cx+65,cy-45);
+  rGrd.addColorStop(0,lighten(bc,18));rGrd.addColorStop(.5,lighten(bc,8));rGrd.addColorStop(1,darken(bc,5));
+  ctx.fillStyle=rGrd;
+  ctx.beginPath();ctx.moveTo(cx-62,cy-52);ctx.bezierCurveTo(cx-35,cy-68,cx+35,cy-68,cx+62,cy-52);ctx.lineTo(cx+55,cy-48);ctx.bezierCurveTo(cx+30,cy-62,cx-30,cy-62,cx-55,cy-48);ctx.closePath();ctx.fill();
+
+  // フロントガラス
+  ctx.fillStyle='rgba(20,40,90,.6)';
+  ctx.beginPath();ctx.moveTo(cx-56,cy-49);ctx.bezierCurveTo(cx-30,cy-65,cx+30,cy-65,cx+56,cy-49);ctx.lineTo(cx+50,cy-45);ctx.bezierCurveTo(cx+28,cy-60,cx-28,cy-60,cx-50,cy-45);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,.15)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(cx-56,cy-49);ctx.bezierCurveTo(cx-30,cy-65,cx+30,cy-65,cx+56,cy-49);ctx.stroke();
+
+  // ヘッドライト（左右）
+  [{sx:-1},{sx:1}].forEach(function(obj){var sx=obj.sx;
+    var lx=cx+sx*92,ly=cy-20;
+    // アウター
+    ctx.fillStyle='rgba(255,248,200,.9)';
+    ctx.beginPath();ctx.moveTo(lx+sx*(-26),ly-8);ctx.bezierCurveTo(lx+sx*(-28),ly-18,lx+sx*(-10),ly-22,lx+sx*8,ly-20);ctx.lineTo(lx+sx*20,ly-12);ctx.lineTo(lx+sx*18,ly+6);ctx.lineTo(lx+sx*(-20),ly+4);ctx.closePath();ctx.fill();
+    // インナー反射
+    ctx.fillStyle='rgba(255,255,255,.6)';
+    ctx.beginPath();ctx.moveTo(lx+sx*(-22),ly-6);ctx.lineTo(lx+sx*(-10),ly-18);ctx.lineTo(lx+sx*2,ly-16);ctx.lineTo(lx+sx*(-8),ly-4);ctx.closePath();ctx.fill();
+    // プロジェクター風
+    ctx.fillStyle='rgba(180,220,255,.7)';
+    ctx.beginPath();ctx.arc(lx,ly-7,8,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(lx-sx*2,ly-9,3,0,Math.PI*2);ctx.fill();
+    // アウトライン
+    ctx.strokeStyle='rgba(80,60,0,.4)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(lx+sx*(-26),ly-8);ctx.bezierCurveTo(lx+sx*(-28),ly-18,lx+sx*(-10),ly-22,lx+sx*8,ly-20);ctx.lineTo(lx+sx*20,ly-12);ctx.lineTo(lx+sx*18,ly+6);ctx.lineTo(lx+sx*(-20),ly+4);ctx.closePath();ctx.stroke();
+  });
+
+  // フロントグリル
+  var glx=cx,gly=cy+15;
+  ctx.fillStyle=darken(bc,42);
+  ctx.beginPath();ctx.moveTo(glx-54,gly-10);ctx.bezierCurveTo(glx-56,gly,glx-46,gly+26,glx-38,gly+28);ctx.lineTo(glx+38,gly+28);ctx.bezierCurveTo(glx+46,gly+26,glx+56,gly,glx+54,gly-10);ctx.closePath();ctx.fill();
+  // グリルバー
+  ctx.strokeStyle='rgba(255,255,255,.07)';ctx.lineWidth=1.5;
+  for(var i=0;i<5;i++){ctx.beginPath();ctx.moveTo(glx-44,gly-4+i*6);ctx.lineTo(glx+44,gly-4+i*6);ctx.stroke();}
+  for(var i=0;i<5;i++){ctx.beginPath();ctx.moveTo(glx-40+i*18,gly-8);ctx.lineTo(glx-38+i*18,gly+26);ctx.stroke();}
+  // グリル枠
+  ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(glx-54,gly-10);ctx.bezierCurveTo(glx-56,gly,glx-46,gly+26,glx-38,gly+28);ctx.lineTo(glx+38,gly+28);ctx.bezierCurveTo(glx+46,gly+26,glx+56,gly,glx+54,gly-10);ctx.closePath();ctx.stroke();
+
+  // フロントバンパーエアロ
+  var aeroKey=Object.keys(S.selected).find(function(k){return ['varis_fd','varis_bnr','varis_ek'].indexOf(k)>=0;});
+  if(aeroKey){
+    var ac=S.partColors[aeroKey]||'__body__';
+    var rac=ac==='__body__'?bc:ac;
+    ctx.fillStyle=darken(rac,28);
+    ctx.beginPath();ctx.moveTo(cx-133,cy+40);ctx.bezierCurveTo(cx-140,cy+50,cx-60,cy+56,cx,cy+56);ctx.bezierCurveTo(cx+60,cy+56,cx+140,cy+50,cx+133,cy+40);ctx.closePath();ctx.fill();
+    // エアインテーク（左右）
+    ctx.fillStyle='#090909';
+    [{ox:-70},{ox:70}].forEach(function(obj){var ox=obj.ox;
+      ctx.beginPath();ctx.moveTo(cx+ox-20,cy+42);ctx.lineTo(cx+ox+20,cy+42);ctx.lineTo(cx+ox+16,cy+54);ctx.lineTo(cx+ox-16,cy+54);ctx.closePath();ctx.fill();
+    });
+  }
+
+  // ホイール
+  [{x:cx-130,y:cy+37},{x:cx+130,y:cy+37}].forEach((function(w){
+    ctx.fillStyle='#111';ctx.beginPath();ctx.arc(w.x,w.y,wR,0,Math.PI*2);ctx.fill();
+    var rGrd=ctx.createRadialGradient(w.x-wR*.2,w.y-wR*.2,0,w.x,w.y,wR*.68);
+    rGrd.addColorStop(0,lighten(wc,35));rGrd.addColorStop(1,darken(wc,25));
+    ctx.fillStyle=rGrd;ctx.beginPath();ctx.arc(w.x,w.y,wR*.67,0,Math.PI*2);ctx.fill();
+    for(var i=0;i<5;i++){var a=i/5*Math.PI*2;
+      ctx.strokeStyle=lighten(wc,10);ctx.lineWidth=3;
+      ctx.beginPath();ctx.moveTo(w.x+Math.cos(a)*wR*.12,w.y+Math.sin(a)*wR*.12);ctx.lineTo(w.x+Math.cos(a)*wR*.58,w.y+Math.sin(a)*wR*.58);ctx.stroke();}
+    var capGrd=ctx.createRadialGradient(w.x-2,w.y-2,0,w.x,w.y,wR*.13);
+    capGrd.addColorStop(0,'#ccc');capGrd.addColorStop(1,'#444');
+    ctx.fillStyle=capGrd;ctx.beginPath();ctx.arc(w.x,w.y,wR*.12,0,Math.PI*2);ctx.fill();
+  });
+}catch(e){console.warn('drawFront error:',e.message);}
+}
+
+function drawRear(ctx,W,H){try{
+  var bc=S.bodyColor,shape=(S.car && S.car.shape)||'coupe';
+  var cx=W/2,cy=H*.5;
+  var wc=getWheelColor();
+  var wR=24+(S.inch-15)*1.5;
+
+  // 影
+  var grd=ctx.createRadialGradient(cx,cy+55,5,cx,cy+58,128);
+  grd.addColorStop(0,'rgba(0,0,0,.26)');grd.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=grd;ctx.beginPath();ctx.ellipse(cx,cy+58,126,12,0,0,Math.PI*2);ctx.fill();
+
+  // メインボディ
+  var bGrd=ctx.createLinearGradient(cx-140,cy-65,cx+140,cy+40);
+  bGrd.addColorStop(0,lighten(bc,8));bGrd.addColorStop(.5,bc);bGrd.addColorStop(1,darken(bc,22));
+  ctx.fillStyle=bGrd;
+  ctx.beginPath();
+  ctx.moveTo(cx-132,cy+42);ctx.lineTo(cx-120,cy-6);
+  ctx.bezierCurveTo(cx-116,cy-28,cx-86,cy-52,cx-38,cy-64);
+  ctx.lineTo(cx+38,cy-64);
+  ctx.bezierCurveTo(cx+86,cy-52,cx+116,cy-28,cx+120,cy-6);
+  ctx.lineTo(cx+132,cy+42);ctx.closePath();ctx.fill();
+
+  // リアガラス
+  var rGrd2=ctx.createLinearGradient(cx-62,cy-50,cx+62,cy-44);
+  rGrd2.addColorStop(0,lighten(bc,16));rGrd2.addColorStop(.5,lighten(bc,6));rGrd2.addColorStop(1,darken(bc,8));
+  ctx.fillStyle=rGrd2;
+  ctx.beginPath();ctx.moveTo(cx-60,cy-48);ctx.bezierCurveTo(cx-34,cy-64,cx+34,cy-64,cx+60,cy-48);ctx.lineTo(cx+54,cy-44);ctx.bezierCurveTo(cx+30,cy-58,cx-30,cy-58,cx-54,cy-44);ctx.closePath();ctx.fill();
+  ctx.fillStyle='rgba(20,40,90,.58)';
+  ctx.beginPath();ctx.moveTo(cx-54,cy-44);ctx.bezierCurveTo(cx-28,cy-58,cx+28,cy-58,cx+54,cy-44);ctx.lineTo(cx+48,cy-40);ctx.bezierCurveTo(cx+26,cy-54,cx-26,cy-54,cx-48,cy-40);ctx.closePath();ctx.fill();
+
+  // テールライト（横長・現代的）
+  [{sx:-1},{sx:1}].forEach(function(obj){var sx=obj.sx;
+    var tlx=cx+sx*95,tly=cy-18;
+    // アウター（赤）
+    ctx.fillStyle='rgba(200,10,10,.92)';
+    ctx.beginPath();ctx.moveTo(tlx+sx*(-28),tly-10);ctx.lineTo(tlx+sx*22,tly-8);ctx.lineTo(tlx+sx*20,tly+8);ctx.lineTo(tlx+sx*(-26),tly+6);ctx.closePath();ctx.fill();
+    // インナー（明るい）
+    ctx.fillStyle='rgba(255,80,80,.7)';
+    ctx.beginPath();ctx.moveTo(tlx+sx*(-24),tly-7);ctx.lineTo(tlx+sx*14,tly-6);ctx.lineTo(tlx+sx*12,tly+4);ctx.lineTo(tlx+sx*(-22),tly+3);ctx.closePath();ctx.fill();
+    // 光源
+    ctx.fillStyle='rgba(255,200,200,.6)';ctx.beginPath();ctx.arc(tlx,tly-1,5,0,Math.PI*2);ctx.fill();
+    // アウトライン
+    ctx.strokeStyle='rgba(80,0,0,.5)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(tlx+sx*(-28),tly-10);ctx.lineTo(tlx+sx*22,tly-8);ctx.lineTo(tlx+sx*20,tly+8);ctx.lineTo(tlx+sx*(-26),tly+6);ctx.closePath();ctx.stroke();
+  });
+
+  // トランク・リアパネル
+  ctx.fillStyle=darken(bc,16);
+  ctx.beginPath();ctx.moveTo(cx-56,cy-44);ctx.lineTo(cx+56,cy-44);ctx.lineTo(cx+60,cy-20);ctx.lineTo(cx-60,cy-20);ctx.closePath();ctx.fill();
+
+  // リアバンパー・ディフューザー
+  var rearKey=Object.keys(S.selected).find(function(k){return k==='ings_s15';});
+  var rbc=rearKey?(S.partColors[rearKey]||'__body__')==='__body__'?bc:S.partColors[rearKey]:bc;
+  var difGrd=ctx.createLinearGradient(cx,cy+36,cx,cy+50);
+  difGrd.addColorStop(0,darken(rbc,18));difGrd.addColorStop(1,darken(rbc,38));
+  ctx.fillStyle=difGrd;
+  ctx.beginPath();ctx.moveTo(cx-128,cy+38);ctx.bezierCurveTo(cx-80,cy+44,cx+80,cy+44,cx+128,cy+38);ctx.lineTo(cx+128,cy+50);ctx.bezierCurveTo(cx+80,cy+56,cx-80,cy+56,cx-128,cy+50);ctx.closePath();ctx.fill();
+  // ディフューザーフィン
+  ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=1.5;
+  for(var i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(cx+i*24,cy+40);ctx.lineTo(cx+i*22,cy+54);ctx.stroke();}
+
+  // マフラー出口
+  var hasMuffler=Object.keys(S.selected).some(function(k){return ['fuji','hks_hi','kakimoto','greddy','js_s2k','nismo_m'].indexOf(k)>=0;});
+  var mufflerKey=Object.keys(S.selected).find(function(k){return ['fuji','hks_hi','kakimoto','greddy','js_s2k','nismo_m'].indexOf(k)>=0;});
+  var isTi=mufflerKey&&['fuji','js_s2k'].includes(mufflerKey);
+  var muffPoss=hasMuffler?[{x:cx-34},{x:cx+34}]:[{x:cx-22},{x:cx+22}];
+  var muffR=hasMuffler?10:7;
+  muffPoss.forEach((function(m){
+    // 外周
+    var mGrd=ctx.createRadialGradient(m.x,cy+47,0,m.x,cy+47,muffR);
+    if(isTi){mGrd.addColorStop(0,'#d4a060');mGrd.addColorStop(.5,'#8060a0');mGrd.addColorStop(1,'#4040a0');}
+    else{mGrd.addColorStop(0,'#aaa');mGrd.addColorStop(1,'#555');}
+    ctx.fillStyle=mGrd;ctx.beginPath();ctx.arc(m.x,cy+47,muffR,0,Math.PI*2);ctx.fill();
+    // 内側（穴）
+    ctx.fillStyle='#111';ctx.beginPath();ctx.arc(m.x,cy+47,muffR*.6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#050505';ctx.beginPath();ctx.arc(m.x,cy+47,muffR*.4,0,Math.PI*2);ctx.fill();
+    // リング
+    ctx.strokeStyle=isTi?'rgba(160,120,80,.6)':'rgba(180,180,180,.4)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.arc(m.x,cy+47,muffR*.75,0,Math.PI*2);ctx.stroke();
+  });
+
+  // ウイング（リアビュー）
+  var wingKey=(function(){var wk=['voltex','varis_w','sard','jsr_ap','varis_fd_w'];for(var wi=0;wi<wk.length;wi++){if(S.selected[wk[wi]])return wk[wi];}return null;})();
+  if(wingKey){
+    var rwc=S.partColors[wingKey]||'__body__';
+    var realRW=rwc==='__body__'?bc:rwc;
+    var wGrd=ctx.createLinearGradient(cx-92,cy-76,cx+92,cy-66);
+    wGrd.addColorStop(0,lighten(realRW,12));wGrd.addColorStop(.5,realRW);wGrd.addColorStop(1,darken(realRW,12));
+    ctx.fillStyle=wGrd;
+    ctx.beginPath();ctx.moveTo(cx-92,cy-76);ctx.lineTo(cx+92,cy-76);ctx.lineTo(cx+90,cy-67);ctx.lineTo(cx-90,cy-67);ctx.closePath();ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(cx-92,cy-76);ctx.lineTo(cx+92,cy-76);ctx.stroke();
+    // ステー
+    ctx.fillStyle='#666';
+    [{x:cx-52},{x:cx+52}].forEach((function(p){ctx.beginPath();ctx.moveTo(p.x-4,cy-67);ctx.lineTo(p.x+4,cy-67);ctx.lineTo(p.x+3,cy-46);ctx.lineTo(p.x-3,cy-46);ctx.closePath();ctx.fill();});
+  }
+
+  // ホイール
+  [{x:cx-128,y:cy+36},{x:cx+128,y:cy+36}].forEach((function(w){
+    ctx.fillStyle='#111';ctx.beginPath();ctx.arc(w.x,w.y,wR,0,Math.PI*2);ctx.fill();
+    var rGrd=ctx.createRadialGradient(w.x-wR*.2,w.y-wR*.2,0,w.x,w.y,wR*.68);
+    rGrd.addColorStop(0,lighten(wc,35));rGrd.addColorStop(1,darken(wc,25));
+    ctx.fillStyle=rGrd;ctx.beginPath();ctx.arc(w.x,w.y,wR*.67,0,Math.PI*2);ctx.fill();
+    for(var i=0;i<5;i++){var a=i/5*Math.PI*2;ctx.strokeStyle=lighten(wc,10);ctx.lineWidth=3;
+      ctx.beginPath();ctx.moveTo(w.x+Math.cos(a)*wR*.12,w.y+Math.sin(a)*wR*.12);ctx.lineTo(w.x+Math.cos(a)*wR*.58,w.y+Math.sin(a)*wR*.58);ctx.stroke();}
+    var capGrd=ctx.createRadialGradient(w.x-2,w.y-2,0,w.x,w.y,wR*.13);
+    capGrd.addColorStop(0,'#ccc');capGrd.addColorStop(1,'#444');
+    ctx.fillStyle=capGrd;ctx.beginPath();ctx.arc(w.x,w.y,wR*.12,0,Math.PI*2);ctx.fill();
+  });
+}catch(e){console.warn('drawRear error:',e.message);}
+}
+
+function drawTop(ctx,W,H){try{
+  var bc=S.bodyColor,shape=(S.car && S.car.shape)||'coupe';
+  var cx=W/2,cy=H/2;
+  var wc=getWheelColor();
+  var wR=15+(S.inch-15)*1;
+
+  // ボディ影
+  ctx.save();ctx.globalAlpha=.14;ctx.fillStyle='#000';
+  ctx.beginPath();ctx.moveTo(cx-72,cy-98);ctx.lineTo(cx+72,cy-98);ctx.lineTo(cx+80,cy+88);ctx.lineTo(cx-80,cy+88);ctx.closePath();ctx.fill();
+  ctx.restore();
+
+  // ボンネット
+  var hoodColor=S.selected['car_h']?'#1a1a1c':lighten(bc,6);
+  ctx.fillStyle=hoodColor;
+  ctx.beginPath();ctx.moveTo(cx-52,cy-98);ctx.lineTo(cx+52,cy-98);ctx.bezierCurveTo(cx+54,cy-80,cx+42,cy-46,cx+38,cy-42);ctx.lineTo(cx-38,cy-42);ctx.bezierCurveTo(cx-42,cy-46,cx-54,cy-80,cx-52,cy-98);ctx.closePath();ctx.fill();
+  if(S.selected['car_h']){
+    ctx.save();ctx.globalAlpha=.06;ctx.strokeStyle='#fff';ctx.lineWidth=0.5;
+    for(var i=0;i<8;i++){ctx.beginPath();ctx.moveTo(cx-44+i*11,cy-96);ctx.lineTo(cx-38+i*10,cy-42);ctx.stroke();}
+    for(var i=0;i<6;i++){ctx.beginPath();ctx.moveTo(cx-50,cy-96+i*9);ctx.lineTo(cx+50,cy-96+i*9);ctx.stroke();}
+    ctx.restore();
+  }
+
+  // ルーフ
+  var roofGrd=ctx.createLinearGradient(cx-50,cy-40,cx+50,cy+42);
+  roofGrd.addColorStop(0,lighten(bc,16));roofGrd.addColorStop(.3,lighten(bc,4));roofGrd.addColorStop(.7,darken(bc,4));roofGrd.addColorStop(1,darken(bc,14));
+  if(shape!=='open'){
+    ctx.fillStyle=roofGrd;
+    ctx.beginPath();ctx.moveTo(cx-38,cy-42);ctx.lineTo(cx+38,cy-42);ctx.bezierCurveTo(cx+44,cy-24,cx+46,cy+36,cx+44,cy+44);ctx.lineTo(cx-44,cy+44);ctx.bezierCurveTo(cx-46,cy+36,cx-44,cy-24,cx-38,cy-42);ctx.closePath();ctx.fill();
+    // サンルーフ風ガラス
+    ctx.fillStyle='rgba(20,40,90,.5)';
+    ctx.beginPath();ctx.moveTo(cx-28,cy-30);ctx.lineTo(cx+28,cy-30);ctx.lineTo(cx+30,cy+30);ctx.lineTo(cx-30,cy+30);ctx.closePath();ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(cx-28,cy-30);ctx.lineTo(cx+28,cy-30);ctx.lineTo(cx+30,cy+30);ctx.lineTo(cx-30,cy+30);ctx.closePath();ctx.stroke();
+    // ルーフハイライト
+    ctx.save();ctx.globalAlpha=.1;
+    var rhl=ctx.createLinearGradient(cx-46,cy-40,cx-10,cy+40);
+    rhl.addColorStop(0,'transparent');rhl.addColorStop(.4,'#fff');rhl.addColorStop(1,'transparent');
+    ctx.fillStyle=rhl;
+    ctx.beginPath();ctx.moveTo(cx-38,cy-42);ctx.lineTo(cx-14,cy-42);ctx.lineTo(cx-10,cy+44);ctx.lineTo(cx-44,cy+44);ctx.closePath();ctx.fill();ctx.restore();
+  }
+
+  // トランク
+  ctx.fillStyle=darken(bc,8);
+  ctx.beginPath();ctx.moveTo(cx-44,cy+44);ctx.lineTo(cx+44,cy+44);ctx.bezierCurveTo(cx+60,cy+54,cx+68,cy+72,cx+66,cy+88);ctx.lineTo(cx-66,cy+88);ctx.bezierCurveTo(cx-68,cy+72,cx-60,cy+54,cx-44,cy+44);ctx.closePath();ctx.fill();
+
+  // リアウイング（上から）
+  var wingKey=(function(){var wk=['voltex','varis_w','sard','jsr_ap','varis_fd_w'];for(var wi=0;wi<wk.length;wi++){if(S.selected[wk[wi]])return wk[wi];}return null;})();
+  if(wingKey){
+    var rwc=S.partColors[wingKey]||'__body__';
+    var realRW=rwc==='__body__'?bc:rwc;
+    ctx.fillStyle=realRW;
+    ctx.beginPath();ctx.moveTo(cx-68,cy+54);ctx.lineTo(cx+68,cy+54);ctx.lineTo(cx+66,cy+62);ctx.lineTo(cx-66,cy+62);ctx.closePath();ctx.fill();
+    ctx.strokeStyle=lighten(realRW,10);ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(cx-68,cy+54);ctx.lineTo(cx+68,cy+54);ctx.stroke();
+  }
+
+  // オーバーフェンダー
+  if(S.selected['rb_fd']||S.selected['rb_86']){
+    var fc=S.partColors['rb_fd']||S.partColors['rb_86']||'__body__';
+    var rfc=fc==='__body__'?bc:fc;
+    [{x:cx-68,y:cy-72},{x:cx+68,y:cy-72},{x:cx-72,y:cy+54},{x:cx+72,y:cy+54}].forEach((function(p){
+      var fGrd=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,14);
+      fGrd.addColorStop(0,lighten(rfc,8));fGrd.addColorStop(1,darken(rfc,12));
+      ctx.fillStyle=fGrd;ctx.beginPath();ctx.arc(p.x,p.y,12,0,Math.PI*2);ctx.fill();
+    });
+  }
+
+  // ホイール（楕円・上から）
+  [{x:cx-68,y:cy-72},{x:cx+68,y:cy-72},{x:cx-70,y:cy+56},{x:cx+70,y:cy+56}].forEach((function(w){
+    ctx.fillStyle='#111';ctx.beginPath();ctx.ellipse(w.x,w.y,wR+2,wR*1.5,0,0,Math.PI*2);ctx.fill();
+    var rGrd=ctx.createRadialGradient(w.x,w.y,0,w.x,w.y,wR*.7);
+    rGrd.addColorStop(0,lighten(wc,30));rGrd.addColorStop(1,darken(wc,20));
+    ctx.fillStyle=rGrd;ctx.beginPath();ctx.ellipse(w.x,w.y,wR*.7,wR*1.1,0,0,Math.PI*2);ctx.fill();
+  });
+}catch(e){console.warn('drawTop error:',e.message);}
+}
+
+function drawEngine(ctx,W,H){try{
+  var bc=S.bodyColor;
+  var cx=W/2,cy=H/2+8;
+
+  // エンジンベイ背景
+  var bayGrd=ctx.createLinearGradient(cx,cy-95,cx,cy+85);
+  bayGrd.addColorStop(0,darken(bc,50));bayGrd.addColorStop(1,darken(bc,60));
+  ctx.fillStyle=bayGrd;
+  ctx.beginPath();ctx.moveTo(cx-155,cy-90);ctx.lineTo(cx+155,cy-90);ctx.bezierCurveTo(cx+165,cy-40,cx+165,cy+60,cx+155,cy+82);ctx.lineTo(cx-155,cy+82);ctx.bezierCurveTo(cx-165,cy+60,cx-165,cy-40,cx-155,cy-90);ctx.closePath();ctx.fill();
+
+  // ストラットタワー（左右）
+  [{x:cx-125},{x:cx+125}].forEach((function(t){
+    var twGrd=ctx.createLinearGradient(t.x-15,cy-85,t.x+15,cy-40);
+    twGrd.addColorStop(0,darken(bc,28));twGrd.addColorStop(1,darken(bc,38));
+    ctx.fillStyle=twGrd;
+    ctx.beginPath();ctx.moveTo(t.x-16,cy-85);ctx.lineTo(t.x+16,cy-85);ctx.lineTo(t.x+18,cy-40);ctx.lineTo(t.x-18,cy-40);ctx.closePath();ctx.fill();
+    // ボルト
+    ctx.fillStyle='#888';ctx.beginPath();ctx.arc(t.x,cy-50,5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#aaa';ctx.beginPath();ctx.arc(t.x,cy-50,3,0,Math.PI*2);ctx.fill();
+  });
+
+  // タワーバー（選択時）
+  if(S.selected['cusco_tb']){
+    var tbGrd=ctx.createLinearGradient(cx-120,cy-60,cx+120,cy-56);
+    tbGrd.addColorStop(0,'#c8a000');tbGrd.addColorStop(.5,'#f0c840');tbGrd.addColorStop(1,'#c8a000');
+    ctx.strokeStyle=tbGrd;ctx.lineWidth=9;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(cx-118,cy-62);ctx.bezierCurveTo(cx-60,cy-70,cx+60,cy-70,cx+118,cy-62);ctx.stroke();
+    // エンド部
+    [{x:cx-118,y:cy-62},{x:cx+118,y:cy-62}].forEach((function(e){
+      var eGrd=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,10);
+      eGrd.addColorStop(0,'#f0d060');eGrd.addColorStop(1,'#a07800');
+      ctx.fillStyle=eGrd;ctx.beginPath();ctx.arc(e.x,e.y,10,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle='#805800';ctx.lineWidth=1;ctx.beginPath();ctx.arc(e.x,e.y,10,0,Math.PI*2);ctx.stroke();
+    });
+    ctx.fillStyle='rgba(255,255,255,.4)';ctx.font='700 8px "Barlow Condensed",sans-serif';ctx.fillText('CUSCO',cx-12,cy-66);
+  }
+
+  // インタークーラー（前方）
+  if(S.selected['trust_ic']||S.selected['hks_tb']){
+    var icGrd=ctx.createLinearGradient(cx-55,cy-88,cx-55,cy-56);
+    icGrd.addColorStop(0,'#5a6a7a');icGrd.addColorStop(1,'#3a4a5a');
+    ctx.fillStyle=icGrd;ctx.beginPath();ctx.moveTo(cx-56,cy-88);ctx.lineTo(cx+56,cy-88);ctx.lineTo(cx+52,cy-58);ctx.lineTo(cx-52,cy-58);ctx.closePath();ctx.fill();
+    ctx.strokeStyle='#2a3a4a';ctx.lineWidth=1.5;
+    for(var i=0;i<10;i++){ctx.beginPath();ctx.moveTo(cx-50+i*11,cy-86);ctx.lineTo(cx-50+i*11,cy-60);ctx.stroke();}
+    ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(cx-56,cy-88);ctx.lineTo(cx+56,cy-88);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.35)';ctx.font='700 7px "Barlow Condensed",sans-serif';
+    ctx.fillText(S.selected['trust_ic']?'TRUST INTERCOOLER':'HKS TURBO KIT',cx-38,cy-70);
+  }
+
+  // エンジンブロック
+  var engGrd=ctx.createLinearGradient(cx-72,cy-42,cx+72,cy+62);
+  engGrd.addColorStop(0,'#2e2e30');engGrd.addColorStop(1,'#1e1e20');
+  ctx.fillStyle=engGrd;
+  ctx.beginPath();ctx.moveTo(cx-74,cy-42);ctx.lineTo(cx+74,cy-42);ctx.lineTo(cx+76,cy+62);ctx.lineTo(cx-76,cy+62);ctx.closePath();ctx.fill();
+
+  // バルブカバー（エンジントップ）
+  var vcGrd=ctx.createLinearGradient(cx-62,cy-40,cx+62,cy-2);
+  vcGrd.addColorStop(0,'#424246');vcGrd.addColorStop(.5,'#3a3a3e');vcGrd.addColorStop(1,'#2a2a2e');
+  ctx.fillStyle=vcGrd;
+  ctx.beginPath();ctx.moveTo(cx-62,cy-40);ctx.lineTo(cx+62,cy-40);ctx.lineTo(cx+60,cy-2);ctx.lineTo(cx-60,cy-2);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,.06)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(cx-62,cy-40);ctx.lineTo(cx+62,cy-40);ctx.stroke();
+  // エンジンロゴ
+  ctx.fillStyle='rgba(255,255,255,.25)';ctx.font='700 9px "Barlow Condensed",sans-serif';
+  ctx.fillText('ENGINE',cx-14,cy-18);
+
+  // プラグコード
+  ctx.strokeStyle='rgba(40,180,40,.6)';ctx.lineWidth=2.5;ctx.lineCap='round';
+  for(var i=0;i<4;i++){
+    ctx.beginPath();ctx.moveTo(cx-40+i*26,cy-40);ctx.bezierCurveTo(cx-35+i*26,cy-28,cx-38+i*26,cy-12,cx-36+i*26,cy-2);ctx.stroke();
+  }
+
+  // エアクリーナー
+  var hasAir=S.selected['hks_air'];
+  if(hasAir){
+    // HKSパワーフロー（特徴的なオレンジ）
+    var airGrd=ctx.createRadialGradient(cx+90,cy+18,0,cx+90,cy+18,28);
+    airGrd.addColorStop(0,'#f0a800');airGrd.addColorStop(.6,'#d08000');airGrd.addColorStop(1,'#805000');
+    ctx.fillStyle=airGrd;ctx.beginPath();ctx.arc(cx+90,cy+18,28,0,Math.PI*2);ctx.fill();
+    // フィルター目
+    ctx.strokeStyle='rgba(0,0,0,.2)';ctx.lineWidth=1;
+    for(var i=0;i<5;i++){ctx.beginPath();ctx.arc(cx+90,cy+18,4+i*4.5,0,Math.PI*2);ctx.stroke();}
+    ctx.fillStyle='#333';ctx.beginPath();ctx.arc(cx+90,cy+18,6,0,Math.PI*2);ctx.fill();
+    // ダクト
+    ctx.strokeStyle='#555';ctx.lineWidth=5;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(cx+65,cy+18);ctx.lineTo(cx+30,cy+10);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.35)';ctx.font='700 8px "Barlow Condensed",sans-serif';ctx.fillText('HKS SPF',cx+72,cy+40);
+  }else{
+    ctx.fillStyle='#3a3a3e';ctx.beginPath();ctx.arc(cx+88,cy+20,18,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#2a2a2e';ctx.beginPath();ctx.arc(cx+88,cy+20,12,0,Math.PI*2);ctx.fill();
+  }
+
+  // バッテリー
+  ctx.fillStyle='#1a2a1a';ctx.beginPath();ctx.moveTo(cx-140,cy+38);ctx.lineTo(cx-100,cy+38);ctx.lineTo(cx-98,cy+70);ctx.lineTo(cx-142,cy+70);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#0a180a';ctx.beginPath();ctx.moveTo(cx-138,cy+40);ctx.lineTo(cx-102,cy+40);ctx.lineTo(cx-100,cy+68);ctx.lineTo(cx-140,cy+68);ctx.closePath();ctx.fill();
+  ctx.fillStyle='rgba(100,255,100,.5)';ctx.font='700 7px sans-serif';ctx.fillText('BATT',cx-128,cy+58);
+  // 端子
+  ctx.fillStyle='#888';ctx.beginPath();ctx.arc(cx-132,cy+44,4,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#c44';ctx.beginPath();ctx.arc(cx-110,cy+44,4,0,Math.PI*2);ctx.fill();
+
+  // クーラント
+  ctx.fillStyle='#1a3040';ctx.beginPath();ctx.moveTo(cx-95,cy+42);ctx.lineTo(cx-62,cy+42);ctx.lineTo(cx-60,cy+70);ctx.lineTo(cx-97,cy+70);ctx.closePath();ctx.fill();
+  ctx.fillStyle='rgba(40,160,220,.4)';ctx.beginPath();ctx.moveTo(cx-93,cy+44);ctx.lineTo(cx-64,cy+44);ctx.lineTo(cx-62,cy+68);ctx.lineTo(cx-95,cy+68);ctx.closePath();ctx.fill();
+
+  // 車高調（コイルスプリング見え）
+  if(S.selected['tein']){
+    [{x:cx-155,y:cy-20},{x:cx+155,y:cy-20}].forEach((function(sp){
+      ctx.strokeStyle='rgba(200,200,200,.5)';ctx.lineWidth=3;ctx.lineCap='round';
+      for(var i=0;i<5;i++){
+        ctx.beginPath();ctx.moveTo(sp.x-8+i%2*16,cy-35+i*10);ctx.lineTo(sp.x+8-i%2*16,cy-25+i*10);ctx.stroke();
+      }
+    });
+  }
+}catch(e){console.warn('drawEngine error:',e.message);}
+}
+
+function drawInterior(ctx,W,H){try{
+  var bc=S.bodyColor;
+  var cx=W/2,cy=H/2;
+  var hasRecaro=S.selected['recaro']||S.selected['bride']||S.selected['sparco'];
+  var hasBride=S.selected['bride'];
+  var hasSparco=S.selected['sparco'];
+  var hasNardi=S.selected['nardi'];
+  var hasTakata=S.selected['takata'];
+  var hasShift=S.selected['mugen_sh'];
+  var sKey=Object.keys(S.selected).find(function(k){return ['recaro','bride','sparco'].indexOf(k)>=0;});
+  var sColorRaw=hasRecaro?(S.partColors[sKey]||'#1C1C1E'):'#2A2A2C';
+  var sc=sColorRaw==='__body__'?bc:sColorRaw;
+
+  // ダッシュボード
+  var dashGrd=ctx.createLinearGradient(cx,cy-65,cx,cy+15);
+  dashGrd.addColorStop(0,darken(bc,42));dashGrd.addColorStop(.6,darken(bc,50));dashGrd.addColorStop(1,'#111');
+  ctx.fillStyle=dashGrd;
+  ctx.beginPath();ctx.moveTo(cx-200,cy-62);ctx.bezierCurveTo(cx-200,cy-50,cx-180,cy-20,cx-160,cy+12);ctx.lineTo(cx+160,cy+12);ctx.bezierCurveTo(cx+180,cy-20,cx+200,cy-50,cx+200,cy-62);ctx.closePath();ctx.fill();
+
+  // フロントガラス（外を見る）
+  var wsGrd=ctx.createLinearGradient(cx,cy-98,cx,cy-62);
+  wsGrd.addColorStop(0,'rgba(20,40,90,.38)');wsGrd.addColorStop(1,'rgba(10,20,50,.55)');
+  ctx.fillStyle=wsGrd;
+  ctx.beginPath();ctx.moveTo(cx-180,cy-62);ctx.lineTo(cx+180,cy-62);ctx.bezierCurveTo(cx+160,cy-80,cx+120,cy-98,cx,cy-100);ctx.bezierCurveTo(cx-120,cy-98,cx-160,cy-80,cx-180,cy-62);ctx.closePath();ctx.fill();
+  // フロントガラスのフレーム
+  ctx.strokeStyle='rgba(0,0,0,.4)';ctx.lineWidth=6;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(cx-180,cy-62);ctx.bezierCurveTo(cx-160,cy-80,cx-120,cy-98,cx,cy-100);ctx.bezierCurveTo(cx+120,cy-98,cx+160,cy-80,cx+180,cy-62);ctx.stroke();
+  // Aピラー
+  [{x:-180},{x:180}].forEach((function(p){
+    ctx.strokeStyle='rgba(0,0,0,.35)';ctx.lineWidth=8;
+    ctx.beginPath();ctx.moveTo(cx+p.x,cy-62);ctx.bezierCurveTo(cx+p.x*.9,cy-80,cx+p.x*.7,cy-94,cx+p.x*.5,cy-98);ctx.stroke();
+  });
+
+  // ダッシュボードパネル詳細
+  // メーターフード
+  ctx.fillStyle='#0e0e10';
+  ctx.beginPath();ctx.moveTo(cx-135,cy-56);ctx.lineTo(cx-40,cy-56);ctx.lineTo(cx-36,cy-20);ctx.lineTo(cx-132,cy-20);ctx.closePath();ctx.fill();
+  // スピードメーター
+  var drawGauge=function(gx,gy,r,label,val){
+    ctx.fillStyle='#050508';ctx.beginPath();ctx.arc(gx,gy,r,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.15)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(gx,gy,r,0,Math.PI*2);ctx.stroke();
+    // 目盛り
+    for(var i=0;i<12;i++){var a=i/12*Math.PI*2-Math.PI/2;var len=i%3===0?r*.35:r*.22;
+      ctx.strokeStyle=i%3===0?'rgba(255,255,255,.6)':'rgba(255,255,255,.25)';ctx.lineWidth=i%3===0?1.5:1;
+      ctx.beginPath();ctx.moveTo(gx+Math.cos(a)*(r-.len),gy+Math.sin(a)*(r-.len));ctx.lineTo(gx+Math.cos(a)*r,gy+Math.sin(a)*r);ctx.stroke();}
+    // 針
+    var needle=(-Math.PI/2)+val*Math.PI*1.5;
+    ctx.strokeStyle='rgba(255,60,30,.9)';ctx.lineWidth=1.5;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(gx,gy);ctx.lineTo(gx+Math.cos(needle)*(r-.6),gy+Math.sin(needle)*(r-.6));ctx.stroke();
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(gx,gy,2,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.3)';ctx.font=`500 ${r*.28}px sans-serif`;ctx.fillText(label,gx-r*.22,gy+r+4);
+  };
+  drawGauge(cx-105,cy-40,16,'RPM',.35);
+  drawGauge(cx-68,cy-38,13,'km/h',.25);
+
+  // センターコンソール
+  var ccGrd=ctx.createLinearGradient(cx-26,cy-32,cx+26,cy+80);
+  ccGrd.addColorStop(0,'#222224');ccGrd.addColorStop(1,'#141416');
+  ctx.fillStyle=ccGrd;
+  ctx.beginPath();ctx.moveTo(cx-24,cy-32);ctx.bezierCurveTo(cx-26,cy,cx-24,cy+50,cx-22,cy+82);ctx.lineTo(cx+22,cy+82);ctx.bezierCurveTo(cx+24,cy+50,cx+26,cy,cx+24,cy-32);ctx.closePath();ctx.fill();
+  // コンソールのディテール
+  ctx.strokeStyle='rgba(255,255,255,.07)';ctx.lineWidth=1;
+  for(var i=0;i<3;i++){ctx.beginPath();ctx.moveTo(cx-22,cy-20+i*18);ctx.lineTo(cx+22,cy-20+i*18);ctx.stroke();}
+
+  // シフトノブ
+  if(hasShift){
+    // MUGENチタンノブ
+    var snGrd=ctx.createRadialGradient(cx-1,cy+16,0,cx,cy+22,12);
+    snGrd.addColorStop(0,'#d0d0d8');snGrd.addColorStop(.5,'#909098');snGrd.addColorStop(1,'#505058');
+    ctx.fillStyle=snGrd;ctx.beginPath();ctx.arc(cx,cy+22,12,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(cx,cy+22,12,0,Math.PI*2);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.35)';ctx.font='700 7px "Barlow Condensed",sans-serif';ctx.fillText('MUGEN',cx-10,cy+35);
+  }else{
+    ctx.fillStyle='#2e2e30';ctx.beginPath();ctx.arc(cx,cy+22,9,0,Math.PI*2);ctx.fill();
+  }
+  // シフトレバー
+  var slGrd=ctx.createLinearGradient(cx,cy+30,cx,cy+54);
+  slGrd.addColorStop(0,'#666');slGrd.addColorStop(1,'#333');
+  ctx.strokeStyle=slGrd;ctx.lineWidth=4;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(cx,cy+32);ctx.lineTo(cx+4,cy+55);ctx.stroke();
+
+  // シート（左右）
+  [{x:cx-92,label:hasBride?'BRIDE':hasSparco?'SPARCO':hasRecaro?'RECARO':null},{x:cx+92,label:null}].forEach((function(seat,si){
+    // シートベース
+    var sGrd=ctx.createLinearGradient(seat.x-40,cy-22,seat.x+40,cy+92);
+    sGrd.addColorStop(0,lighten(sc,10));sGrd.addColorStop(.4,sc);sGrd.addColorStop(1,darken(sc,20));
+    ctx.fillStyle=sGrd;
+    ctx.beginPath();
+    ctx.moveTo(seat.x-38,cy+90);ctx.lineTo(seat.x-40,cy-22);ctx.bezierCurveTo(seat.x-40,cy-30,seat.x+40,cy-30,seat.x+40,cy-22);ctx.lineTo(seat.x+38,cy+90);ctx.closePath();ctx.fill();
+
+    // シートバック上部（ヘッドレスト）
+    var hrGrd=ctx.createLinearGradient(seat.x-30,cy-36,seat.x+30,cy-22);
+    hrGrd.addColorStop(0,lighten(sc,8));hrGrd.addColorStop(1,darken(sc,12));
+    ctx.fillStyle=hrGrd;
+    ctx.beginPath();ctx.moveTo(seat.x-30,cy-22);ctx.bezierCurveTo(seat.x-32,cy-36,seat.x+32,cy-36,seat.x+30,cy-22);ctx.closePath();ctx.fill();
+
+    // バケットサイドサポート
+    var ssGrd=ctx.createLinearGradient(seat.x-40,cy,seat.x-26,cy);
+    ssGrd.addColorStop(0,darken(sc,18));ssGrd.addColorStop(1,sc);
+    ctx.fillStyle=ssGrd;
+    ctx.beginPath();ctx.moveTo(seat.x-40,cy-22);ctx.lineTo(seat.x-26,cy-22);ctx.lineTo(seat.x-26,cy+60);ctx.lineTo(seat.x-40,cy+60);ctx.closePath();ctx.fill();
+    var ssGrd2=ctx.createLinearGradient(seat.x+26,cy,seat.x+40,cy);
+    ssGrd2.addColorStop(0,sc);ssGrd2.addColorStop(1,darken(sc,18));
+    ctx.fillStyle=ssGrd2;
+    ctx.beginPath();ctx.moveTo(seat.x+26,cy-22);ctx.lineTo(seat.x+40,cy-22);ctx.lineTo(seat.x+40,cy+60);ctx.lineTo(seat.x+26,cy+60);ctx.closePath();ctx.fill();
+
+    // シートのステッチ
+    ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(seat.x-28,cy-20);ctx.lineTo(seat.x-28,cy+80);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(seat.x+28,cy-20);ctx.lineTo(seat.x+28,cy+80);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // 4点式ハーネス
+    if(hasTakata){
+      // ショルダー
+      [{dx:-10},{dx:10}].forEach(function(obj){var dx=obj.dx;
+        ctx.strokeStyle='#C8A800';ctx.lineWidth=4;ctx.lineCap='round';
+        ctx.beginPath();ctx.moveTo(seat.x+dx,cy-18);ctx.bezierCurveTo(seat.x+dx,cy+10,seat.x+dx,cy+30,seat.x+dx,cy+44);ctx.stroke();
+      });
+      // ラップ
+      ctx.strokeStyle='#B89800';ctx.lineWidth=4;
+      ctx.beginPath();ctx.moveTo(seat.x-28,cy+28);ctx.lineTo(seat.x+28,cy+28);ctx.stroke();
+      // バックル
+      var bkGrd=ctx.createRadialGradient(seat.x,cy+44,0,seat.x,cy+44,10);
+      bkGrd.addColorStop(0,'#e0e0e0');bkGrd.addColorStop(1,'#888');
+      ctx.fillStyle=bkGrd;ctx.beginPath();ctx.moveTo(seat.x-12,cy+40);ctx.lineTo(seat.x+12,cy+40);ctx.lineTo(seat.x+10,cy+50);ctx.lineTo(seat.x-10,cy+50);ctx.closePath();ctx.fill();
+      if(si===0){ctx.fillStyle='rgba(255,255,255,.3)';ctx.font='700 7px "Barlow Condensed",sans-serif';ctx.fillText('TAKATA',seat.x-11,cy+8);}
+    }
+
+    // シートブランドロゴ
+    if(seat.label&&si===0){
+      ctx.fillStyle='rgba(255,255,255,.28)';ctx.font='700 9px "Barlow Condensed",sans-serif';
+      ctx.fillText(seat.label,seat.x-seat.label.length*2.8,cy+5);
+    }
+
+    // シートハイライト
+    ctx.save();ctx.globalAlpha=.1;
+    var shl=ctx.createLinearGradient(seat.x-38,cy-22,seat.x-10,cy+40);
+    shl.addColorStop(0,'#fff');shl.addColorStop(1,'transparent');
+    ctx.fillStyle=shl;
+    ctx.beginPath();ctx.moveTo(seat.x-38,cy-22);ctx.lineTo(seat.x-10,cy-22);ctx.lineTo(seat.x-12,cy+40);ctx.lineTo(seat.x-38,cy+40);ctx.closePath();ctx.fill();
+    ctx.restore();
+  });
+
+  // ステアリングホイール
+  var sw_cx=cx-62, sw_cy=cy-32, sw_r=34;
+  var swColor=hasNardi?'#4A2A10':'#1a1a1e';
+  // リム
+  var swRimGrd=ctx.createRadialGradient(sw_cx-sw_r*.3,sw_cy-sw_r*.3,0,sw_cx,sw_cy,sw_r);
+  swRimGrd.addColorStop(0,hasNardi?lighten(swColor,20):lighten(swColor,15));swRimGrd.addColorStop(1,darken(swColor,10));
+  ctx.strokeStyle=swRimGrd;ctx.lineWidth=10;ctx.lineCap='butt';
+  ctx.beginPath();ctx.arc(sw_cx,sw_cy,sw_r,0,Math.PI*2);ctx.stroke();
+  // スポーク3本
+  ctx.strokeStyle=hasNardi?'#666':'#333';ctx.lineWidth=5;ctx.lineCap='round';
+  [{a:-Math.PI/2},{a:-Math.PI/2+Math.PI*2/3},{a:-Math.PI/2+Math.PI*4/3}].forEach((function(sp){
+    ctx.beginPath();ctx.moveTo(sw_cx+Math.cos(sp.a)*sw_r*.2,sw_cy+Math.sin(sp.a)*sw_r*.2);
+    ctx.lineTo(sw_cx+Math.cos(sp.a)*sw_r*.82,sw_cy+Math.sin(sp.a)*sw_r*.82);ctx.stroke();
+  });
+  // ホーンパッド
+  if(hasNardi){
+    var npGrd=ctx.createRadialGradient(sw_cx-3,sw_cy-3,0,sw_cx,sw_cy,sw_r*.22);
+    npGrd.addColorStop(0,'#8B5010');npGrd.addColorStop(1,'#5A3008');
+    ctx.fillStyle=npGrd;ctx.beginPath();ctx.arc(sw_cx,sw_cy,sw_r*.2,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.4)';ctx.font='700 7px "Barlow Condensed",sans-serif';ctx.fillText('NARDI',sw_cx-10,sw_cy+3);
+  }else{
+    ctx.fillStyle='#222';ctx.beginPath();ctx.arc(sw_cx,sw_cy,sw_r*.2,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.2)';ctx.font='700 7px "Barlow Condensed",sans-serif';ctx.fillText('◉',sw_cx-5,sw_cy+3);
+  }
+  // ステアリングコラム
+  var colGrd=ctx.createLinearGradient(sw_cx,sw_cy+sw_r,sw_cx,cy+16);
+  colGrd.addColorStop(0,'#555');colGrd.addColorStop(1,'#222');
+  ctx.fillStyle=colGrd;ctx.beginPath();ctx.moveTo(sw_cx-6,sw_cy+sw_r);ctx.lineTo(sw_cx+6,sw_cy+sw_r);ctx.lineTo(sw_cx+5,cy+16);ctx.lineTo(sw_cx-5,cy+16);ctx.closePath();ctx.fill();
+
+  // インフォメーションディスプレイ（センター）
+  ctx.fillStyle='#0a0a14';
+  ctx.beginPath();ctx.moveTo(cx+20,cy-54);ctx.lineTo(cx+80,cy-54);ctx.lineTo(cx+78,cy-24);ctx.lineTo(cx+18,cy-24);ctx.closePath();ctx.fill();
+  // 画面コンテンツ
+  ctx.fillStyle='rgba(30,60,120,.7)';
+  ctx.beginPath();ctx.moveTo(cx+22,cy-52);ctx.lineTo(cx+78,cy-52);ctx.lineTo(cx+76,cy-26);ctx.lineTo(cx+20,cy-26);ctx.closePath();ctx.fill();
+  // スピードデジタル
+  ctx.fillStyle='rgba(100,200,255,.8)';ctx.font='700 10px "Barlow Condensed",sans-serif';ctx.fillText('0 km/h',cx+28,cy-36);
+  ctx.fillStyle='rgba(255,255,255,.3)';ctx.font='500 6px sans-serif';ctx.fillText('CUSTOM MODE',cx+24,cy-28);
+}catch(e){console.warn('drawInterior error:',e.message);}
+}
+
+// ══ UPLOAD ══
+function setUT(t,btn){
+  document.querySelectorAll('#pg-upload .cpill').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  document.getElementById('up-car').style.display=t==='car'?'block':'none';
+  document.getElementById('up-part').style.display=t==='part'?'block':'none';
+}
+function fakeUp(z){z.innerHTML='<i class="ti ti-check" style="font-size:26px;color:var(--a);display:block;margin-bottom:6px"></i><p style="color:var(--a);font-weight:500">写真を選択済み（デモ）</p>';}
+function submitCar(){
+  var model=document.getElementById('up-model-in').value;
+  var grade=document.getElementById('up-grade-in').value;
+  var maker=document.getElementById('up-maker-sel').value;
+  if(!maker||!model||!grade){toast('すべての項目を入力してください');return;}
+  USER_CARS.push({id:'u'+Date.now(),maker,model,grade:grade+' (投稿)',emoji:'🚗',by:'あなた',
+    colors:[{name:'ホワイト',hex:'#EEE9E2'},{name:'ブラック',hex:'#151515'},{name:'シルバー',hex:'#9898A0'}]});
+  renderUCGrid();toast(`${model} を投稿しました！審査後に公開されます`);
+}
+function submitPart(){toast('パーツを投稿しました！審査後に反映されます');}
+
+// ══ GARAGE ══
+function saveGarage(){
+  if(!Object.keys(S.selected).length){toast('パーツを選んでください');return;}
+  S.garage.push({
+    maker:S.maker,model:S.model,grade:S.grade,
+    bodyColor:S.bodyColor,partColors:{...S.partColors},
+    selected:{...S.selected},inch:S.inch,
+    at:new Date().toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}),
+  });
+  renderGarage();toast('ガレージに保存しました！');
+}
+function renderGarage(){
+  var el=document.getElementById('garage-inner');
+  document.getElementById('garage-cnt').textContent=S.garage.length?S.garage.length+'件':'';
+  if(!S.garage.length){el.innerHTML='<div class="empty"><i class="ti ti-garage"></i><p>保存した構成がありません</p></div>';return;}
+  el.innerHTML=S.garage.map((function(g,i){
+    var parts=Object.values(g.selected);
+    var total=parts.reduce(function(s,p){return s+p.price;},0);
+    return `<div class="gcard" onclick="loadGarage(${i})">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px">
+        <div style="width:34px;height:34px;border-radius:8px;background:${g.bodyColor};flex-shrink:0"></div>
+        <div>
+          <div style="font-size:13px;font-weight:500">${g.model} ${g.grade.split(' ')[0]}</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">${g.at} · ¥${total.toLocaleString()}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap">
+        ${parts.slice(0,4).map(p=>`<span style="font-size:10px;padding:2px 7px;border-radius:100px;background:var(--b3);color:var(--t2);border:.5px solid var(--br)">${p.name}</span>`).join('')}
+        ${parts.length>4?`<span style="font-size:10px;padding:2px 7px;border-radius:100px;background:var(--b3);color:var(--t2)">+${parts.length-4}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+function loadGarage(i){
+  var g=S.garage[i];
+  S.maker=g.maker;S.model=g.model;S.grade=g.grade;
+  S.car=buildCar(g.maker,g.model,g.grade);
+  S.bodyColor=g.bodyColor;S.partColors={...g.partColors};
+  S.selected={...g.selected};S.inch=g.inch;
+  sw('custom');renderBC();renderBodyColors();renderInchRow();renderCatStrip();renderPartList();renderOrder();drawCar();updateBadge();
+  toast('構成を読み込みました');
+}
+
+// ══ SHARE / DL ══
+function dlImg(){
+  drawCar();
+  var cv=document.getElementById('cv');
+  var a=document.createElement('a');
+  a.download=`customatch-${S.model}-${currentView}.png`;
+  a.href=cv.toDataURL('image/png');a.click();
+  toast('画像を保存しました');
+}
+function shareImg(){
+  var parts=Object.values(S.selected).map(function(p){return p.name;}).join(' + ');
+  var text=`${S.model} ${S.grade.split(' ')[0]} のカスタム\n${parts||'ノーマル'}\n#CusToMatch`;
+  if(navigator.share)navigator.share({title:'CusToMatch',text});
+  else (navigator.clipboard && navigator.clipboard.writeText.bind(navigator.clipboard))(text).then(function(){toast('テキストをコピーしました');});
+}
+
+// ══ NAV ══
+function sw(id){
+  ['custom','order','upload','garage'].forEach((function(p){
+    document.getElementById('pg-'+p).classList.toggle('on',p===id);
+    document.getElementById('ni-'+p).classList.toggle('on',p===id);
+  });
+  if(id==='garage')renderGarage();
+  if(id==='order')renderOrder();
+}
+
+var _tt;
+function toast(msg){
+  var el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('on');
+  clearTimeout(_tt);_tt=setTimeout(function(){el.classList.remove('on');},2200);
+}
+
+window.addEventListener('resize',function(){drawCar();});
+document.addEventListener("DOMContentLoaded", function(){ init(); });
+document.addEventListener("DOMContentLoaded",function(){
+  init();
+  setTimeout(function(){drawCar();},100);
+  function delegate(sel,evt,fn){
+    document.querySelectorAll(sel).forEach(function(el){
+      el.addEventListener(evt,fn);
+    });
+  }
+  delegate('[data-sw]','click',function(){sw(this.getAttribute('data-sw'));});
+  delegate('[data-view]','click',function(){setView(this.getAttribute('data-view'));});
+  delegate('[data-filter]','click',function(){setOrderFilter(this.getAttribute('data-filter'),this);});
+  delegate('[data-change]','change',function(){
+    var fn=this.getAttribute('data-change');
+    if(fn==='onMaker')onMaker();
+    if(fn==='onModel')onModel();
+  });
+  delegate('[data-action]','click',function(e){
+    var a=this.getAttribute('data-action'),arg=this.getAttribute('data-arg');
+    if(a==='openModal')openModal();
+    else if(a==='closeModal')closeModal(e);
+    else if(a==='confirmCar')confirmCar();
+    else if(a==='saveGarage')saveGarage();
+    else if(a==='dlImg')dlImg();
+    else if(a==='shareImg')shareImg();
+    else if(a==='clearAllParts')clearAllParts();
+    else if(a==='openAllShops')openAllShops(arg);
+    else if(a==='setUT')setUT(arg,this);
+    else if(a==='fakeUp')fakeUp(this);
+    else if(a==='submitCar')submitCar();
+    else if(a==='submitPart')submitPart();
+  });
+  var mo=document.getElementById('car-modal');
+  if(mo)mo.addEventListener('click',function(e){if(e.target===this)closeModal();});
+  var mi=document.querySelector('.modal');
+  if(mi)mi.addEventListener('click',function(e){e.stopPropagation();});
+});
+
+</script>
 </body>
 </html>
