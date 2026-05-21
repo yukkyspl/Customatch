@@ -1350,11 +1350,8 @@ function getWheelColor(){
 
 function drawCar(){
   var cv=document.getElementById('cv');
-  var W=cv.offsetWidth,H=cv.offsetHeight;
-  if(!W||!H){
-    requestAnimationFrame(function(){drawCar();});
-    return;
-  }
+  var W=cv.offsetWidth||480;
+  var H=cv.offsetHeight||200;
   var dpr=window.devicePixelRatio||1;
   cv.style.width=W+'px';
   cv.style.height=H+'px';
