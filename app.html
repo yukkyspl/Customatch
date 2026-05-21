@@ -362,9 +362,9 @@ input[type=text],input[type=number]{background:var(--b3);color:var(--t);border:.
 
 <script>
 
-// ══════════════════════════════════════
+// ---
 // MAKERS / GRADES
-// ══════════════════════════════════════
+// ---
 var MAKERS={
   'マツダ':['RX-7','RX-8','ロードスター','アテンザ','アクセラ'],
   '日産':['スカイライン GT-R','フェアレディZ','シルビア','180SX','GT-R R35','ローレル'],
@@ -435,10 +435,10 @@ var GRADES={
   'コルベット Z06':['C8 (2023-)','C7 (2015-2019)'],
 };
 
-// ── 正確な純正カラーデータ ──
+// ---
 // 色名は日本国内カタログ名準拠、HEXはメーカー公式塗料コードに基づいた近似値
 var CAR_COLORS={
-  // ──────── MAZDA ────────
+  // ---
   'FD3S (1991-2002)':[
     {name:'ビビッドレッド',        hex:'#BF0000', code:'A3E'},
     {name:'ピュアホワイト',        hex:'#F0EDE5', code:'22B'},
@@ -457,7 +457,7 @@ var CAR_COLORS={
     {name:'ダークブルーマイカ',    hex:'#1C2244', code:'18U'},
     {name:'フォレストグリーンマイカ',hex:'#3A5038',code:'18T'},
   ],
-  // ──────── NISSAN ────────
+  // ---
   'BNR34 (1999-2002)':[
     {name:'ベイサイドブルー',      hex:'#1D3D73', code:'BT2'},
     {name:'ミッドナイトパープル II',hex:'#2B1F4E', code:'LY0'},
@@ -510,7 +510,7 @@ var CAR_COLORS={
     {name:'ダークブルーパール',    hex:'#1A2348', code:'BU0'},
     {name:'ブリティッシュグリーン',hex:'#243520', code:'GY0'},
   ],
-  // ──────── TOYOTA ────────
+  // ---
   'JZA80 RZ (1993-2002)':[
     {name:'ルネッサンスレッド',    hex:'#921010', code:'3P1'},
     {name:'スーパーホワイト II',   hex:'#EEE9E0', code:'040'},
@@ -543,7 +543,7 @@ var CAR_COLORS={
     {name:'ダークグリーンマイカ',  hex:'#243020', code:'6R0'},
     {name:'ルビーレッドマイカ',    hex:'#780E12', code:'3R3'},
   ],
-  // ──────── HONDA ────────
+  // ---
   'NA1 (1990-2001)':[
     {name:'モナコシルバーメタリック',hex:'#ABABB3',code:'NH578M'},
     {name:'フォーミュラレッド',    hex:'#BE1010', code:'R81'},
@@ -586,7 +586,7 @@ var CAR_COLORS={
     {name:'ソニックグレーパール',  hex:'#505058', code:'NH870M'},
     {name:'ブルー',                hex:'#1A2A5A', code:'B600M'},
   ],
-  // ──────── SUBARU ────────
+  // ---
   'VAB (2014-2021)':[
     {name:'WRブルーパール',        hex:'#0D3070', code:'02C'},
     {name:'クリスタルブラックシリカ',hex:'#141418',code:'D4S'},
@@ -609,7 +609,7 @@ var CAR_COLORS={
     {name:'マグネタイトグレーメタリック',hex:'#484848',code:'61K'},
     {name:'ファイアリーレッドパール',hex:'#B81010',code:'C6P'},
   ],
-  // ──────── MITSUBISHI ────────
+  // ---
   'CT9A Evo IX GSR (2005-2007)':[
     {name:'チャンピオンシップホワイト',hex:'#EEE9E2',code:'W67'},
     {name:'コードレッド',          hex:'#B01818', code:'R25'},
@@ -624,7 +624,7 @@ var CAR_COLORS={
     {name:'メタリックシルバー',    hex:'#9898A0', code:'A83'},
     {name:'ブラックパール',        hex:'#141418', code:'X08'},
   ],
-  // ──────── BMW ────────
+  // ---
   'E46 CSL (2003-2004)':[
     {name:'アルピンホワイト III',  hex:'#EEE9E2', code:'300'},
     {name:'ジェットブラック',      hex:'#161618', code:'668'},
@@ -648,7 +648,7 @@ var CAR_COLORS={
     {name:'ポルティマオブルーメタリック',hex:'#1A3060',code:'C4G'},
     {name:'サンパウロイエロー',    hex:'#D4B000', code:'1EM'},
   ],
-  // ──────── PORSCHE ────────
+  // ---
   '992 GT3 RS (2022-)':[
     {name:'ワイスシルバーメタリック',hex:'#C8C8C8',code:'LX7W'},
     {name:'ガーズレッド',          hex:'#AE1010', code:'G1'},
@@ -667,7 +667,7 @@ var CAR_COLORS={
     {name:'ミアミブルー',          hex:'#1A8090', code:'M5B'},
     {name:'ラバオレンジ',          hex:'#C04810', code:'20U'},
   ],
-  // ── デフォルト（型式データなし時） ──
+  // ---
   '_default_':[
     {name:'ホワイト',  hex:'#EEE9E2'},{name:'ブラック', hex:'#151515'},
     {name:'シルバー',  hex:'#9898A0'},{name:'レッド',   hex:'#A01010'},
@@ -708,7 +708,7 @@ var CATEGORIES=[
   {id:'muffler', label:'マフラー',     icon:'💥', cs:null},
 ];
 
-// ── PARTS DATA — 対応車種(compatCars)付き ──
+// ---
 // compatCars: 対応型式の配列。['汎用'] = 全車種対応
 var PARTS={
   wheel:[
@@ -895,7 +895,7 @@ var USER_CARS=[
    colors:[{name:'クリスタルブルー',hex:'#1A3060'},{name:'ブラック',hex:'#151515'},{name:'ホワイト',hex:'#EEE9E0'}]},
 ];
 
-// ══ STATE ══
+// ---
 var S={
   maker:'マツダ',model:'RX-7',grade:'FD3S (1991-2002)',
   car:null,bodyColor:'#BF0000',
@@ -905,7 +905,7 @@ var S={
   garage:[],
 };
 
-// ── compat helpers ──
+// ---
 function gradeShortId(grade){
   // 型式コードを抽出: "BNR34 (1999-2002)" → "BNR34"
   return grade.split(' ')[0];
@@ -919,14 +919,14 @@ function compatiblePartsInCat(catId){
   return (PARTS[catId]||[]).filter(function(p){return isCompatible(p);});
 }
 function allCompatibleSelected(){
-  return Object.keys(S.selected).filter((function(id){
-    var all=Object.values(PARTS).flat();
+  return Object.keys(S.selected).filter(function(id){
+    var all=(function(){var a=[];Object.keys(PARTS).forEach(function(k){PARTS[k].forEach(function(p){a.push(p);});});return a;})();
     var p=all.find(function(x){return x.id===id;});
     return p&&!isCompatible(p);
   });
 }
 
-// ── shape ──
+// ---
 function guessShape(g){
   var s=(g||'').toLowerCase();
   if(/roadster|boxster|s2000|pp1|beat|cabriolet|spider/.test(s)) return 'open';
@@ -940,9 +940,9 @@ function buildCar(maker,model,grade){
   return{maker,model,grade,colors:getColors(grade),shape:guessShape(grade),emoji:'🏎',isUser:false};
 }
 
-// ══════════════════════════════════════
+// ---
 // INIT
-// ══════════════════════════════════════
+// ---
 function init(){
   S.car=buildCar(S.maker,S.model,S.grade);
   S.bodyColor=S.car.colors[0].hex;
@@ -951,16 +951,16 @@ function init(){
   renderUCGrid();renderGarage();drawCar();
   var us=document.getElementById('up-maker-sel');
   us.innerHTML='<option value="">選択してください</option>';
-  Object.keys(MAKERS).forEach(function(m){us.innerHTML+=`<option>${m}</option>`;});
+  Object.keys(MAKERS).forEach(function(m){us.innerHTML+='<option>'+(m)+'</option>';});
 }
 
 function populateMakers(){
   var s=document.getElementById('sel-maker');
   s.innerHTML='<option value="">メーカーを選択</option>';
-  Object.keys(MAKERS).forEach(function(m){s.innerHTML+=`<option value="${m}">${m}</option>`;});
+  Object.keys(MAKERS).forEach(function(m){s.innerHTML+='<option value="'+(m)+'">'+(m)+'</option>';});
 }
 
-// ══ MODAL ══
+// ---
 function openModal(){
   document.getElementById('car-modal').classList.add('on');
   populateMakers();
@@ -979,7 +979,7 @@ function onMaker(silent){
   var ms=MAKERS[maker]||[];
   var s=document.getElementById('sel-model');
   s.innerHTML='<option value="">車種を選択</option>';
-  ms.forEach(function(m){s.innerHTML+=`<option value="${m}">${m}</option>`;});
+  ms.forEach(function(m){s.innerHTML+='<option value="'+(m)+'">'+(m)+'</option>';});
   document.getElementById('wrap-model').style.display='block';
   document.getElementById('wrap-grade').style.display='none';
   if(!silent&&maker===S.maker){s.value=S.model;onModel(true);}
@@ -990,7 +990,7 @@ function onModel(silent){
   var gs=GRADES[model]||['標準'];
   var s=document.getElementById('sel-grade');
   s.innerHTML='<option value="">型式を選択</option>';
-  gs.forEach(function(g){s.innerHTML+=`<option value="${g}">${g}</option>`;});
+  gs.forEach(function(g){s.innerHTML+='<option value="'+(g)+'">'+(g)+'</option>';});
   document.getElementById('wrap-grade').style.display='block';
   if(!silent&&model===S.model)s.value=S.grade;
 }
@@ -1006,32 +1006,38 @@ function confirmCar(){
   closeModal();
   renderBC();renderBodyColors();renderCatStrip();renderPartList();renderOrder();drawCar();
   updateBadge();
-  toast(`${model} ${grade.split(' ')[0]} に切替 → パーツをリセットしました`);
+  toast((model)+' '+(grade.split(' ')[0])+' に切替 → パーツをリセットしました');
 }
 function selectUC(id){
   var uc=USER_CARS.find(function(c){return c.id===id;});if(!uc)return;
   S.maker=uc.maker;S.model=uc.model;S.grade=uc.grade;
-  S.car={...uc,shape:guessShape(uc.grade),isUser:true};
+  S.car=Object.assign({},uc,{shape:guessShape(uc.grade),isUser:true});
   S.bodyColor=uc.colors[0].hex;S.partColors={};S.selected={};
   closeModal();renderBC();renderBodyColors();renderPartList();renderOrder();drawCar();updateBadge();
-  toast(`${uc.model} を選択 (by ${uc.by})`);
+  toast((uc.model)+' を選択 (by '+(uc.by)+')');
 }
 function renderUCGrid(){
-  document.getElementById('uc-grid').innerHTML=USER_CARS.map(function(uc){return `
-    <div class="uccard" onclick="selectUC('${uc.id}')">
-      <div style="height:60px;background:${uc.colors[0].hex};display:flex;align-items:center;justify-content:center;font-size:30px;position:relative">
-        ${uc.emoji}
-        <span style="position:absolute;top:4px;right:5px;font-size:9px;padding:1px 5px;background:rgba(0,0,0,.6);border-radius:100px;color:#aaa">📸投稿</span>
-      </div>
-      <div style="padding:6px 9px">
-        <div style="font-size:11px;font-weight:500">${uc.model}</div>
-        <div style="font-size:9px;color:var(--t3);margin-top:1px">${uc.grade.split(' ')[0]} · by ${uc.by}</div>
-      </div>
-    </div>
-  `;}).join('');
+  var grid=document.getElementById('uc-grid');
+  if(!grid) return;
+  grid.innerHTML='';
+  USER_CARS.forEach(function(uc){
+    var card=document.createElement('div');
+    card.className='uccard';
+    card.innerHTML=
+      '<div style="height:60px;background:'+uc.colors[0].hex+';display:flex;align-items:center;justify-content:center;font-size:30px;position:relative">'
+      +uc.emoji
+      +'<span style="position:absolute;top:4px;right:5px;font-size:9px;padding:1px 5px;background:rgba(0,0,0,.6);border-radius:100px;color:#aaa">📸投稿</span>'
+      +'</div>'
+      +'<div style="padding:6px 9px">'
+      +'<div style="font-size:11px;font-weight:500">'+uc.model+'</div>'
+      +'<div style="font-size:9px;color:var(--t3);margin-top:1px">'+uc.grade.split(' ')[0]+' · by '+uc.by+'</div>'
+      +'</div>';
+    (function(id){card.addEventListener('click',function(){selectUC(id);});})(uc.id);
+    grid.appendChild(card);
+  });
 }
 
-// ══ BC / COLORS ══
+// ---
 function renderBC(){
   document.getElementById('bc-maker').textContent=S.maker;
   document.getElementById('bc-model').textContent=S.model;
@@ -1040,89 +1046,124 @@ function renderBC(){
 function isLight(hex){var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return(r*.299+g*.587+b*.114)>160;}
 function renderBodyColors(){
   var colors=S.car?S.car.colors:[];
-  var cur=colors.find(function(c){return c.hex===S.bodyColor;})||colors[0];
-  document.getElementById('color-maker-lbl').textContent=
-    (S.car && S.car.isUser)?'投稿車両カラー':
-    `${S.maker} 純正カラー${(cur && cur.code)?' ['+cur.code+']':''}`;
-  document.getElementById('color-name-lbl').textContent=cur?cur.name:'';
-  document.getElementById('body-dots').innerHTML=colors.map(function(c){return `
-    <div class="cdot ${c.hex===S.bodyColor?'on':''}"
-      style="background:${c.hex};${isLight(c.hex)?'box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.2)':''}"
-      title="${c.name}${c.code?' ['+c.code+']':''}"
-      onclick="setBC('${c.hex}','${c.name.replace(/'/g,'&#39;')}')"></div>
-  `;}).join('');
+  var cur=null;
+  colors.forEach(function(c){ if(c.hex===S.bodyColor) cur=c; });
+  if(!cur && colors.length) cur=colors[0];
+  var lbl=document.getElementById('color-maker-lbl');
+  var nml=document.getElementById('color-name-lbl');
+  if(lbl) lbl.textContent=(S.car&&S.car.isUser)?'投稿車両カラー':S.maker+' 純正カラー'+((cur&&cur.code)?' ['+cur.code+']':'');
+  if(nml) nml.textContent=cur?cur.name:'';
+  var dotsEl=document.getElementById('body-dots');
+  if(!dotsEl) return;
+  dotsEl.innerHTML='';
+  colors.forEach(function(c){
+    var dot=document.createElement('div');
+    dot.className='cdot'+(c.hex===S.bodyColor?' on':'');
+    dot.style.background=c.hex;
+    if(isLight(c.hex)) dot.style.boxShadow='inset 0 0 0 1.5px rgba(0,0,0,.2)';
+    dot.title=c.name+(c.code?' ['+c.code+']':'');
+    (function(hex,name){dot.addEventListener('click',function(){setBC(hex,name);});})(c.hex,c.name);
+    dotsEl.appendChild(dot);
+  });
 }
 function setBC(hex,name){S.bodyColor=hex;renderBodyColors();drawCar();if(name)toast(name);}
 
-// ══ INCH ══
+// ---
 function renderInchRow(){
-  document.getElementById('inch-row').innerHTML=[15,16,17,18,19,20].map(function(i){return `
-    <div class="ibtn ${i===S.inch?'on':''}" onclick="setInch(${i})">${i}"</div>
-  `;}).join('');
+  var el=document.getElementById('inch-row');
+  if(!el) return;
+  el.innerHTML='';
+  [15,16,17,18,19,20].forEach(function(v){
+    var btn=document.createElement('div');
+    btn.className='ibtn'+(v===S.inch?' on':'');
+    btn.textContent=v+'"';
+    (function(inch){btn.addEventListener('click',function(){setInch(inch);});})(v);
+    el.appendChild(btn);
+  });
 }
 function setInch(v){S.inch=v;renderInchRow();drawCar();}
 
-// ══ PARTS — カスタムページ (全部表示、対応バッジ付き) ══
+// ---
 function renderCatStrip(){
-  document.getElementById('cat-strip').innerHTML=CATEGORIES.map((function(c){
+  var strip=document.getElementById('cat-strip');
+  if(!strip) return;
+  strip.innerHTML='';
+  CATEGORIES.forEach(function(c){
     var compat=compatiblePartsInCat(c.id).length;
-    return `<div class="cpill ${c.id===S.currentCat?'on':''}" onclick="setCat('${c.id}')">
-      ${c.label}${compat>0?`<span style="margin-left:4px;font-size:10px;opacity:.7">${compat}</span>`:''}
-    </div>`;
-  }).join('');
-  // compat notice
+    var pill=document.createElement('div');
+    pill.className='cpill'+(c.id===S.currentCat?' on':'');
+    pill.textContent=c.label+(compat>0?' '+compat:'');
+    (function(id){pill.addEventListener('click',function(){setCat(id);});})(c.id);
+    strip.appendChild(pill);
+  });
   var note=document.getElementById('compat-note');
-  var gid=gradeShortId(S.grade);
-  note.textContent=`✓ ${gid}対応パーツを強調表示`;
+  if(note) note.textContent=gradeShortId(S.grade)+'対応パーツを強調表示';
 }
 function setCat(id){S.currentCat=id;renderCatStrip();renderPartList();}
 
 function renderPartList(){
-  var cat=CATEGORIES.find(function(c){return c.id===S.currentCat;});
+  var cat=null;
+  CATEGORIES.forEach(function(c){ if(c.id===S.currentCat) cat=c; });
   var allParts=PARTS[S.currentCat]||[];
-  var cs=(cat && cat.cs)?PART_COLORS[cat.cs]:null;
-  // 対応パーツ→非対応の順にソート
-  var sorted=[...allParts].sort((function(a,b){
-    var ca=isCompatible(a)?0:1, cb=isCompatible(b)?0:1;
-    return ca-cb;
+  var cs=(cat&&cat.cs)?PART_COLORS[cat.cs]:null;
+  var sorted=allParts.slice().sort(function(a,b){
+    return (isCompatible(a)?0:1)-(isCompatible(b)?0:1);
   });
-  document.getElementById('part-list').innerHTML=sorted.map((function(p){
+  var list=document.getElementById('part-list');
+  if(!list) return;
+  list.innerHTML='';
+  sorted.forEach(function(p){
     var sel=!!S.selected[p.id];
     var compat=isCompatible(p);
+    var gid=gradeShortId(S.grade);
+    var card=document.createElement('div');
+    card.className='pcard'+(sel?' on':'');
+    (function(id){card.addEventListener('click',function(){togglePart(id);});})(p.id);
     var colorHtml='';
     if(cs){
-      colorHtml='<div class="pcdots">'+cs.map((function(c){
+      var cdotsEl=document.createElement('div');
+      cdotsEl.className='pcdots';
+      cs.forEach(function(c){
         var hex=c.hex==='__body__'?S.bodyColor:c.hex;
         var cur=(S.partColors[p.id]||cs[0].hex)===c.hex;
-        return `<div class="pcd ${cur?'on':''}" style="background:${hex};${isLight(hex)?'box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)':''}" title="${c.name}" onclick="setPC('${p.id}','${c.hex}',event)"></div>`;
-      }).join('')+'</div>';
+        var dot=document.createElement('div');
+        dot.className='pcd'+(cur?' on':'');
+        dot.style.background=hex;
+        if(isLight(hex)) dot.style.boxShadow='inset 0 0 0 1px rgba(0,0,0,.2)';
+        dot.title=c.name;
+        (function(pid,chex){dot.addEventListener('click',function(ev){ev.stopPropagation();setPC(pid,chex,ev);});})(p.id,c.hex);
+        cdotsEl.appendChild(dot);
+      });
+      colorHtml=cdotsEl.outerHTML;
     }
     var compatHtml=compat
-      ?`<span class="compat-tag match">✓ ${gradeShortId(S.grade)}対応</span>`
-      :`<span class="compat-tag">対応: ${p.compatCars.slice(0,2).join('/')}${p.compatCars.length>2?'…':''}</span>`;
-    return `<div class="pcard ${sel?'on':''}" onclick="togglePart('${p.id}')">
-      <div class="picon" style="opacity:${compat?1:.6}">${(cat && cat.icon)||'🔧'}</div>
-      <div class="pinfo">
-        <div class="pn" style="opacity:${compat?1:.75}">${p.name}</div>
-        <div class="pm">${p.maker}</div>
-        <div class="pp">¥${p.price.toLocaleString()}</div>
-        ${compatHtml}
-        ${colorHtml}
-      </div>
-      <div class="padd ${sel?'on':''}">${sel?'<i class="ti ti-check" style="font-size:14px"></i>':'<i class="ti ti-plus" style="font-size:14px"></i>'}</div>
-    </div>`;
-  }).join('');
+      ?'<span class="compat-tag match">✓ '+gid+'対応</span>'
+      :'<span class="compat-tag">対応: '+p.compatCars.slice(0,2).join('/')+(p.compatCars.length>2?'…':'')+'</span>';
+    var icon=(cat&&cat.icon)||'🔧';
+    var addBtn=sel
+      ?'<div class="padd on"><i class="ti ti-check" style="font-size:14px"></i></div>'
+      :'<div class="padd"><i class="ti ti-plus" style="font-size:14px"></i></div>';
+    card.innerHTML=
+      '<div class="picon" style="opacity:'+(compat?1:.6)+'">'+icon+'</div>'+
+      '<div class="pinfo">'+
+        '<div class="pn">'+p.name+'</div>'+
+        '<div class="pm">'+p.maker+'</div>'+
+        '<div class="pp">¥'+p.price.toLocaleString()+'</div>'+
+        compatHtml+colorHtml+
+      '</div>'+addBtn;
+    list.appendChild(card);
+  });
 }
 function setPC(id,hex,e){e.stopPropagation();S.partColors[id]=hex;renderPartList();drawCar();}
 function togglePart(id){
-  var all=Object.values(PARTS).flat();
+  var all=(function(){var a=[];Object.keys(PARTS).forEach(function(k){PARTS[k].forEach(function(p){a.push(p);});});return a;})();
   var p=all.find(function(x){return x.id===id;});if(!p)return;
   if(S.selected[id]){delete S.selected[id];toast(p.name+' を外しました');}
   else{S.selected[id]=p;toast(p.name+' を追加！');}
   renderPartList();renderOrder();drawCar();updateBadge();
 }
 
-// ══ ORDER — 「選択車種のみ」フィルター ══
+// ---
 var orderFilter='current'; // 'current' or 'all'
 function setOrderFilter(f,btn){
   orderFilter=f;
@@ -1132,77 +1173,91 @@ function setOrderFilter(f,btn){
 }
 function renderOrder(){
   var allKeys=Object.keys(S.selected);
-  var all=Object.values(PARTS).flat();
-  // フィルタ
-  var filteredKeys=allKeys.filter((function(id){
+  var filteredKeys=allKeys.filter(function(id){
     var p=S.selected[id];
     if(!p) return false;
     if(orderFilter==='current') return isCompatible(p);
     return true;
   });
-  var incompatKeys=allKeys.filter((function(id){
+  var incompatKeys=allKeys.filter(function(id){
     var p=S.selected[id];
     return p&&!isCompatible(p);
   });
-
-  document.getElementById('order-cnt').textContent=allKeys.length?`${allKeys.length}点選択中`:'';
-
-  // notice bar
+  var cntEl=document.getElementById('order-cnt');
+  if(cntEl) cntEl.textContent=allKeys.length?allKeys.length+'点選択中':'';
   var notice=document.getElementById('compat-notice');
   var noticeText=document.getElementById('compat-notice-text');
-  if(orderFilter==='current'&&incompatKeys.length>0){
-    notice.style.display='block';
-    noticeText.textContent=`${incompatKeys.length}点のパーツは${gradeShortId(S.grade)}非対応のため非表示。「すべて表示」で確認できます。`;
-  } else {
-    notice.style.display='none';
+  if(notice){
+    if(orderFilter==='current'&&incompatKeys.length>0){
+      notice.style.display='block';
+      if(noticeText) noticeText.textContent=incompatKeys.length+'点のパーツは'+gradeShortId(S.grade)+'非対応のため非表示。「すべて表示」で確認できます。';
+    } else {
+      notice.style.display='none';
+    }
   }
-
+  var emptyEl=document.getElementById('order-empty');
+  var footEl=document.getElementById('order-foot');
+  var itemsEl=document.getElementById('order-items');
   if(!filteredKeys.length){
-    document.getElementById('order-empty').style.display='flex';
-    document.getElementById('order-empty').innerHTML=allKeys.length&&orderFilter==='current'
-      ?`<i class="ti ti-filter" style="font-size:40px"></i><p>${gradeShortId(S.grade)}対応パーツが<br>選択されていません<br><span style="font-size:11px;color:var(--a);cursor:pointer" onclick="setOrderFilter('all',document.getElementById('fp-all'))">すべて表示する →</span></p>`
-      :`<i class="ti ti-shopping-cart" style="font-size:40px"></i><p>カスタムページでパーツを選ぶと<br>ここに購入リンクが表示されます</p>`;
-    document.getElementById('order-foot').style.display='none';
-    document.getElementById('order-items').innerHTML='';
+    if(emptyEl){
+      emptyEl.style.display='flex';
+      if(allKeys.length&&orderFilter==='current'){
+        emptyEl.innerHTML='<i class="ti ti-filter" style="font-size:40px"></i><p>'+gradeShortId(S.grade)+'対応パーツが<br>選択されていません</p>';
+      } else {
+        emptyEl.innerHTML='<i class="ti ti-shopping-cart" style="font-size:40px"></i><p>カスタムページでパーツを選ぶと<br>ここに購入リンクが表示されます</p>';
+      }
+    }
+    if(footEl) footEl.style.display='none';
+    if(itemsEl) itemsEl.innerHTML='';
     return;
   }
-  document.getElementById('order-empty').style.display='none';
-  document.getElementById('order-foot').style.display='block';
-
-  var catMap={};CATEGORIES.forEach(function(c){catMap[c.id]=c.label;});
+  if(emptyEl) emptyEl.style.display='none';
+  if(footEl) footEl.style.display='block';
+  var catMap={};
+  CATEGORIES.forEach(function(c){ catMap[c.id]=c.label; });
   var total=0;
-  document.getElementById('order-items').innerHTML=filteredKeys.map((function(id){
-    var p=S.selected[id];total+=p.price;
-    var catId=Object.keys(PARTS).find(function(k){return PARTS[k].some(function(x){return x.id===id;});});
-    var catCs=(CATEGORIES.find(function(c){return c.id===catId;})||{}).cs;
-    var ph=S.partColors[id]||(catCs?(PART_COLORS[catCs] && PART_COLORS[catCs][0] && PART_COLORS[catCs][0].hex):null);
-    var swHex=ph==='__body__'?S.bodyColor:(ph||S.bodyColor);
-    var compat=isCompatible(p);
-    var colorName=catCs?(PART_COLORS[catCs] && PART_COLORS[catCs].find(function(c){return c.hex===(S.partColors[id]||PART_COLORS[catCs][0].hex);})) ? PART_COLORS[catCs].find(function(c){return c.hex===(S.partColors[id]||PART_COLORS[catCs][0].hex);}).name : '';
-
-    return `<div class="oitem">
-      <div class="osw" style="background:${swHex}"></div>
-      <div class="oi">
-        <div class="on2">${p.name}</div>
-        <div class="om2">${p.maker} · ${catMap[catId]||''}</div>
-        ${colorName?`<div class="ocol"><span style="width:10px;height:10px;border-radius:50%;background:${swHex==='__body__'?S.bodyColor:swHex};display:inline-block;border:1px solid rgba(255,255,255,.15)"></span>${colorName}</div>`:''}
-        ${!compat?`<div style="font-size:10px;color:var(--a);margin-top:3px">⚠ ${gradeShortId(S.grade)}の対応を要確認</div>`:''}
-        <div class="olinks">
-          ${p.amz?`<a class="olink amz" href="${p.amz}" target="_blank" rel="noopener">
-            <i class="ti ti-brand-amazon" style="font-size:12px"></i>Amazon
-          </a>`:''}
-          ${p.yah?`<a class="olink yah" href="${p.yah}" target="_blank" rel="noopener">
-            <i class="ti ti-shopping-bag" style="font-size:12px"></i>Yahoo!
-          </a>`:''}
-          <span class="olink rmv" onclick="removePart('${id}')">
-            <i class="ti ti-trash" style="font-size:12px"></i>外す
-          </span>
-        </div>
-      </div>
-      <div class="op">¥${p.price.toLocaleString()}</div>
-    </div>`;
-  }).join('');
-  document.getElementById('total-num').textContent='¥'+total.toLocaleString();
+  if(itemsEl){
+    itemsEl.innerHTML='';
+    filteredKeys.forEach(function(id){
+      var p=S.selected[id];
+      total+=p.price;
+      var catId=null;
+      Object.keys(PARTS).forEach(function(k){ PARTS[k].forEach(function(x){ if(x.id===id) catId=k; }); });
+      var catCs=null;
+      CATEGORIES.forEach(function(c){ if(c.id===catId) catCs=c.cs; });
+      var ph=S.partColors[id]||(catCs&&PART_COLORS[catCs]?PART_COLORS[catCs][0].hex:null);
+      var swHex=ph==='__body__'?S.bodyColor:(ph||S.bodyColor);
+      var compat=isCompatible(p);
+      var colorName='';
+      if(catCs&&PART_COLORS[catCs]){
+        PART_COLORS[catCs].forEach(function(c){
+          if(c.hex===(S.partColors[id]||PART_COLORS[catCs][0].hex)) colorName=c.name;
+        });
+      }
+      var div=document.createElement('div');
+      div.className='oitem';
+      var links='';
+      if(p.amz) links+='<a class="olink amz" href="'+p.amz+'" target="_blank" rel="noopener"><i class="ti ti-brand-amazon" style="font-size:12px"></i>Amazon</a>';
+      if(p.yah) links+='<a class="olink yah" href="'+p.yah+'" target="_blank" rel="noopener"><i class="ti ti-shopping-bag" style="font-size:12px"></i>Yahoo!</a>';
+      div.innerHTML=
+        '<div class="osw" style="background:'+swHex+'"></div>'+
+        '<div class="oi">'+
+          '<div class="on2">'+p.name+'</div>'+
+          '<div class="om2">'+p.maker+' · '+(catMap[catId]||'')+'</div>'+
+          (colorName?'<div class="ocol">'+colorName+'</div>':'')+
+          (!compat?'<div style="font-size:10px;color:var(--a);margin-top:3px">⚠ '+gradeShortId(S.grade)+'の対応を要確認</div>':'')+
+          '<div class="olinks">'+links+
+            '<span class="olink rmv"><i class="ti ti-trash" style="font-size:12px"></i>外す</span>'+
+          '</div>'+
+        '</div>'+
+        '<div class="op">¥'+p.price.toLocaleString()+'</div>';
+      var rmv=div.querySelector('.rmv');
+      if(rmv)(function(pid){rmv.addEventListener('click',function(){removePart(pid);});})(id);
+      itemsEl.appendChild(div);
+    });
+  }
+  var totalEl=document.getElementById('total-num');
+  if(totalEl) totalEl.textContent='¥'+total.toLocaleString();
   renderOrderTips();
 }
 
@@ -1218,20 +1273,20 @@ function openAllShops(shop){
   var first=encodeURIComponent(parts[0].name);
   var allQ=encodeURIComponent(parts.map(function(p){return p.name;}).join(' '));
   var urls={
-    amz:`https://www.amazon.co.jp/s?k=${first}&tag=customatch-22`,
-    yah:`https://shopping.yahoo.co.jp/search?p=${first}`,
-    rak:`https://search.rakuten.co.jp/search/mall/${first}/`,
+    amz:'https://www.amazon.co.jp/s?k='+(first)+'&tag=customatch-22',
+    yah:'https://shopping.yahoo.co.jp/search?p='+(first),
+    rak:'https://search.rakuten.co.jp/search/mall/'+(first)+'/',
   };
   // 複数パーツある場合は順番に開く（最大3件）
   if(parts.length>1){
-    parts.slice(0,3).forEach((function(p,i){
+    parts.slice(0,3).forEach(function(p,i){
       var q=encodeURIComponent(p.name);
-      var u=shop==='amz'?`https://www.amazon.co.jp/s?k=${q}&tag=customatch-22`
-               :shop==='yah'?`https://shopping.yahoo.co.jp/search?p=${q}`
-               :`https://search.rakuten.co.jp/search/mall/${q}/`;
+      var u=shop==='amz'?'https://www.amazon.co.jp/s?k='+q+'&tag=customatch-22'
+               :shop==='yah'?'https://shopping.yahoo.co.jp/search?p='+q
+               :'https://search.rakuten.co.jp/search/mall/'+q+'/';
       setTimeout(function(){window.open(u,'_blank');},i*300);
     });
-    if(parts.length>3) toast(`先頭3件を開きました。残り${parts.length-3}件は個別リンクから`);
+    if(parts.length>3) toast('先頭3件を開きました。残り'+(parts.length-3)+'件は個別リンクから');
   } else {
     window.open(urls[shop],'_blank');
   }
@@ -1253,12 +1308,12 @@ function renderOrderTips(){
   var total=Object.values(S.selected).reduce(function(s,p){return s+p.price;},0);
   var tips=[];
   // アフィリエイト開示
-  tips.push(`<div style="font-size:10px;color:var(--t3);line-height:1.6"><i class="ti ti-info-circle" style="font-size:12px;vertical-align:-2px;color:var(--a)"></i> 各リンクはアフィリエイトリンクです。ご購入でサイト運営を応援できます。</div>`);
+  tips.push('<div style="font-size:10px;color:var(--t3);line-height:1.6"><i class="ti ti-info-circle" style="font-size:12px;vertical-align:-2px;color:var(--a)"></i> 各リンクはアフィリエイトリンクです。ご購入でサイト運営を応援できます。</div>');
   // 価格比較アドバイス
-  if(total>300000) tips.push(`<div style="margin-top:6px;font-size:11px;color:var(--t2)">💡 合計¥${total.toLocaleString()}超 — 複数ショップで価格比較をおすすめします</div>`);
+  if(total>300000) tips.push('<div style="margin-top:6px;font-size:11px;color:var(--t2)">💡 合計¥'+(total.toLocaleString())+'超 — 複数ショップで価格比較をおすすめします</div>');
   // 車種対応確認
   var incompat=keys.filter(function(id){return S.selected[id]&&!isCompatible(S.selected[id]);});
-  if(incompat.length) tips.push(`<div style="margin-top:6px;font-size:11px;color:#E0A030">⚠ ${incompat.length}点のパーツは対応車種を購入前に必ずご確認ください</div>`);
+  if(incompat.length) tips.push('<div style="margin-top:6px;font-size:11px;color:#E0A030">⚠ '+(incompat.length)+'点のパーツは対応車種を購入前に必ずご確認ください</div>');
   el.innerHTML=tips.join('');
 }
 function updateBadge(){
@@ -1268,7 +1323,7 @@ function updateBadge(){
   b.classList.toggle('on',n>0);
 }
 
-// ══ 6-VIEW CANVAS ══
+// ---
 var currentView='side';
 function setView(v){
   currentView=v;
@@ -1335,19 +1390,19 @@ function drawSide(ctx,W,H){try{
   var bY=gY-wR*.9;
   var wc=getWheelColor();
 
-  // ── 地面・グラウンドシャドウ ──
+  // ---
   var grd=ctx.createRadialGradient(cx,gY+2,10,cx,gY+2,190);
   grd.addColorStop(0,'rgba(0,0,0,.32)');grd.addColorStop(1,'rgba(0,0,0,0)');
   ctx.fillStyle=grd;ctx.beginPath();ctx.ellipse(cx,gY+4,190,14,0,0,Math.PI*2);ctx.fill();
 
-  // ── ボディカラー反射（地面への映り込み） ──
+  // ---
   ctx.save();ctx.globalAlpha=.09;
   var ref=ctx.createLinearGradient(cx,gY,cx,gY+30);
   ref.addColorStop(0,bc);ref.addColorStop(1,'transparent');
   ctx.fillStyle=ref;ctx.beginPath();ctx.ellipse(cx,gY+6,170,20,0,0,Math.PI*2);ctx.fill();ctx.restore();
 
-  // ── ホイール（精密スポーク） ──
-  wXs.forEach((function(wx){
+  // ---
+  wXs.forEach(function(wx){
     // タイヤ
     ctx.fillStyle='#111';ctx.beginPath();ctx.arc(wx,gY,wR,0,Math.PI*2);ctx.fill();
     // タイヤサイドウォール質感
@@ -1393,8 +1448,8 @@ function drawSide(ctx,W,H){try{
       ctx.lineTo(wx+Math.cos(a)*wR*.5,gY+Math.sin(a)*wR*.5);ctx.stroke();}
   });
 
-  // ── ボディ本体 ──
-  var drawBody=(function(pts,fill){ctx.beginPath();pts.forEach(function(pt,i){var x=pt[0],y=pt[1];i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.closePath();ctx.fillStyle=fill;ctx.fill();};
+  // ---
+  var drawBody=function(pts,fill){ctx.beginPath();pts.forEach(function(pt,i){var x=pt[0],y=pt[1];i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.closePath();ctx.fillStyle=fill;ctx.fill();};
 
   // メインボディグラデーション
   var bodyGrd=ctx.createLinearGradient(cx,bY-70,cx,gY);
@@ -1465,7 +1520,7 @@ function drawSide(ctx,W,H){try{
     ctx.beginPath();ctx.moveTo(cx+20,bY-15);ctx.lineTo(cx+20,bY-34);ctx.lineTo(cx+36,bY-34);ctx.lineTo(cx+36,bY-15);ctx.stroke();
   }
 
-  // ── ハイライト（光の当たり） ──
+  // ---
   ctx.save();ctx.globalAlpha=.13;
   var hl=ctx.createLinearGradient(cx-190,bY-20,cx-80,bY+10);
   hl.addColorStop(0,'transparent');hl.addColorStop(.3,'#fff');hl.addColorStop(1,'transparent');
@@ -1475,11 +1530,11 @@ function drawSide(ctx,W,H){try{
   else{ctx.moveTo(cx-180,bY+10);ctx.lineTo(cx-66,bY-17);ctx.lineTo(cx-40,bY-17);ctx.lineTo(cx-140,bY+8);}
   ctx.closePath();ctx.fill();ctx.restore();
 
-  // ── アンダーボディ ──
+  // ---
   ctx.fillStyle=darken(bc,35);
   ctx.beginPath();ctx.moveTo(cx-192,gY);ctx.lineTo(cx+178,gY);ctx.lineTo(cx+178,gY-8);ctx.lineTo(cx-192,gY-8);ctx.closePath();ctx.fill();
 
-  // ── パーツ描画 ──
+  // ---
 
   // フロントバンパー（エアロ）
   var aeroKey=Object.keys(S.selected).find(function(k){return ['varis_fd','varis_bnr','varis_ek'].indexOf(k)>=0;});
@@ -1513,7 +1568,7 @@ function drawSide(ctx,W,H){try{
   if(S.selected['rb_fd']||S.selected['rb_86']){
     var fc=S.partColors['rb_fd']||S.partColors['rb_86']||'__body__';
     var rfc=fc==='__body__'?bc:fc;
-    wXs.forEach((function(wx){
+    wXs.forEach(function(wx){
       ctx.save();
       var fGrd=ctx.createRadialGradient(wx,gY-wR,4,wx,gY,wR+12);
       fGrd.addColorStop(0,lighten(rfc,5));fGrd.addColorStop(1,darken(rfc,15));
@@ -1666,7 +1721,7 @@ function drawFront(ctx,W,H){try{
   }
 
   // ホイール
-  [{x:cx-130,y:cy+37},{x:cx+130,y:cy+37}].forEach((function(w){
+  [{x:cx-130,y:cy+37},{x:cx+130,y:cy+37}].forEach(function(w){
     ctx.fillStyle='#111';ctx.beginPath();ctx.arc(w.x,w.y,wR,0,Math.PI*2);ctx.fill();
     var rGrd=ctx.createRadialGradient(w.x-wR*.2,w.y-wR*.2,0,w.x,w.y,wR*.68);
     rGrd.addColorStop(0,lighten(wc,35));rGrd.addColorStop(1,darken(wc,25));
@@ -1748,7 +1803,7 @@ function drawRear(ctx,W,H){try{
   var isTi=mufflerKey&&['fuji','js_s2k'].includes(mufflerKey);
   var muffPoss=hasMuffler?[{x:cx-34},{x:cx+34}]:[{x:cx-22},{x:cx+22}];
   var muffR=hasMuffler?10:7;
-  muffPoss.forEach((function(m){
+  muffPoss.forEach(function(m){
     // 外周
     var mGrd=ctx.createRadialGradient(m.x,cy+47,0,m.x,cy+47,muffR);
     if(isTi){mGrd.addColorStop(0,'#d4a060');mGrd.addColorStop(.5,'#8060a0');mGrd.addColorStop(1,'#4040a0');}
@@ -1775,11 +1830,11 @@ function drawRear(ctx,W,H){try{
     ctx.beginPath();ctx.moveTo(cx-92,cy-76);ctx.lineTo(cx+92,cy-76);ctx.stroke();
     // ステー
     ctx.fillStyle='#666';
-    [{x:cx-52},{x:cx+52}].forEach((function(p){ctx.beginPath();ctx.moveTo(p.x-4,cy-67);ctx.lineTo(p.x+4,cy-67);ctx.lineTo(p.x+3,cy-46);ctx.lineTo(p.x-3,cy-46);ctx.closePath();ctx.fill();});
+    [{x:cx-52},{x:cx+52}].forEach(function(p){ctx.beginPath();ctx.moveTo(p.x-4,cy-67);ctx.lineTo(p.x+4,cy-67);ctx.lineTo(p.x+3,cy-46);ctx.lineTo(p.x-3,cy-46);ctx.closePath();ctx.fill();});
   }
 
   // ホイール
-  [{x:cx-128,y:cy+36},{x:cx+128,y:cy+36}].forEach((function(w){
+  [{x:cx-128,y:cy+36},{x:cx+128,y:cy+36}].forEach(function(w){
     ctx.fillStyle='#111';ctx.beginPath();ctx.arc(w.x,w.y,wR,0,Math.PI*2);ctx.fill();
     var rGrd=ctx.createRadialGradient(w.x-wR*.2,w.y-wR*.2,0,w.x,w.y,wR*.68);
     rGrd.addColorStop(0,lighten(wc,35));rGrd.addColorStop(1,darken(wc,25));
@@ -1853,7 +1908,7 @@ function drawTop(ctx,W,H){try{
   if(S.selected['rb_fd']||S.selected['rb_86']){
     var fc=S.partColors['rb_fd']||S.partColors['rb_86']||'__body__';
     var rfc=fc==='__body__'?bc:fc;
-    [{x:cx-68,y:cy-72},{x:cx+68,y:cy-72},{x:cx-72,y:cy+54},{x:cx+72,y:cy+54}].forEach((function(p){
+    [{x:cx-68,y:cy-72},{x:cx+68,y:cy-72},{x:cx-72,y:cy+54},{x:cx+72,y:cy+54}].forEach(function(p){
       var fGrd=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,14);
       fGrd.addColorStop(0,lighten(rfc,8));fGrd.addColorStop(1,darken(rfc,12));
       ctx.fillStyle=fGrd;ctx.beginPath();ctx.arc(p.x,p.y,12,0,Math.PI*2);ctx.fill();
@@ -1861,7 +1916,7 @@ function drawTop(ctx,W,H){try{
   }
 
   // ホイール（楕円・上から）
-  [{x:cx-68,y:cy-72},{x:cx+68,y:cy-72},{x:cx-70,y:cy+56},{x:cx+70,y:cy+56}].forEach((function(w){
+  [{x:cx-68,y:cy-72},{x:cx+68,y:cy-72},{x:cx-70,y:cy+56},{x:cx+70,y:cy+56}].forEach(function(w){
     ctx.fillStyle='#111';ctx.beginPath();ctx.ellipse(w.x,w.y,wR+2,wR*1.5,0,0,Math.PI*2);ctx.fill();
     var rGrd=ctx.createRadialGradient(w.x,w.y,0,w.x,w.y,wR*.7);
     rGrd.addColorStop(0,lighten(wc,30));rGrd.addColorStop(1,darken(wc,20));
@@ -1881,7 +1936,7 @@ function drawEngine(ctx,W,H){try{
   ctx.beginPath();ctx.moveTo(cx-155,cy-90);ctx.lineTo(cx+155,cy-90);ctx.bezierCurveTo(cx+165,cy-40,cx+165,cy+60,cx+155,cy+82);ctx.lineTo(cx-155,cy+82);ctx.bezierCurveTo(cx-165,cy+60,cx-165,cy-40,cx-155,cy-90);ctx.closePath();ctx.fill();
 
   // ストラットタワー（左右）
-  [{x:cx-125},{x:cx+125}].forEach((function(t){
+  [{x:cx-125},{x:cx+125}].forEach(function(t){
     var twGrd=ctx.createLinearGradient(t.x-15,cy-85,t.x+15,cy-40);
     twGrd.addColorStop(0,darken(bc,28));twGrd.addColorStop(1,darken(bc,38));
     ctx.fillStyle=twGrd;
@@ -1898,7 +1953,7 @@ function drawEngine(ctx,W,H){try{
     ctx.strokeStyle=tbGrd;ctx.lineWidth=9;ctx.lineCap='round';
     ctx.beginPath();ctx.moveTo(cx-118,cy-62);ctx.bezierCurveTo(cx-60,cy-70,cx+60,cy-70,cx+118,cy-62);ctx.stroke();
     // エンド部
-    [{x:cx-118,y:cy-62},{x:cx+118,y:cy-62}].forEach((function(e){
+    [{x:cx-118,y:cy-62},{x:cx+118,y:cy-62}].forEach(function(e){
       var eGrd=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,10);
       eGrd.addColorStop(0,'#f0d060');eGrd.addColorStop(1,'#a07800');
       ctx.fillStyle=eGrd;ctx.beginPath();ctx.arc(e.x,e.y,10,0,Math.PI*2);ctx.fill();
@@ -1977,7 +2032,7 @@ function drawEngine(ctx,W,H){try{
 
   // 車高調（コイルスプリング見え）
   if(S.selected['tein']){
-    [{x:cx-155,y:cy-20},{x:cx+155,y:cy-20}].forEach((function(sp){
+    [{x:cx-155,y:cy-20},{x:cx+155,y:cy-20}].forEach(function(sp){
       ctx.strokeStyle='rgba(200,200,200,.5)';ctx.lineWidth=3;ctx.lineCap='round';
       for(var i=0;i<5;i++){
         ctx.beginPath();ctx.moveTo(sp.x-8+i%2*16,cy-35+i*10);ctx.lineTo(sp.x+8-i%2*16,cy-25+i*10);ctx.stroke();
@@ -2015,7 +2070,7 @@ function drawInterior(ctx,W,H){try{
   ctx.strokeStyle='rgba(0,0,0,.4)';ctx.lineWidth=6;ctx.lineCap='round';
   ctx.beginPath();ctx.moveTo(cx-180,cy-62);ctx.bezierCurveTo(cx-160,cy-80,cx-120,cy-98,cx,cy-100);ctx.bezierCurveTo(cx+120,cy-98,cx+160,cy-80,cx+180,cy-62);ctx.stroke();
   // Aピラー
-  [{x:-180},{x:180}].forEach((function(p){
+  [{x:-180},{x:180}].forEach(function(p){
     ctx.strokeStyle='rgba(0,0,0,.35)';ctx.lineWidth=8;
     ctx.beginPath();ctx.moveTo(cx+p.x,cy-62);ctx.bezierCurveTo(cx+p.x*.9,cy-80,cx+p.x*.7,cy-94,cx+p.x*.5,cy-98);ctx.stroke();
   });
@@ -2031,13 +2086,13 @@ function drawInterior(ctx,W,H){try{
     // 目盛り
     for(var i=0;i<12;i++){var a=i/12*Math.PI*2-Math.PI/2;var len=i%3===0?r*.35:r*.22;
       ctx.strokeStyle=i%3===0?'rgba(255,255,255,.6)':'rgba(255,255,255,.25)';ctx.lineWidth=i%3===0?1.5:1;
-      ctx.beginPath();ctx.moveTo(gx+Math.cos(a)*(r-.len),gy+Math.sin(a)*(r-.len));ctx.lineTo(gx+Math.cos(a)*r,gy+Math.sin(a)*r);ctx.stroke();}
+      ctx.beginPath();ctx.moveTo(gx+Math.cos(a)*(r-len),gy+Math.sin(a)*(r-len));ctx.lineTo(gx+Math.cos(a)*r,gy+Math.sin(a)*r);ctx.stroke();}
     // 針
     var needle=(-Math.PI/2)+val*Math.PI*1.5;
     ctx.strokeStyle='rgba(255,60,30,.9)';ctx.lineWidth=1.5;ctx.lineCap='round';
     ctx.beginPath();ctx.moveTo(gx,gy);ctx.lineTo(gx+Math.cos(needle)*(r-.6),gy+Math.sin(needle)*(r-.6));ctx.stroke();
     ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(gx,gy,2,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='rgba(255,255,255,.3)';ctx.font=`500 ${r*.28}px sans-serif`;ctx.fillText(label,gx-r*.22,gy+r+4);
+    ctx.fillStyle='rgba(255,255,255,.3)';ctx.font='500 '+(r*.28)+'px sans-serif';ctx.fillText(label,gx-r*.22,gy+r+4);
   };
   drawGauge(cx-105,cy-40,16,'RPM',.35);
   drawGauge(cx-68,cy-38,13,'km/h',.25);
@@ -2069,7 +2124,7 @@ function drawInterior(ctx,W,H){try{
   ctx.beginPath();ctx.moveTo(cx,cy+32);ctx.lineTo(cx+4,cy+55);ctx.stroke();
 
   // シート（左右）
-  [{x:cx-92,label:hasBride?'BRIDE':hasSparco?'SPARCO':hasRecaro?'RECARO':null},{x:cx+92,label:null}].forEach((function(seat,si){
+  [{x:cx-92,label:hasBride?'BRIDE':hasSparco?'SPARCO':hasRecaro?'RECARO':null},{x:cx+92,label:null}].forEach(function(seat,si){
     // シートベース
     var sGrd=ctx.createLinearGradient(seat.x-40,cy-22,seat.x+40,cy+92);
     sGrd.addColorStop(0,lighten(sc,10));sGrd.addColorStop(.4,sc);sGrd.addColorStop(1,darken(sc,20));
@@ -2141,7 +2196,7 @@ function drawInterior(ctx,W,H){try{
   ctx.beginPath();ctx.arc(sw_cx,sw_cy,sw_r,0,Math.PI*2);ctx.stroke();
   // スポーク3本
   ctx.strokeStyle=hasNardi?'#666':'#333';ctx.lineWidth=5;ctx.lineCap='round';
-  [{a:-Math.PI/2},{a:-Math.PI/2+Math.PI*2/3},{a:-Math.PI/2+Math.PI*4/3}].forEach((function(sp){
+  [{a:-Math.PI/2},{a:-Math.PI/2+Math.PI*2/3},{a:-Math.PI/2+Math.PI*4/3}].forEach(function(sp){
     ctx.beginPath();ctx.moveTo(sw_cx+Math.cos(sp.a)*sw_r*.2,sw_cy+Math.sin(sp.a)*sw_r*.2);
     ctx.lineTo(sw_cx+Math.cos(sp.a)*sw_r*.82,sw_cy+Math.sin(sp.a)*sw_r*.82);ctx.stroke();
   });
@@ -2172,7 +2227,7 @@ function drawInterior(ctx,W,H){try{
 }catch(e){console.warn('drawInterior error:',e.message);}
 }
 
-// ══ UPLOAD ══
+// ---
 function setUT(t,btn){
   document.querySelectorAll('#pg-upload .cpill').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
@@ -2187,72 +2242,84 @@ function submitCar(){
   if(!maker||!model||!grade){toast('すべての項目を入力してください');return;}
   USER_CARS.push({id:'u'+Date.now(),maker,model,grade:grade+' (投稿)',emoji:'🚗',by:'あなた',
     colors:[{name:'ホワイト',hex:'#EEE9E2'},{name:'ブラック',hex:'#151515'},{name:'シルバー',hex:'#9898A0'}]});
-  renderUCGrid();toast(`${model} を投稿しました！審査後に公開されます`);
+  renderUCGrid();toast((model)+' を投稿しました！審査後に公開されます');
 }
 function submitPart(){toast('パーツを投稿しました！審査後に反映されます');}
 
-// ══ GARAGE ══
+// ---
 function saveGarage(){
   if(!Object.keys(S.selected).length){toast('パーツを選んでください');return;}
   S.garage.push({
     maker:S.maker,model:S.model,grade:S.grade,
-    bodyColor:S.bodyColor,partColors:{...S.partColors},
-    selected:{...S.selected},inch:S.inch,
+    bodyColor:S.bodyColor,partColors:Object.assign({},S.partColors),
+    selected:Object.assign({},S.selected),inch:S.inch,
     at:new Date().toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}),
   });
   renderGarage();toast('ガレージに保存しました！');
 }
 function renderGarage(){
   var el=document.getElementById('garage-inner');
-  document.getElementById('garage-cnt').textContent=S.garage.length?S.garage.length+'件':'';
-  if(!S.garage.length){el.innerHTML='<div class="empty"><i class="ti ti-garage"></i><p>保存した構成がありません</p></div>';return;}
-  el.innerHTML=S.garage.map((function(g,i){
-    var parts=Object.values(g.selected);
+  var cnt=document.getElementById('garage-cnt');
+  if(cnt) cnt.textContent=S.garage.length?S.garage.length+'件':'';
+  if(!el) return;
+  if(!S.garage.length){
+    el.innerHTML='<div class="empty"><i class="ti ti-garage"></i><p>保存した構成がありません</p></div>';
+    return;
+  }
+  el.innerHTML='';
+  S.garage.forEach(function(g,idx){
+    var parts=[];
+    Object.keys(g.selected).forEach(function(id){ parts.push(g.selected[id]); });
     var total=parts.reduce(function(s,p){return s+p.price;},0);
-    return `<div class="gcard" onclick="loadGarage(${i})">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px">
-        <div style="width:34px;height:34px;border-radius:8px;background:${g.bodyColor};flex-shrink:0"></div>
-        <div>
-          <div style="font-size:13px;font-weight:500">${g.model} ${g.grade.split(' ')[0]}</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:2px">${g.at} · ¥${total.toLocaleString()}</div>
-        </div>
-      </div>
-      <div style="display:flex;gap:5px;flex-wrap:wrap">
-        ${parts.slice(0,4).map(p=>`<span style="font-size:10px;padding:2px 7px;border-radius:100px;background:var(--b3);color:var(--t2);border:.5px solid var(--br)">${p.name}</span>`).join('')}
-        ${parts.length>4?`<span style="font-size:10px;padding:2px 7px;border-radius:100px;background:var(--b3);color:var(--t2)">+${parts.length-4}</span>`:''}
-      </div>
-    </div>`;
-  }).join('');
+    var card=document.createElement('div');
+    card.className='gcard';
+    var ptags='';
+    parts.slice(0,4).forEach(function(p){
+      ptags+='<span style="font-size:10px;padding:2px 7px;border-radius:100px;background:var(--b3);color:var(--t2);border:.5px solid var(--br)">'+p.name+'</span>';
+    });
+    if(parts.length>4) ptags+='<span style="font-size:10px;padding:2px 7px;border-radius:100px;background:var(--b3);color:var(--t2)">+'+(parts.length-4)+'</span>';
+    card.innerHTML=
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:9px">'+
+        '<div style="width:34px;height:34px;border-radius:8px;background:'+g.bodyColor+';flex-shrink:0"></div>'+
+        '<div>'+
+          '<div style="font-size:13px;font-weight:500">'+g.model+' '+g.grade.split(' ')[0]+'</div>'+
+          '<div style="font-size:10px;color:var(--t3);margin-top:2px">'+g.at+' · ¥'+total.toLocaleString()+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:5px;flex-wrap:wrap">'+ptags+'</div>';
+    (function(i){card.addEventListener('click',function(){loadGarage(i);});})(idx);
+    el.appendChild(card);
+  });
 }
 function loadGarage(i){
   var g=S.garage[i];
   S.maker=g.maker;S.model=g.model;S.grade=g.grade;
   S.car=buildCar(g.maker,g.model,g.grade);
-  S.bodyColor=g.bodyColor;S.partColors={...g.partColors};
-  S.selected={...g.selected};S.inch=g.inch;
+  S.bodyColor=g.bodyColor;S.partColors=Object.assign({},g.partColors);
+  S.selected=Object.assign({},g.selected);S.inch=g.inch;
   sw('custom');renderBC();renderBodyColors();renderInchRow();renderCatStrip();renderPartList();renderOrder();drawCar();updateBadge();
   toast('構成を読み込みました');
 }
 
-// ══ SHARE / DL ══
+// ---
 function dlImg(){
   drawCar();
   var cv=document.getElementById('cv');
   var a=document.createElement('a');
-  a.download=`customatch-${S.model}-${currentView}.png`;
+  a.download='customatch-'+(S.model)+'-'+(currentView)+'.png';
   a.href=cv.toDataURL('image/png');a.click();
   toast('画像を保存しました');
 }
 function shareImg(){
   var parts=Object.values(S.selected).map(function(p){return p.name;}).join(' + ');
-  var text=`${S.model} ${S.grade.split(' ')[0]} のカスタム\n${parts||'ノーマル'}\n#CusToMatch`;
+  var text=(S.model)+' '+(S.grade.split(' ')[0])+' のカスタム\n'+(parts||'ノーマル')+'\n#CusToMatch';
   if(navigator.share)navigator.share({title:'CusToMatch',text});
   else (navigator.clipboard && navigator.clipboard.writeText.bind(navigator.clipboard))(text).then(function(){toast('テキストをコピーしました');});
 }
 
-// ══ NAV ══
+// ---
 function sw(id){
-  ['custom','order','upload','garage'].forEach((function(p){
+  ['custom','order','upload','garage'].forEach(function(p){
     document.getElementById('pg-'+p).classList.toggle('on',p===id);
     document.getElementById('ni-'+p).classList.toggle('on',p===id);
   });
