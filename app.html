@@ -1355,9 +1355,13 @@ function drawCar(){
     requestAnimationFrame(function(){drawCar();});
     return;
   }
-  cv.width=W;cv.height=H;
+  var dpr=window.devicePixelRatio||1;
+  cv.style.width=W+'px';
+  cv.style.height=H+'px';
+  cv.width=W*dpr;
+  cv.height=H*dpr;
   var ctx=cv.getContext('2d');
-  ctx.setTransform(1,0,0,1,0,0);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
   ctx.clearRect(0,0,W,H);
   try{
     switch(currentView){
