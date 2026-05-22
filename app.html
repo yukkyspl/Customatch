@@ -483,16 +483,17 @@ function drawCarWithImage(cv, ctx, W, H, imgUrl){
     var ix = (W - iw) / 2;
     var iy = (H - ih) / 2;
 
-    // 背景（グラデーション）
+    // 背景（スタジオ風白グラデーション）
     var bgGrd = ctx.createLinearGradient(0,0,0,H);
-    bgGrd.addColorStop(0,'#1e1e22');
-    bgGrd.addColorStop(1,'#0c0c0d');
+    bgGrd.addColorStop(0,'#f8f8f8');
+    bgGrd.addColorStop(.7,'#eeeeee');
+    bgGrd.addColorStop(1,'#dddddd');
     ctx.fillStyle = bgGrd;
     ctx.fillRect(0,0,W,H);
 
     // グラウンドシャドウ
-    var shd = ctx.createRadialGradient(W/2, H*.85, 10, W/2, H*.85, W*.45);
-    shd.addColorStop(0,'rgba(0,0,0,.35)');
+    var shd = ctx.createRadialGradient(W/2, H*.88, 5, W/2, H*.88, W*.4);
+    shd.addColorStop(0,'rgba(0,0,0,.18)');
     shd.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle = shd;
     ctx.fillRect(0,0,W,H);
@@ -500,11 +501,18 @@ function drawCarWithImage(cv, ctx, W, H, imgUrl){
     // 車画像を描画
     ctx.drawImage(img, ix, iy, iw, ih);
 
-    // ボディカラー合成（乗算ブレンド）
-    if(S.bodyColor && S.bodyColor !== '#F0EDE5' && S.bodyColor !== '#EEE9E2'){
+    // ボディカラー合成（自然な色変更）
+    var isWhite = S.bodyColor === '#F0EDE5' || S.bodyColor === '#EEE9E2' || S.bodyColor === '#EEE9E0';
+    var isBlack = S.bodyColor === '#151515' || S.bodyColor === '#171718' || S.bodyColor === '#141418';
+    if(!isWhite){
       ctx.save();
-      ctx.globalCompositeOperation = 'multiply';
-      ctx.globalAlpha = 0.45;
+      if(isBlack){
+        ctx.globalCompositeOperation = 'multiply';
+        ctx.globalAlpha = 0.6;
+      } else {
+        ctx.globalCompositeOperation = 'color';
+        ctx.globalAlpha = 0.55;
+      }
       ctx.fillStyle = S.bodyColor;
       ctx.fillRect(ix, iy, iw, ih);
       ctx.restore();
