@@ -437,6 +437,102 @@ var GRADES={
 
 // ---
 // 色名は日本国内カタログ名準拠、HEXはメーカー公式塗料コードに基づいた近似値
+
+// ── 実写合成用画像データ ──
+var CAR_IMAGES = {
+  'FD3S (1991-2002)': {
+    side: 'images/car_side.jpg',
+    front: null,
+    rear: null,
+  },
+};
+var IMG_CACHE = {};
+
+function loadCarImage(url, cb){
+  if(!url){ cb(null); return; }
+  if(IMG_CACHE[url]){ cb(IMG_CACHE[url]); return; }
+  var img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = function(){ IMG_CACHE[url]=img; cb(img); };
+  img.onerror = function(){ cb(null); };
+  img.src = url;
+}
+
+function getCarImageUrl(grade, view){
+  var data = CAR_IMAGES[grade];
+  if(!data) return null;
+  return data[view] || null;
+}
+
+function drawCarWithImage(cv, ctx, W, H, imgUrl){
+  // 背景
+  ctx.fillStyle = '#1a1a1c';
+  ctx.fillRect(0,0,W,H);
+
+  loadCarImage(imgUrl, function(img){
+    if(!img){
+      // 画像なし→従来のCanvas描画
+      drawCarFallback(ctx, W, H);
+      return;
+    }
+
+    // 画像をcanvasに描画（アスペクト比維持・中央配置）
+    var scale = Math.min(W/img.width, H/img.height) * 0.92;
+    var iw = img.width * scale;
+    var ih = img.height * scale;
+    var ix = (W - iw) / 2;
+    var iy = (H - ih) / 2;
+
+    // 背景（グラデーション）
+    var bgGrd = ctx.createLinearGradient(0,0,0,H);
+    bgGrd.addColorStop(0,'#1e1e22');
+    bgGrd.addColorStop(1,'#0c0c0d');
+    ctx.fillStyle = bgGrd;
+    ctx.fillRect(0,0,W,H);
+
+    // グラウンドシャドウ
+    var shd = ctx.createRadialGradient(W/2, H*.85, 10, W/2, H*.85, W*.45);
+    shd.addColorStop(0,'rgba(0,0,0,.35)');
+    shd.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle = shd;
+    ctx.fillRect(0,0,W,H);
+
+    // 車画像を描画
+    ctx.drawImage(img, ix, iy, iw, ih);
+
+    // ボディカラー合成（乗算ブレンド）
+    if(S.bodyColor && S.bodyColor !== '#F0EDE5' && S.bodyColor !== '#EEE9E2'){
+      ctx.save();
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.globalAlpha = 0.45;
+      ctx.fillStyle = S.bodyColor;
+      ctx.fillRect(ix, iy, iw, ih);
+      ctx.restore();
+    }
+
+    // ウォーターマーク
+    ctx.save();
+    ctx.globalAlpha = .18;
+    ctx.fillStyle = '#fff';
+    ctx.font = '700 11px "Barlow Condensed",sans-serif';
+    ctx.fillText('CusToMatch', 10, H-10);
+    ctx.restore();
+  });
+}
+
+function drawCarFallback(ctx, W, H){
+  try{
+    if(currentView==='side')     drawSide(ctx,W,H);
+    else if(currentView==='front')    drawFront(ctx,W,H);
+    else if(currentView==='rear')     drawRear(ctx,W,H);
+    else if(currentView==='top')      drawTop(ctx,W,H);
+    else if(currentView==='engine')   drawEngine(ctx,W,H);
+    else if(currentView==='interior') drawInterior(ctx,W,H);
+  }catch(e){
+    console.warn('drawCarFallback error:',e.message);
+  }
+}
+
 var CAR_COLORS={
   // ---
   'FD3S (1991-2002)':[
@@ -1353,21 +1449,22 @@ function drawCar(){
   if(!cv) return;
   var W=cv.offsetWidth||480;
   var H=cv.offsetHeight||200;
-  // canvasの実サイズをCSSサイズに合わせる（初期化が必要）
   cv.width=W;
   cv.height=H;
   var ctx=cv.getContext('2d');
-  console.log('drawCar v2 W:'+W+' H:'+H);
-  // サイズ設定後に描画
-  try{
-    if(currentView==='side')     drawSide(ctx,W,H);
-    else if(currentView==='front')    drawFront(ctx,W,H);
-    else if(currentView==='rear')     drawRear(ctx,W,H);
-    else if(currentView==='top')      drawTop(ctx,W,H);
-    else if(currentView==='engine')   drawEngine(ctx,W,H);
-    else if(currentView==='interior') drawInterior(ctx,W,H);
-  }catch(e){
-    console.warn('drawCar error:',e.message);
+
+  // 実写画像があるか確認
+  var imgUrl = getCarImageUrl(S.grade, currentView);
+  if(imgUrl){
+    drawCarWithImage(cv, ctx, W, H, imgUrl);
+  } else {
+    // フォールバック：Canvas描画
+    ctx.fillStyle='#1a1a1c';
+    ctx.fillRect(0,0,W,H);
+    drawCarFallback(ctx, W, H);
+    ctx.save();ctx.globalAlpha=.18;ctx.fillStyle='#fff';
+    ctx.font='700 11px "Barlow Condensed",sans-serif';
+    ctx.fillText('CusToMatch',10,H-10);ctx.restore();
   }
 }
 
