@@ -444,7 +444,27 @@ var CAR_IMAGES = {
     side: 'images/car_side.jpg',
     front: null,
     rear: null,
+    // ホイール位置（画像全体に対する比率）
+    // {cx: 中心X比率, cy: 中心Y比率, r: 半径比率}
+    wheels: {
+      side: [
+        {cx: 0.21, cy: 0.72, r: 0.155},  // フロントホイール
+        {cx: 0.73, cy: 0.72, r: 0.155},  // リアホイール
+      ]
+    }
   },
+};
+
+// ホイール画像データ
+var WHEEL_IMAGES = {
+  'te37':   'images/wheel_te37.png',
+  'ce28':   null,
+  'rpf1':   null,
+  'bbs':    null,
+  'work':   null,
+  'advan':  null,
+  'gram':   null,
+  'ssr':    null,
 };
 var IMG_CACHE = {};
 
@@ -516,6 +536,44 @@ function drawCarWithImage(cv, ctx, W, H, imgUrl){
       ctx.fillStyle = S.bodyColor;
       ctx.fillRect(ix, iy, iw, ih);
       ctx.restore();
+    }
+
+    // ホイール合成
+    var carData = CAR_IMAGES[S.grade];
+    if(carData && carData.wheels && carData.wheels[currentView]){
+      var wheelPositions = carData.wheels[currentView];
+      // 選択されているホイールを取得
+      var selectedWheelKey = null;
+      var wheelKeys = ['te37','ce28','rpf1','bbs','work','advan','gram','ssr'];
+      wheelKeys.forEach(function(k){ if(S.selected[k]) selectedWheelKey=k; });
+
+      if(selectedWheelKey && WHEEL_IMAGES[selectedWheelKey]){
+        var wheelUrl = WHEEL_IMAGES[selectedWheelKey];
+        loadCarImage(wheelUrl, function(wImg){
+          if(!wImg) return;
+          wheelPositions.forEach(function(pos){
+            var wx = ix + pos.cx * iw;
+            var wy = iy + pos.cy * ih;
+            var wr = pos.r * iw;
+            ctx.save();
+            // 円形クリッピング
+            ctx.beginPath();
+            ctx.arc(wx, wy, wr, 0, Math.PI*2);
+            ctx.clip();
+            // ホイール画像を描画
+            ctx.drawImage(wImg, wx-wr, wy-wr, wr*2, wr*2);
+            // ホイールカラー合成
+            var wheelColorKey = S.partColors[selectedWheelKey];
+            if(wheelColorKey && wheelColorKey !== '#C4C4C4'){
+              ctx.globalCompositeOperation = 'color';
+              ctx.globalAlpha = 0.5;
+              ctx.fillStyle = wheelColorKey === '__body__' ? S.bodyColor : wheelColorKey;
+              ctx.fillRect(wx-wr, wy-wr, wr*2, wr*2);
+            }
+            ctx.restore();
+          });
+        });
+      }
     }
 
     // ウォーターマーク
