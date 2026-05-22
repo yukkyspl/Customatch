@@ -1357,6 +1357,7 @@ function drawCar(){
   cv.width=W;
   cv.height=H;
   var ctx=cv.getContext('2d');
+  console.log('drawCar v2 W:'+W+' H:'+H);
   // サイズ設定後に描画
   try{
     if(currentView==='side')     drawSide(ctx,W,H);
