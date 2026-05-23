@@ -497,10 +497,8 @@ var WHEEL_IMAGES = {
   'gram':   'images/wheel_gram.png',
   'ssr':    'images/wheel_ssr.png',
 };
-// 画像が円いっぱいまで描かれている場合に縮小（1.0=等倍、小さくするほど余白が増える）
-var WHEEL_SCALE = {
-  'bbs': 0.85,
-};
+// ホイール描画スケール（自動クロップで通常不要。ズレが残る場合の手動補正用）
+var WHEEL_SCALE = {};
 var IMG_CACHE = {};
 var WHEEL_PROC_CACHE = {};
 
@@ -514,7 +512,7 @@ function loadCarImage(url, cb){
   img.src = url;
 }
 
-// ホイール画像の白背景をCanvasピクセル処理で透過化
+// ホイール画像の白背景を除去し、ホイール範囲を自動検出してクロップ
 function processWheelBg(img){
   var oc = document.createElement('canvas');
   oc.width = img.width; oc.height = img.height;
@@ -523,10 +521,29 @@ function processWheelBg(img){
   try {
     var d = ox.getImageData(0, 0, oc.width, oc.height);
     var px = d.data;
+    var minX = oc.width, maxX = 0, minY = oc.height, maxY = 0;
     for(var i = 0; i < px.length; i += 4){
-      if(px[i] > 235 && px[i+1] > 235 && px[i+2] > 235) px[i+3] = 0;
+      // R/G/B がすべて242以上 → 白背景として透明化
+      if(px[i] > 242 && px[i+1] > 242 && px[i+2] > 242){
+        px[i+3] = 0;
+      } else {
+        var idx = i / 4;
+        var x = idx % oc.width, y = Math.floor(idx / oc.width);
+        if(x < minX) minX = x; if(x > maxX) maxX = x;
+        if(y < minY) minY = y; if(y > maxY) maxY = y;
+      }
     }
     ox.putImageData(d, 0, 0);
+    // ホイール部分だけ正方形にクロップして返す
+    if(maxX > minX && maxY > minY){
+      var sz  = Math.max(maxX - minX, maxY - minY);
+      var cx  = (minX + maxX) / 2, cy = (minY + maxY) / 2;
+      var half = sz / 2 * 1.04; // 4%余白
+      var out = document.createElement('canvas');
+      out.width = out.height = Math.round(sz * 1.08);
+      out.getContext('2d').drawImage(oc, cx-half, cy-half, half*2, half*2, 0, 0, out.width, out.height);
+      return out;
+    }
   } catch(e){}
   return oc;
 }
