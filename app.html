@@ -670,20 +670,22 @@ function drawCarWithImage(cv, ctx, W, H, imgUrl){
             var wy = iy + pos.cy * ih;
             var wr = pos.r * iw;
             ctx.save();
-            // 円形クリッピング
+            // クリッピング（ryがあれば楕円、なければ円）
+            var wrX = pos.r * iw;
+            var wrY = (pos.ry != null ? pos.ry : pos.r) * iw;
             ctx.beginPath();
-            ctx.arc(wx, wy, wr, 0, Math.PI*2);
+            ctx.ellipse(wx, wy, wrX, wrY, 0, 0, Math.PI*2);
             ctx.clip();
             // ホイール画像を描画（画像が大きい場合はスケールダウン）
-            var ws = (WHEEL_SCALE[selectedWheelKey] || 1.0) * wr;
-            ctx.drawImage(wImg, wx-ws, wy-ws, ws*2, ws*2);
+            var ws = (WHEEL_SCALE[selectedWheelKey] || 1.0);
+            ctx.drawImage(wImg, wx - wrX*ws, wy - wrY*ws, wrX*ws*2, wrY*ws*2);
             // ホイールカラー合成
             var wheelColorKey = S.partColors[selectedWheelKey];
             if(wheelColorKey && wheelColorKey !== '#C4C4C4'){
               ctx.globalCompositeOperation = 'color';
               ctx.globalAlpha = 0.5;
               ctx.fillStyle = wheelColorKey === '__body__' ? S.bodyColor : wheelColorKey;
-              ctx.fillRect(wx-wr, wy-wr, wr*2, wr*2);
+              ctx.fillRect(wx-wrX, wy-wrY, wrX*2, wrY*2);
             }
             ctx.restore();
           });
