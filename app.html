@@ -502,6 +502,7 @@ var WHEEL_SCALE = {
   'bbs': 0.85,
 };
 var IMG_CACHE = {};
+var WHEEL_PROC_CACHE = {};
 
 function loadCarImage(url, cb){
   if(!url){ cb(null); return; }
@@ -511,6 +512,33 @@ function loadCarImage(url, cb){
   img.onload = function(){ IMG_CACHE[url]=img; cb(img); };
   img.onerror = function(){ cb(null); };
   img.src = url;
+}
+
+// ホイール画像の白背景をCanvasピクセル処理で透過化
+function processWheelBg(img){
+  var oc = document.createElement('canvas');
+  oc.width = img.width; oc.height = img.height;
+  var ox = oc.getContext('2d');
+  ox.drawImage(img, 0, 0);
+  try {
+    var d = ox.getImageData(0, 0, oc.width, oc.height);
+    var px = d.data;
+    for(var i = 0; i < px.length; i += 4){
+      if(px[i] > 235 && px[i+1] > 235 && px[i+2] > 235) px[i+3] = 0;
+    }
+    ox.putImageData(d, 0, 0);
+  } catch(e){}
+  return oc;
+}
+
+function loadWheelImage(url, cb){
+  if(WHEEL_PROC_CACHE[url]){ cb(WHEEL_PROC_CACHE[url]); return; }
+  loadCarImage(url, function(img){
+    if(!img){ cb(null); return; }
+    var processed = processWheelBg(img);
+    WHEEL_PROC_CACHE[url] = processed;
+    cb(processed);
+  });
 }
 
 function getCarImageUrl(grade, view){
@@ -584,7 +612,7 @@ function drawCarWithImage(cv, ctx, W, H, imgUrl){
 
       if(selectedWheelKey && WHEEL_IMAGES[selectedWheelKey]){
         var wheelUrl = WHEEL_IMAGES[selectedWheelKey];
-        loadCarImage(wheelUrl, function(wImg){
+        loadWheelImage(wheelUrl, function(wImg){
           if(!wImg) return;
           wheelPositions.forEach(function(pos){
             var wx = ix + pos.cx * iw;
