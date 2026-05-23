@@ -513,6 +513,8 @@ function loadCarImage(url, cb){
 }
 
 // ホイール画像の白背景を除去し、ホイール範囲を自動検出してクロップ
+// フラッドフィル方式：エッジから繋がった白領域だけを除去し、
+// ホイール内部のシルバー・クロームを保護する
 function processWheelBg(img){
   var oc = document.createElement('canvas');
   oc.width = img.width; oc.height = img.height;
@@ -521,27 +523,53 @@ function processWheelBg(img){
   try {
     var d = ox.getImageData(0, 0, oc.width, oc.height);
     var px = d.data;
-    var minX = oc.width, maxX = 0, minY = oc.height, maxY = 0;
-    for(var i = 0; i < px.length; i += 4){
-      // R/G/B がすべて242以上 → 白背景として透明化
-      if(px[i] > 242 && px[i+1] > 242 && px[i+2] > 242){
-        px[i+3] = 0;
+    var W = oc.width, H = oc.height;
+
+    // エッジから繋がる「背景」白ピクセルをBFSで検出
+    var visited = new Uint8Array(W * H);
+    var queue = new Int32Array(W * H);
+    var qHead = 0, qTail = 0;
+
+    function isBg(pi){ return px[pi]>225 && px[pi+1]>225 && px[pi+2]>225; }
+    function seed(x, y){
+      if(x<0||x>=W||y<0||y>=H) return;
+      var id = y*W+x;
+      if(visited[id] || !isBg(id*4)) return;
+      visited[id] = 1; queue[qTail++] = id;
+    }
+
+    // 4辺のエッジピクセルをシード
+    for(var x=0;x<W;x++){ seed(x,0); seed(x,H-1); }
+    for(var y=0;y<H;y++){ seed(0,y); seed(W-1,y); }
+
+    // BFS 拡張
+    while(qHead < qTail){
+      var cur = queue[qHead++];
+      var cx = cur%W, cy = Math.floor(cur/W);
+      seed(cx-1,cy); seed(cx+1,cy); seed(cx,cy-1); seed(cx,cy+1);
+    }
+
+    // 背景ピクセルを透明化し、ホイールのバウンディングボックスを計算
+    var minX=W, maxX=0, minY=H, maxY=0;
+    for(var i=0; i<W*H; i++){
+      if(visited[i]){
+        px[i*4+3] = 0;
       } else {
-        var idx = i / 4;
-        var x = idx % oc.width, y = Math.floor(idx / oc.width);
-        if(x < minX) minX = x; if(x > maxX) maxX = x;
-        if(y < minY) minY = y; if(y > maxY) maxY = y;
+        var xi=i%W, yi=Math.floor(i/W);
+        if(xi<minX)minX=xi; if(xi>maxX)maxX=xi;
+        if(yi<minY)minY=yi; if(yi>maxY)maxY=yi;
       }
     }
     ox.putImageData(d, 0, 0);
-    // ホイール部分だけ正方形にクロップして返す
+
+    // ホイール範囲を正方形にクロップ
     if(maxX > minX && maxY > minY){
-      var sz  = Math.max(maxX - minX, maxY - minY);
-      var cx  = (minX + maxX) / 2, cy = (minY + maxY) / 2;
-      var half = sz / 2 * 1.04; // 4%余白
-      var out = document.createElement('canvas');
-      out.width = out.height = Math.round(sz * 1.08);
-      out.getContext('2d').drawImage(oc, cx-half, cy-half, half*2, half*2, 0, 0, out.width, out.height);
+      var sz   = Math.max(maxX-minX, maxY-minY);
+      var cxc  = (minX+maxX)/2, cyc = (minY+maxY)/2;
+      var half = sz/2 * 1.04;
+      var out  = document.createElement('canvas');
+      out.width = out.height = Math.round(sz*1.08);
+      out.getContext('2d').drawImage(oc, cxc-half, cyc-half, half*2, half*2, 0, 0, out.width, out.height);
       return out;
     }
   } catch(e){}
