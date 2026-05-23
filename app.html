@@ -552,14 +552,18 @@ function processWheelBg(img){
     }
 
     // 背景ピクセルを透明化し、ホイールのバウンディングボックスを計算
+    // 端のアーティファクトを除くため中央80%領域のみ対象にする
     var minX=W, maxX=0, minY=H, maxY=0;
+    var mx0=W*0.10, mx1=W*0.90, my0=H*0.10, my1=H*0.90;
     for(var i=0; i<W*H; i++){
       if(visited[i]){
         px[i*4+3] = 0;
       } else {
         var xi=i%W, yi=Math.floor(i/W);
-        if(xi<minX)minX=xi; if(xi>maxX)maxX=xi;
-        if(yi<minY)minY=yi; if(yi>maxY)maxY=yi;
+        if(xi>=mx0 && xi<=mx1 && yi>=my0 && yi<=my1){
+          if(xi<minX)minX=xi; if(xi>maxX)maxX=xi;
+          if(yi<minY)minY=yi; if(yi>maxY)maxY=yi;
+        }
       }
     }
     ox.putImageData(d, 0, 0);
