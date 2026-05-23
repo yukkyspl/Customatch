@@ -497,6 +497,10 @@ var WHEEL_IMAGES = {
   'gram':   'images/wheel_gram.png',
   'ssr':    'images/wheel_ssr.png',
 };
+// 画像が円いっぱいまで描かれている場合に縮小（1.0=等倍、小さくするほど余白が増える）
+var WHEEL_SCALE = {
+  'bbs': 0.85,
+};
 var IMG_CACHE = {};
 
 function loadCarImage(url, cb){
@@ -591,8 +595,9 @@ function drawCarWithImage(cv, ctx, W, H, imgUrl){
             ctx.beginPath();
             ctx.arc(wx, wy, wr, 0, Math.PI*2);
             ctx.clip();
-            // ホイール画像を描画
-            ctx.drawImage(wImg, wx-wr, wy-wr, wr*2, wr*2);
+            // ホイール画像を描画（画像が大きい場合はスケールダウン）
+            var ws = (WHEEL_SCALE[selectedWheelKey] || 1.0) * wr;
+            ctx.drawImage(wImg, wx-ws, wy-ws, ws*2, ws*2);
             // ホイールカラー合成
             var wheelColorKey = S.partColors[selectedWheelKey];
             if(wheelColorKey && wheelColorKey !== '#C4C4C4'){
