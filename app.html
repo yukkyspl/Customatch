@@ -501,6 +501,18 @@ var WHEEL_IMAGES = {
 var WHEEL_SCALE = {
   'bbs': 0.80,
 };
+// 事前合成済み高品質画像マップ
+// tools/wheel_compositor.py を実行すると images/composite/ に生成される
+// キー形式: "{carKey}_{wheelKey}" — 存在する場合はこちらを優先使用
+var COMPOSITE_IMAGES = {};
+
+// CAR_IMAGES のキー → Python ツールの車種キー への対応
+var GRADE_TO_CAR_KEY = {
+  'FD3S (1991-2002)': 'fd3s',
+  'ZN8 RZ (2021-)':   'gr86',
+  'ZD8 S (2021-)':    'brz',
+  'FL5 (2022-)':      'civic',
+};
 var IMG_CACHE = {};
 var WHEEL_PROC_CACHE = {};
 var CAR_COLOR_CACHE = {};
@@ -658,8 +670,9 @@ function getCarImageUrl(grade, view){
   return data[view] || null;
 }
 
-function drawCarWithImage(cv, ctx, W, H, imgUrl){
-  // 背景
+function drawCarWithImage(cv, ctx, W, H, imgUrl, isComposite){
+  // isComposite=true のとき: imgUrl は車+ホイール事前合成済み画像
+  //   → 別途ホイール描画・シャドウ描画をスキップ
   ctx.fillStyle = '#1a1a1c';
   ctx.fillRect(0,0,W,H);
 
@@ -697,9 +710,9 @@ function drawCarWithImage(cv, ctx, W, H, imgUrl){
     // ピクセル処理済みの色変更済み車画像を描画
     ctx.drawImage(coloredImg, ix, iy, iw, ih);
 
-    // ホイール合成
+    // ホイール合成（事前合成済み画像の場合はスキップ）
     var carData = CAR_IMAGES[S.grade];
-    if(carData && carData.wheels && carData.wheels[currentView]){
+    if(!isComposite && carData && carData.wheels && carData.wheels[currentView]){
       var wheelPositions = carData.wheels[currentView];
       // 選択されているホイールを取得
       var selectedWheelKey = null;
@@ -707,13 +720,35 @@ function drawCarWithImage(cv, ctx, W, H, imgUrl){
       wheelKeys.forEach(function(k){ if(S.selected[k]) selectedWheelKey=k; });
 
       if(selectedWheelKey && WHEEL_IMAGES[selectedWheelKey]){
+        // ① 接地シャドウ（ホイール描画より先 → タイヤの下に描かれる）
+        wheelPositions.forEach(function(pos){
+          var wx  = ix + pos.cx * iw;
+          var wy  = iy + pos.cy * ih;
+          var wrX = pos.r * iw;
+          var wrY = (pos.ry != null ? pos.ry : pos.r) * iw;
+          // タイヤ接地点を中心に扁平楕円グラデーションを描画
+          ctx.save();
+          ctx.translate(wx, wy + wrY);   // タイヤ底端（接地点）へ移動
+          ctx.scale(1, 0.14);            // 縦14%に圧縮 → 扁平な接地楕円
+          var shR = wrX * 0.92;
+          var grd = ctx.createRadialGradient(0,0,0, 0,0,shR);
+          grd.addColorStop(0,    'rgba(0,0,0,0.58)');
+          grd.addColorStop(0.50, 'rgba(0,0,0,0.28)');
+          grd.addColorStop(1,    'rgba(0,0,0,0)');
+          ctx.fillStyle = grd;
+          ctx.beginPath();
+          ctx.arc(0, 0, shR, 0, Math.PI*2);
+          ctx.fill();
+          ctx.restore();
+        });
+
+        // ② ホイール本体描画（シャドウの上に重なる）
         var wheelUrl = WHEEL_IMAGES[selectedWheelKey];
         loadWheelImage(wheelUrl, function(wImg){
           if(!wImg) return;
           wheelPositions.forEach(function(pos){
             var wx = ix + pos.cx * iw;
             var wy = iy + pos.cy * ih;
-            var wr = pos.r * iw;
             ctx.save();
             // クリッピング（ryがあれば楕円、なければ円）
             var wrX = pos.r * iw;
@@ -721,7 +756,7 @@ function drawCarWithImage(cv, ctx, W, H, imgUrl){
             ctx.beginPath();
             ctx.ellipse(wx, wy, wrX, wrY, 0, 0, Math.PI*2);
             ctx.clip();
-            // ホイール画像を描画（画像が大きい場合はスケールダウン）
+            // ホイール画像を描画
             var ws = (WHEEL_SCALE[selectedWheelKey] || 1.0);
             ctx.drawImage(wImg, wx - wrX*ws, wy - wrY*ws, wrX*ws*2, wrY*ws*2);
             // ホイールカラー合成
@@ -1684,7 +1719,14 @@ function drawCar(){
   // 実写画像があるか確認
   var imgUrl = getCarImageUrl(S.grade, currentView);
   if(imgUrl){
-    drawCarWithImage(cv, ctx, W, H, imgUrl);
+    // 事前合成画像があればそちらを優先（ホイール別途描画不要）
+    var selectedWheelKeyNow = null;
+    var _wkeys = ['te37','ce28','rpf1','bbs','work','advan','gram','ssr'];
+    _wkeys.forEach(function(k){ if(S.selected[k]) selectedWheelKeyNow=k; });
+    var _carKey = GRADE_TO_CAR_KEY[S.grade] || '';
+    var _compositeKey = _carKey && selectedWheelKeyNow ? _carKey+'_'+selectedWheelKeyNow : '';
+    var compositeUrl = _compositeKey ? COMPOSITE_IMAGES[_compositeKey] : null;
+    drawCarWithImage(cv, ctx, W, H, compositeUrl ? compositeUrl : imgUrl, !!compositeUrl);
   } else {
     // フォールバック：Canvas描画
     ctx.fillStyle='#1a1a1c';
